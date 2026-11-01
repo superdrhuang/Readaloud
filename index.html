@@ -421,6 +421,121 @@ body{background:var(--bg)}
 .btn{transition:transform .08s}
 .btn:active{transform:scale(.97)}
 @media (max-width:640px){ .rightctl #sleepTxt{display:none} }
+@media (max-width:440px){
+  .seg button{padding:.3rem .42rem;font-size:.8rem}
+  #voiceName{display:none}
+  .player{padding-left:.5rem;padding-right:.5rem}
+  .player .in{padding:.65rem .7rem .7rem;border-radius:1.1rem}
+}
+/* collapsible outline */
+.oi.hid{display:none}
+.oi .caret{flex:none;width:1.6rem;height:1.6rem;margin-left:.1rem;border:none;background:none;border-radius:.4rem;color:var(--muted);display:grid;place-items:center}
+.oi .caret:hover{background:var(--surface);color:var(--ink)}
+.oi .caret svg{width:.95rem;height:.95rem;transition:transform .15s}
+.oi.open .caret svg{transform:rotate(90deg)}
+.oi .caret.none{visibility:hidden}
+.oi.d0 .ot{font-weight:600}
+.oi.d1 .go{padding-left:1.1rem}
+.oi.d2 .go{padding-left:2rem;font-size:.9rem}
+.oi.d3 .go{padding-left:2.8rem;font-size:.88rem}
+.oi .cnt{flex:none;font-size:.72rem;color:var(--muted);font-variant-numeric:tabular-nums}
+.oi.lv1 .go,.oi.lv2 .go,.oi.lv3 .go{padding-left:.4rem}
+.oi.d1 .go{padding-left:1.1rem}.oi.d2 .go{padding-left:2rem}.oi.d3 .go{padding-left:2.8rem}
+.sd-tools{display:flex;gap:.4rem;margin:0 .75rem .6rem}
+.sd-tools button{display:inline-flex;align-items:center;gap:.35rem;background:var(--surface);border:1px solid var(--line);border-radius:.6rem;padding:.4rem .6rem;font-weight:600;font-size:.82rem;color:var(--ink)}
+.sd-tools button:first-child{flex:1;color:var(--accent)}
+.sd-tools svg{width:1rem;height:1rem}
+.ovbtn{display:inline-flex;align-items:center;gap:.35rem;background:var(--surface);border:1px solid var(--line);border-radius:999px;padding:.35rem .75rem;font-weight:600;font-size:.86rem;color:var(--ink);flex:none}
+.ovbtn:hover,.ovbtn.on{border-color:var(--accent);color:var(--accent)}
+.ovbtn svg{width:1rem;height:1rem}
+@media (max-width:1100px){ .ovbtn span{display:none} .ovbtn{padding:.45rem} }
+
+/* book overview page */
+.ov{max-width:46rem;margin:0 auto;padding:2.2rem 1.25rem 16rem}
+.ov-kicker{font-size:.85rem;font-weight:600;color:var(--accent);margin-bottom:.3rem}
+.ov h1{font-family:'Literata',Georgia,serif;font-weight:600;font-size:clamp(1.7rem,4vw,2.3rem);line-height:1.15;letter-spacing:-.01em;margin:0 0 .5rem}
+.ov-meta{color:var(--muted);margin:0 0 .4rem}
+.ov-help{margin:0 0 1.6rem;color:var(--ink)}
+.ov-list{list-style:none;margin:0;padding:0;display:grid;gap:.7rem}
+.ov-card{background:var(--surface);border:1px solid var(--line);border-radius:1.1rem;overflow:hidden;transition:border-color .15s, box-shadow .15s}
+.ov-card.cur{border-color:var(--accent);box-shadow:0 0 0 3px var(--accent-soft)}
+.ov-top{display:flex;align-items:center;gap:1rem;padding:1rem 1.1rem;cursor:pointer}
+.ov-num{flex:none;width:2.4rem;height:2.4rem;border-radius:.8rem;display:grid;place-items:center;background:var(--accent-soft);color:var(--accent);font-family:'Literata',Georgia,serif;font-weight:600;font-size:1.1rem}
+.ov-card.done .ov-num{background:var(--ok);color:#fff}
+.ov-body{flex:1;min-width:0}
+.ov-body h3{margin:0;font-family:'Literata',Georgia,serif;font-weight:600;font-size:1.12rem;line-height:1.3}
+.ov-sub-meta{font-size:.85rem;color:var(--muted);margin-top:.2rem}
+.ov-bar{height:4px;border-radius:4px;background:var(--line);margin-top:.55rem;overflow:hidden;max-width:16rem}
+.ov-bar i{display:block;height:100%;background:var(--ok)}
+.ov-go{flex:none;display:inline-flex;align-items:center;gap:.3rem;border:none;border-radius:999px;background:var(--accent);color:var(--on-accent);font-weight:600;font-size:.88rem;padding:.5rem .95rem}
+.ov-go svg{width:.95rem;height:.95rem}
+.ov-tog{flex:none;width:2.2rem;height:2.2rem;border:1px solid var(--line);border-radius:999px;background:var(--surface);color:var(--muted);display:grid;place-items:center}
+.ov-tog svg{width:1rem;height:1rem;transition:transform .15s}
+.ov-card.open .ov-tog svg{transform:rotate(90deg)}
+.ov-subs{list-style:none;margin:0;padding:0 1.1rem 1rem 4.5rem;display:none}
+.ov-card.open .ov-subs{display:block}
+.ov-subs li button{width:100%;display:flex;align-items:center;gap:.6rem;text-align:left;background:none;border:none;border-radius:.6rem;padding:.5rem .6rem;font-size:.95rem;color:var(--ink)}
+.ov-subs li button:hover{background:var(--surface2)}
+.ov-subs .ck{flex:none;width:.95rem;height:.95rem;border-radius:50%;border:1.5px solid var(--line)}
+.ov-subs .done .ck{background:var(--ok);border-color:var(--ok)}
+.ov-subs .cur .ck{border-color:var(--accent);background:radial-gradient(circle, var(--accent) 0 32%, transparent 36%)}
+.ov-subs .d2 button{padding-left:1.6rem;font-size:.9rem;color:var(--muted)}
+.ov-subs .mins{margin-left:auto;font-size:.78rem;color:var(--muted);font-variant-numeric:tabular-nums;flex:none}
+.ov-foot{margin-top:1.4rem}
+@media (max-width:640px){ .ov-subs{padding-left:1rem} .ov-go span{display:none} .ov-top{gap:.7rem;padding:.85rem} }
+
+/* playlist and history */
+.plsec,.histsec{margin:0 0 2rem}
+.histsec{margin-top:2.4rem}
+.histsec h3{margin-bottom:.6rem}
+.plhead{display:flex;align-items:center;flex-wrap:wrap;gap:.75rem;justify-content:space-between;margin-bottom:.7rem}
+.plhead h3,.histsec h3{margin:0;font-family:'Literata',Georgia,serif;font-weight:600;font-size:1.2rem}
+.plhead h3 span{color:var(--muted);font-weight:400}
+.placts{display:flex;align-items:center;gap:1rem}
+.placts .btn{padding:.55rem 1rem}
+.pllist,.histlist{list-style:none;margin:0;padding:0;display:grid;gap:.4rem}
+.pli{display:flex;align-items:center;gap:.6rem;background:var(--surface);border:1px solid var(--line);border-radius:.9rem;padding:.45rem .5rem .45rem .7rem}
+.pli.now{border-color:var(--accent);box-shadow:0 0 0 3px var(--accent-soft)}
+.pli .n{flex:none;width:1.7rem;height:1.7rem;border-radius:50%;display:grid;place-items:center;font-size:.8rem;font-weight:600;background:var(--surface2);border:1px solid var(--line);color:var(--muted)}
+.pli.played .n{background:var(--ok);border-color:var(--ok);color:#fff}
+.pli .main{flex:1;min-width:0;text-align:left;background:none;border:none;padding:.25rem 0}
+.pli .main b{display:block;font-weight:600;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.pli .main small{display:block;color:var(--muted);font-size:.8rem;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.pli .main small .when{color:var(--ok);font-weight:600}
+.pli .mini{flex:none;width:2rem;height:2rem;border:none;background:none;border-radius:.5rem;color:var(--muted);display:grid;place-items:center}
+.pli .mini:hover{background:var(--surface2);color:var(--ink)}
+.pli .mini svg{width:1rem;height:1rem}
+.plhint{color:var(--muted);font-size:.9rem;margin:-.6rem 0 1.6rem}
+.histlist li button{width:100%;display:flex;gap:.8rem;align-items:baseline;text-align:left;background:none;border:none;border-bottom:1px solid var(--line);padding:.55rem .2rem}
+.histlist li button:hover{background:var(--surface)}
+.histlist .d{flex:none;width:7.5rem;font-size:.82rem;color:var(--ok);font-weight:600;font-variant-numeric:tabular-nums}
+.histlist .w{flex:1;min-width:0}
+.histlist .w b{font-weight:600}
+.histlist .w small{display:block;color:var(--muted);font-size:.8rem}
+.plbar{display:flex;align-items:center;gap:.6rem;flex-wrap:wrap;margin:-.1rem 0 .55rem;padding:.45rem .7rem;border-radius:.8rem;background:var(--surface2);border:1px solid var(--line);font-size:.88rem}
+.plbar > svg{width:1.1rem;height:1.1rem;color:var(--accent);flex:none}
+.plbar .pltx{flex:1;min-width:0;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.plbar .pltx span{color:var(--muted);margin-left:.4rem}
+.plbar button{border:1px solid var(--line);background:var(--surface);border-radius:999px;padding:.25rem .7rem;font-weight:600;font-size:.8rem}
+.ov-add{flex:none;width:2.2rem;height:2.2rem;border:1px solid var(--line);border-radius:999px;background:var(--surface);color:var(--accent);display:grid;place-items:center;font-size:1.2rem;font-weight:600;line-height:1}
+.ov-add.in{background:var(--accent-soft);border-color:var(--accent)}
+.ov-subs .add{flex:none;width:1.8rem;height:1.8rem;border:1px solid var(--line);border-radius:999px;background:var(--surface);color:var(--accent);font-weight:700;display:grid;place-items:center;margin-left:.4rem}
+.ov-subs .add.in{background:var(--accent-soft);border-color:var(--accent)}
+.ov-subs li{display:flex;align-items:center}
+.ov-subs li > button:first-child{flex:1;min-width:0}
+.ov-subs .when,.ov-sub-meta .when{color:var(--ok);font-weight:600}
+/* slides */
+.blk.slide{font-family:'Figtree',system-ui,sans-serif;font-size:.86em;line-height:1.5;background:var(--surface);border:1px solid var(--line);border-left:3px solid var(--muted);border-radius:.4rem .7rem .7rem .4rem;padding:.6rem .9rem;color:var(--muted)}
+.blk.slide.skip{opacity:1}
+.blk.slide .sl-k{font-size:.72rem;font-weight:600;margin-bottom:.2rem}
+.blk.slide ul{margin:0;padding-left:1.1rem}
+.blk.slide .sl-hide{display:none}
+
+/* practice answers stay hidden until the reading gets there */
+.blk.spoil{filter:blur(7px);opacity:.7;cursor:pointer;user-select:none;transition:filter .3s, opacity .3s}
+.blk.spoil:hover{filter:blur(5px)}
+.spoil-hint{font-family:'Figtree',system-ui,sans-serif;font-size:.82rem;font-weight:600;color:var(--accent);margin:-.4rem 0 1rem;display:flex;align-items:center;gap:.4rem}
+.spoil-hint button{background:none;border:1.5px solid var(--accent);color:var(--accent);border-radius:999px;padding:.15rem .6rem;font-weight:600;font-size:.8rem}
 
 </style>
 </head>
@@ -437,6 +552,10 @@ body{background:var(--bg)}
     </div>
     <div id="sideDoc" hidden>
       <div class="sd-title" id="sdTitle"></div>
+      <div class="sd-tools">
+        <button id="sdOverview"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="3" width="7" height="7" rx="1.5"/><rect x="14" y="3" width="7" height="7" rx="1.5"/><rect x="3" y="14" width="7" height="7" rx="1.5"/><rect x="14" y="14" width="7" height="7" rx="1.5"/></svg>Book overview</button>
+        <button id="sdExpand" title="Show or hide all the details">Expand all</button>
+      </div>
       <div class="tabs" role="tablist">
         <button role="tab" id="tabSec" aria-selected="true" aria-controls="secList">Sections</button>
         <button role="tab" id="tabPg" aria-selected="false" aria-controls="pgList">Pages</button>
@@ -468,6 +587,7 @@ body{background:var(--bg)}
       <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M4 6h16M4 12h16M4 18h10"/></svg><span>Contents</span></button>
     <button class="libbtn" id="libBtn" hidden aria-label="Go to my library"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 19V5a2 2 0 0 1 2-2h3v18H6a2 2 0 0 1-2-2zM9 3h4v18H9zM14.5 4.2l3.8-1 3.2 16.8-3.8 1z"/></svg><span>My library</span></button>
     <div class="ttl"><h2 id="topTitle">Library</h2><div class="cursec" id="curSec" hidden></div></div>
+    <button class="ovbtn" id="ovBtn" hidden title="Book overview: main topics"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="3" width="7" height="7" rx="1.5"/><rect x="14" y="3" width="7" height="7" rx="1.5"/><rect x="3" y="14" width="7" height="7" rx="1.5"/><rect x="14" y="14" width="7" height="7" rx="1.5"/></svg><span>Overview</span></button>
     <div class="seg modeseg" id="modeSeg" role="group" aria-label="Listening mode" hidden>
       <button data-mode="read" aria-pressed="true" title="Read the text only"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M2 5h7a3 3 0 0 1 3 3v12a2 2 0 0 0-2-2H2zM22 5h-7a3 3 0 0 0-3 3v12a2 2 0 0 1 2-2h8z"/></svg><span class="ml">Read</span></button>
       <button data-mode="prof" aria-pressed="false" title="A professor explains each paragraph, figure and table"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M22 9L12 4 2 9l10 5 10-5z"/><path d="M6 11v5c3 2.5 9 2.5 12 0v-5"/></svg><span class="ml">Professor</span></button>
@@ -484,17 +604,32 @@ body{background:var(--bg)}
         <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M14 3H6a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V9z"/><path d="M14 3v6h6"/></svg>Open file</button>
       <button class="btn" id="pasteBtn">
         <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M12 5v14M5 12h14"/></svg>Paste text</button>
-      <input type="file" id="fileIn" accept=".txt,.md,.markdown,.pdf,.epub,.html,.htm,.docx,application/epub+zip,text/plain,application/pdf,text/html,application/vnd.openxmlformats-officedocument.wordprocessingml.document" hidden>
+      <input type="file" id="fileIn" accept=".txt,.md,.markdown,.pdf,.epub,.pptx,application/vnd.openxmlformats-officedocument.presentationml.presentation,.html,.htm,.docx,application/epub+zip,text/plain,application/pdf,text/html,application/vnd.openxmlformats-officedocument.wordprocessingml.document" hidden>
     </div>
     <div class="cont" id="contCard" hidden></div>
+    <section class="plsec" id="plSec" hidden>
+      <div class="plhead">
+        <h3>My playlist <span id="plCount"></span></h3>
+        <div class="placts">
+          <button class="btn primary" id="plPlay"><svg viewBox="0 0 24 24" fill="currentColor"><path d="M8 5v14l11-7z"/></svg>Play all</button>
+          <button class="link" id="plClearDone">Remove played</button>
+        </div>
+      </div>
+      <ol class="pllist" id="plList"></ol>
+    </section>
+    <p class="plhint" id="plHint">Build a playlist: open a book’s overview and press <b>+</b> next to any topic you want to hear.</p>
     <div class="libtools" id="libTools" hidden>
       <h3 id="libCount">My books and papers</h3>
       <input type="search" id="libSearch" placeholder="Search your library" aria-label="Search your library">
     </div>
     <ul class="list" id="docList"></ul>
     <p class="nomatch" id="noMatch" hidden>Nothing in your library matches that search.</p>
+    <section class="histsec" id="histSec" hidden>
+      <h3>Listening history</h3>
+      <ol class="histlist" id="histList"></ol>
+    </section>
     <div class="empty" id="empty" hidden>
-      <p>Your library is empty. Open a PDF, e-book (.epub), Word file or web page, paste some text, or drop a file anywhere on this page.</p>
+      <p>Your library is empty. Open a PDF, e-book (.epub), PowerPoint (.pptx), Word file or web page, paste some text, or drop a file anywhere on this page.</p>
       <button class="btn" id="sampleBtn">Listen to a sample</button>
     </div>
     <div class="lib-foot">
@@ -504,13 +639,28 @@ body{background:var(--bg)}
       <input type="file" id="importIn" accept=".json,application/json" hidden>
     </div>
     <p class="lib-note" id="libNote">Everything you open is saved in this browser, so it’s here next time without uploading again. Use “Back up library” to move your books to another device or browser.</p>
-    <p class="lib-note version">Readaloud version 11 (November 1, 2026)</p>
+    <p class="lib-note version">Readaloud version 13 (November 1, 2026)</p>
   </main>
 
+  <section class="ov" id="overview" hidden aria-label="Book overview">
+    <div class="ov-head">
+      <div class="ov-kicker">Book overview</div>
+      <h1 id="ovTitle"></h1>
+      <p class="ov-meta" id="ovMeta"></p>
+      <p class="ov-help">Pick a main topic to see what’s inside, then choose where to start.</p>
+    </div>
+    <ol class="ov-list" id="ovList"></ol>
+    <div class="ov-foot"><button class="btn" id="ovBack">Back to where I was</button></div>
+  </section>
   <article class="text" id="text" hidden></article>
 
   <div class="player" id="player" hidden>
     <div class="in">
+      <div class="plbar" id="plBar" hidden>
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 6h12M3 12h12M3 18h8M19 15v6M16 18h6"/></svg>
+        <div class="pltx"><b id="plNow"></b><span id="plPos"></span></div>
+        <button id="plSkip">Next item</button><button id="plStop">End playlist</button>
+      </div>
       <div class="think" id="think" hidden role="status">
         <svg class="ring" viewBox="0 0 36 36"><circle cx="18" cy="18" r="15" stroke="var(--line)"/><circle id="thinkArc" cx="18" cy="18" r="15" stroke="var(--accent)" stroke-linecap="round" transform="rotate(-90 18 18)" stroke-dasharray="94.25" stroke-dashoffset="0"/></svg>
         <div><b>Your turn: answer out loud.</b><div class="tsec" id="thinkTxt"></div></div>
@@ -621,7 +771,7 @@ body{background:var(--bg)}
     <div class="row" style="justify-content:flex-start"><button class="btn" id="aiTest">Check key</button></div>
   </div>
   <div class="row">
-    <span class="note" style="margin:0 auto 0 0;align-self:center">Version 11</span>
+    <span class="note" style="margin:0 auto 0 0;align-self:center">Version 13</span>
     <button class="btn primary" id="setDone">Done</button>
   </div>
 </dialog>
@@ -1492,7 +1642,7 @@ function renderLibrary(){
     b.onclick = () => { openDoc(d.id); closeDrawer(); };
     li.append(b); sl.append(li);
   });
-  showUsage();
+  showUsage(); renderPlaylist(); renderHistory();
 }
 async function showUsage(){
   try{
@@ -1562,6 +1712,95 @@ async function parseEpub(file){
   return {blocks: parseHtml(html, true), title: bookTitle};
 }
 
+/* ---- PowerPoint: speaker notes, grouped by the deck's sections ---- */
+async function parsePptx(file){
+  if(!window.JSZip) await loadScript('https://cdnjs.cloudflare.com/ajax/libs/jszip/3.10.1/jszip.min.js');
+  const zip = await JSZip.loadAsync(await file.arrayBuffer());
+  const xml = async path => { const f = zip.file(path); return f ? new DOMParser().parseFromString(await f.async('text'), 'application/xml') : null; };
+  const RNS = 'http://schemas.openxmlformats.org/officeDocument/2006/relationships';
+  const rels = async path => { const d = await xml(path); const m = {}; if(d) for(const r of d.getElementsByTagNameNS('*', 'Relationship')) m[r.getAttribute('Id')] = {target: r.getAttribute('Target') || '', type: r.getAttribute('Type') || ''}; return m; };
+  const resolve = (dir, t) => { const out = []; for(const part of (dir + t).split('/')){ if(part === '..') out.pop(); else if(part && part !== '.') out.push(part); } return out.join('/'); };
+  const pres = await xml('ppt/presentation.xml'); if(!pres) throw new Error('not a pptx');
+  const prel = await rels('ppt/_rels/presentation.xml.rels');
+  const ids = [...pres.getElementsByTagNameNS('*', 'sldId')].filter(e => e.parentNode && e.parentNode.parentNode && e.parentNode.parentNode.localName === 'presentation');
+  const secOf = {}; let hasSections = false;
+  for(const sec of pres.getElementsByTagNameNS('*', 'section')){
+    const name = sec.getAttribute('name'); if(!name) continue; hasSections = true;
+    for(const x of sec.getElementsByTagNameNS('*', 'sldId')) secOf[x.getAttribute('id')] = name;
+  }
+  const paras = node => [...node.getElementsByTagNameNS('*', 'p')].map(p => [...p.getElementsByTagNameNS('*', 't')].map(t => t.textContent).join('')).map(norm).filter(Boolean);
+  const sized = node => [...node.getElementsByTagNameNS('*', 'p')].map(p => {
+    const t = norm([...p.getElementsByTagNameNS('*', 't')].map(x => x.textContent).join(''));
+    let sz = 0; for(const r of p.getElementsByTagNameNS('*', 'rPr')) sz = Math.max(sz, +(r.getAttribute('sz') || 0));
+    return {t, sz};
+  }).filter(x => x.t);
+  const STAGE = /\[(?!\d)[^\]]{1,90}\]/g;
+  const raw = [];
+  for(let i = 0; i < ids.length; i++){
+    if(ids.length > 15 && i % 10 === 0) toast(`Reading slide ${i + 1} of ${ids.length}…`, 60000);
+    const rid = ids[i].getAttributeNS(RNS, 'id') || ids[i].getAttribute('r:id'), rel = prel[rid]; if(!rel) continue;
+    const path = resolve('ppt/', rel.target.replace(/^\/ppt\//, ''));
+    const sd = await xml(path); if(!sd) continue;
+    let title = ''; const lines = [], sizes = {};
+    for(const sp of sd.getElementsByTagNameNS('*', 'sp')){
+      const ph = sp.getElementsByTagNameNS('*', 'ph')[0], type = ph ? (ph.getAttribute('type') || 'body') : '';
+      if(type === 'sldNum' || type === 'dt' || type === 'ftr') continue;
+      const ps = sized(sp);
+      if((type === 'title' || type === 'ctrTitle') && !title) title = ps.map(x => x.t).join(' ');
+      else ps.forEach(x => { lines.push(x.t); sizes[x.t] = Math.max(sizes[x.t] || 0, x.sz); });
+    }
+    for(const gf of sd.getElementsByTagNameNS('*', 'graphicFrame')) lines.push(...paras(gf));
+    // speaker notes
+    let notes = [];
+    const dir = path.slice(0, path.lastIndexOf('/') + 1), file = path.slice(path.lastIndexOf('/') + 1);
+    const sr = await rels(dir + '_rels/' + file + '.rels');
+    const nr = Object.values(sr).find(r => /\/notesSlide$/.test(r.type));
+    if(nr){
+      const nd = await xml(resolve(dir, nr.target));
+      if(nd) for(const sp of nd.getElementsByTagNameNS('*', 'sp')){
+        const ph = sp.getElementsByTagNameNS('*', 'ph')[0];
+        if(ph && ph.getAttribute('type') === 'body') notes.push(...paras(sp));
+      }
+    }
+    notes = notes.map(t => t.replace(STAGE, ' ').replace(/^[>\s]+/, '').replace(/\*\*/g, '').replace(/\s+/g, ' ').trim()).filter(t => /[A-Za-z]{2}/.test(t));
+    raw.push({id: ids[i].getAttribute('id'), title, lines, notes, sizes});
+  }
+  // footer text repeated on many slides (institution name, page numbers) is not content
+  const freq = {}; raw.forEach(r => new Set(r.lines).forEach(t => freq[t] = (freq[t] || 0) + 1));
+  const repeated = t => raw.length >= 5 && freq[t] >= raw.length * 0.6 && t.length < 80;
+  raw.forEach(r => {
+    r.lines = r.lines.filter(t => !/^\d{1,3}$/.test(t) && !repeated(t));
+    if(!r.title){
+      // no title box: the largest text on the slide is the title; small capitals above it are a label
+      const big = Math.max(0, ...r.lines.map(t => r.sizes[t] || 0));
+      const bySize = big >= 2000 ? r.lines.filter(t => (r.sizes[t] || 0) === big) : [];
+      const isKicker = t => t === t.toUpperCase() && /[A-Z]/.test(t) && t.length < 60 && (r.sizes[t] || 0) < big;
+      r.title = (bySize.length === 1 ? bySize[0] : '') || r.lines.find(t => t.length > 3 && !isKicker(t)) || r.lines[0] || '';
+      r.kicker = r.lines.find(t => t !== r.title && isKicker(t)) || '';
+      r.lines = r.lines.filter(t => t !== r.title && t !== r.kicker);
+    }
+  });
+  const isDivider = r => /^section\s+\d+\b/i.test(r.kicker || '') || /^section\s+\d+\b/i.test(r.title) || r.lines.some(t => /^section\s+\d+$/i.test(t));
+  const blocks = []; let lastSec = null;
+  raw.forEach((r, i) => {
+    if(hasSections && secOf[r.id] && secOf[r.id] !== lastSec){ blocks.push({t:'h', lv:1, x:secOf[r.id]}); lastSec = secOf[r.id]; }
+    const ttl = r.title.replace(/^section\s+\d+\s*[:.\-–]?\s*/i, '').trim();
+    if(!hasSections && isDivider(r)){
+      const name = ttl || r.lines.find(t => !/^section\s+\d+$/i.test(t)) || r.title;
+      blocks.push({t:'h', lv:1, x:name});
+      (r.notes.length ? r.notes : r.lines.filter(t => t !== name && !/^section\s+\d+$/i.test(t))).forEach(t => blocks.push({t:'p', x:t}));
+      return;
+    }
+    blocks.push({t:'h', lv:2, x:`Slide ${i + 1}. ${ttl || 'Untitled slide'}`});
+    if(r.notes.length){
+      if(r.lines.length) blocks.push({t:'slide', x:r.lines.join(' '), lines:r.lines.slice(0, 16)});
+      r.notes.forEach(t => blocks.push({t:'p', x:t}));
+    }else r.lines.forEach(t => blocks.push({t:'p', x:/[.!?:]$/.test(t) ? t : t + '.'}));
+  });
+  hideToast();
+  return {blocks: finalize(blocks), title: (raw[0] && raw[0].title) || '', slides: raw.length, noted: raw.filter(r => r.notes.length).length};
+}
+
 /* ---- files ---- */
 async function openFile(f, replaceId){
   const name = f.name.replace(/\.[^.]+$/, '').replace(/[_]+/g, ' ');
@@ -1576,6 +1815,11 @@ async function openFile(f, replaceId){
     }else if(/\.epub$/i.test(f.name) || f.type === 'application/epub+zip'){
       toast('Reading the e-book…', 60000);
       const r = await parseEpub(f); blocks = r.blocks; if(r.title) title = r.title; extra.kind = 'E-book';
+    }else if(/\.pptx$/i.test(f.name)){
+      toast('Reading the slides and speaker notes…', 60000);
+      const r = await parsePptx(f); blocks = r.blocks; extra.kind = 'Slides';
+      if(r.title && r.title.length >= 4 && r.title.length <= 160) title = r.title;
+      if(!r.noted) setTimeout(() => toast('This deck has no speaker notes, so Readaloud reads the text on each slide.', 7000), 1500);
     }else if(/\.docx$/i.test(f.name)){
       toast('Reading the Word file…', 60000);
       if(!window.mammoth) await loadScript('https://cdnjs.cloudflare.com/ajax/libs/mammoth/1.6.0/mammoth.browser.min.js');
@@ -1722,7 +1966,7 @@ let sayFails = 0, voiceSwitches = 0;
 let cur = null, S = [], H = [], idx = 0, playing = false, token = 0, words = [], activeEl = null, activeWord = null, curSecEl = null, curPgEl = null, curFigEl = null, forceB = -1;
 const KIND_LABEL = {foot:'Footnote, skipped', note:'Publishing note, skipped', cap:'Caption, skipped'};
 
-function kindSkip(k){ return k === 'ref' ? prefs.skip.refs : (k === 'foot' || k === 'note') ? prefs.skip.notes : k === 'cap' ? prefs.skip.captions : false; }
+function kindSkip(k){ if(k === 'slide') return true; return k === 'ref' ? prefs.skip.refs : (k === 'foot' || k === 'note') ? prefs.skip.notes : k === 'cap' ? prefs.skip.captions : false; }
 function computeSkips(){
   const ov = cur.ov || {};
   H.forEach((h, k) => {
@@ -1846,6 +2090,12 @@ function renderText(){
         el = document.createElement(b.t === 'h' ? (b.lv <= 1 ? 'h2' : 'h3') : 'div');
         el.className = 'blk ' + (b.t === 'h' ? 'h' + (b.lv || 0) : b.t);
         el.dataset.b = s.b; art.append(el);
+        if(b.t === 'slide'){
+          const kk = document.createElement('div'); kk.className = 'sl-k'; kk.textContent = 'On the slide';
+          const ul = document.createElement('ul'); (b.lines || [b.x]).forEach(t => { const li = document.createElement('li'); li.textContent = t; ul.append(li); });
+          const hid = document.createElement('span'); hid.className = 'sl-hide';
+          el.append(kk, ul, hid); el = hid;
+        }
       }
       lastB = s.b;
     }else if(s.k !== 'pnl') el.append(' ');
@@ -1856,13 +2106,51 @@ function renderText(){
     const sp = document.createElement('span'); sp.className = 's'; sp.dataset.i = i; sp.dataset.k = s.k; fillSentence(sp, s, false); el.append(sp);
   });
   applySkipClasses();
+  markSpoilers();
+}
+// after "Pause here and answer", blur the answer blocks (up to the next heading) until reading reaches them
+function markSpoilers(){
+  const art = $('#text');
+  art.querySelectorAll('.spoil-hint').forEach(e => e.remove());
+  let hiding = false, first = true, prompt = null;
+  for(const el of art.querySelectorAll('.blk')){
+    const b = cur.blocks[+el.dataset.b];
+    if(!b) continue;
+    if(b.t === 'h'){ hiding = false; continue; }
+    if(hiding){
+      el.classList.add('spoil'); el.dataset.spoil = '1';
+      if(first && prompt){
+        const h = document.createElement('div'); h.className = 'spoil-hint';
+        h.innerHTML = 'Answer hidden until you’ve had time to think. <button type="button">Show answer</button>';
+        h.querySelector('button').onclick = ev => { ev.stopPropagation(); revealFrom(el); };
+        el.before(h); first = false;
+      }
+      continue;
+    }
+    if([...el.querySelectorAll('.s')].some(sp => isPracticePause(S[+sp.dataset.i].t))){ hiding = true; first = true; prompt = el; }
+  }
+  updateSpoilers();
+}
+function revealFrom(el){
+  // reveal this answer and the rest of its case
+  let n = el; while(n){ if(n.classList && n.classList.contains('blk')){ const b = cur.blocks[+n.dataset.b]; if(b && b.t === 'h') break; n.classList.remove('spoil'); } if(n.classList && n.classList.contains('spoil-hint')) n.remove(); n = n.nextElementSibling; }
+  const prev = el.previousElementSibling; if(prev && prev.classList.contains('spoil-hint')) prev.remove();
+}
+function updateSpoilers(){
+  const s = S[idx]; if(!s) return;
+  $('#text').querySelectorAll('.blk.spoil').forEach(el => {
+    if(+el.dataset.b <= s.b){
+      el.classList.remove('spoil');
+      const prev = el.previousElementSibling; if(prev && prev.classList.contains('spoil-hint')) prev.remove();
+    }
+  });
 }
 function applySkipClasses(){
   const byB = {};
   S.forEach(s => { (byB[s.b] = byB[s.b] || []).push(s); });
   $('#text').querySelectorAll('.blk').forEach(el => {
     const b = cur.blocks[+el.dataset.b];
-    if(isVis(b)) return;
+    if(isVis(b) || b.t === 'slide') return;
     const ss = byB[el.dataset.b] || [], sk = ss.length && ss.every(s => s.skip);
     el.classList.toggle('skip', !!sk);
     let lab = '';
@@ -1880,14 +2168,22 @@ function renderOutline(){
     li.textContent = cur.pages ? 'No section headings were found. Use Pages, or click any sentence to start there.' : 'No section headings were found. Click any sentence to start there.';
     sl.append(li);
   }
+  buildTree();
+  if(!cur._open) cur._open = new Set();
   H.forEach((h, k) => {
-    const li = document.createElement('li'); li.className = 'oi lv' + h.lv + (h.skip ? ' skipped' : ''); li.dataset.k = k;
+    const li = document.createElement('li'); li.className = 'oi lv' + h.lv + ' d' + Math.min(3, TREE.depth[k]) + (h.skip ? ' skipped' : ''); li.dataset.k = k;
+    const kids = TREE.kids[k].length;
+    const car = document.createElement('button'); car.className = 'caret' + (kids ? '' : ' none');
+    car.innerHTML = '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M9 6l6 6-6 6"/></svg>';
+    if(kids){ car.setAttribute('aria-label', 'Show or hide the parts of ' + h.x); car.onclick = () => toggleOpen(k); } else car.tabIndex = -1;
     const go = document.createElement('button'); go.className = 'go';
     const st = document.createElement('span'); st.className = 'st'; go.append(st);
     if((cur.done || []).includes(k)) li.classList.add('done');
     const t = document.createElement('span'); t.className = 'ot'; t.textContent = h.x; go.append(t);
+    if(kids){ const c = document.createElement('span'); c.className = 'cnt'; c.textContent = kids; c.title = kids + ' parts inside'; go.append(c); }
     if(cur.pages && h.pg){ const p = document.createElement('span'); p.className = 'op'; p.textContent = 'p. ' + h.pg; go.append(p); }
     go.onclick = () => goSection(k);
+    li.prepend(car);
     const eye = document.createElement('button'); eye.className = 'eye';
     eye.innerHTML = h.skip ? ICON_EYE_OFF : ICON_EYE;
     eye.setAttribute('aria-label', (h.skip ? 'Read section: ' : 'Skip section: ') + h.x);
@@ -1895,6 +2191,7 @@ function renderOutline(){
     eye.onclick = () => toggleSection(k);
     li.append(go, eye); sl.append(li);
   });
+  applyOpen();
   const pl = $('#pgList'); pl.innerHTML = '';
   for(let n = 1; n <= (cur.pages || 0); n++){
     const first = S.findIndex(s => s.pg >= n && s.k !== 'run');
@@ -1930,17 +2227,268 @@ function renderOutline(){
   curSecEl = curPgEl = curFigEl = null;
   markOutline();
 }
-let lastSec = -1;
+/* ---- topic tree: main topics and their details ---- */
+let TREE = {parent: [], kids: [], depth: [], top: []};
+function buildTree(){
+  const parent = H.map(() => -1), kids = H.map(() => []), depth = H.map(() => 0);
+  H.forEach((h, k) => {
+    for(let j = k - 1; j >= 0; j--) if(H[j].lv < h.lv){ parent[k] = j; break; }
+  });
+  // a single title heading (level 0) is the book itself, not a topic
+  const root = k => parent[k] >= 0 && H[parent[k]].lv === 0 && H.filter(x => x.lv === 0).length === 1;
+  H.forEach((h, k) => { if(parent[k] >= 0 && !(H[parent[k]].lv === 0 && root(k))) kids[parent[k]].push(k); });
+  H.forEach((h, k) => { let d = 0, p = parent[k]; while(p >= 0){ if(!(H[p].lv === 0 && H.filter(x => x.lv === 0).length === 1)) d++; p = parent[p]; } depth[k] = d; });
+  let top = H.map((h, k) => k).filter(k => depth[k] === 0 && !(H[k].lv === 0 && H.filter(x => x.lv === 0).length === 1));
+  TREE = {parent, kids, depth, top};
+}
+function rangeEnd(k){ for(let j = k + 1; j < H.length; j++) if(H[j].lv <= H[k].lv) return H[j].si; return S.length; }
+function minutesIn(k){
+  let w = 0; const a = H[k].si, b = rangeEnd(k);
+  for(let i = a; i < b; i++) if(readable(S[i])) w += wc(S[i].spk);
+  return Math.max(1, Math.round(w / (165 * prefs.rate)));
+}
+function descendants(k){ const out = []; const walk = j => TREE.kids[j].forEach(c => { out.push(c); walk(c); }); walk(k); return out; }
+function isOpen(k){ return cur._open && cur._open.has(k); }
+function toggleOpen(k){ if(isOpen(k)) cur._open.delete(k); else cur._open.add(k); applyOpen(); }
+function applyOpen(){
+  const list = $('#secList');
+  H.forEach((h, k) => {
+    const li = list.querySelector(`.oi[data-k="${k}"]`); if(!li) return;
+    let p = TREE.parent[k], vis = true;
+    while(p >= 0){ if(TREE.kids[p].includes(k) || TREE.kids[p].some(c => descendants(c).includes(k))){ if(!isOpen(p)) { vis = false; break; } } p = TREE.parent[p]; }
+    li.classList.toggle('hid', !vis);
+    li.classList.toggle('open', isOpen(k));
+  });
+  const anyClosed = H.some((h, k) => TREE.kids[k].length && !isOpen(k));
+  $('#sdExpand').textContent = anyClosed ? 'Expand all' : 'Collapse all';
+}
+function openBranch(k){
+  if(!cur._open) cur._open = new Set();
+  let p = TREE.parent[k], changed = false;
+  while(p >= 0){ if(!cur._open.has(p)){ cur._open.add(p); changed = true; } p = TREE.parent[p]; }
+  if(changed) applyOpen();
+}
+$('#sdExpand').onclick = () => {
+  const anyClosed = H.some((h, k) => TREE.kids[k].length && !isOpen(k));
+  cur._open = new Set(anyClosed ? H.map((h, k) => k).filter(k => TREE.kids[k].length) : []);
+  if(!anyClosed && S[idx]) openBranch(S[idx].sec);
+  applyOpen();
+};
+
+/* ---- book overview page ---- */
+let ovReturn = -1;
+function showOverview(){
+  if(!cur) return;
+  buildTree();
+  let tops = TREE.top.length >= 2 ? TREE.top : (TREE.top.length === 1 ? TREE.kids[TREE.top[0]] : []);
+  // a leading title-like heading with nothing under it is the book's introduction, not a topic
+  if(tops.length >= 3 && !TREE.kids[tops[0]].length && tops.slice(1).some(k => TREE.kids[k].length)) tops = tops.slice(1);
+  $('#ovTitle').textContent = cur.title;
+  const total = (() => { let w = 0; S.forEach(x => { if(readable(x)) w += wc(x.spk); }); return Math.max(1, Math.round(w / (165 * prefs.rate))); })();
+  const done = cur.done || [];
+  $('#ovMeta').textContent = `${tops.length} main ${tops.length === 1 ? 'topic' : 'topics'}, about ${total} ${total === 1 ? 'minute' : 'minutes'} of listening` + (done.length ? `, ${done.length} of ${H.length} parts finished` : '');
+  const list = $('#ovList'); list.innerHTML = '';
+  const curSec = S[idx] ? S[idx].sec : -1;
+  tops.forEach((k, n) => {
+    const h = H[k], subs = descendants(k).filter(c => TREE.depth[c] - TREE.depth[k] <= 2);
+    const all = [k, ...descendants(k)], fin = all.filter(c => done.includes(c)).length;
+    const li = document.createElement('li'); li.className = 'ov-card';
+    if(all.includes(curSec)) li.classList.add('cur');
+    if(fin === all.length) li.classList.add('done');
+    const top = document.createElement('div'); top.className = 'ov-top';
+    const num = document.createElement('div'); num.className = 'ov-num'; num.textContent = n + 1;
+    const body = document.createElement('div'); body.className = 'ov-body';
+    const h3 = document.createElement('h3'); h3.textContent = h.x;
+    const meta = document.createElement('div'); meta.className = 'ov-sub-meta';
+    meta.textContent = (subs.length ? `${TREE.kids[k].length} ${TREE.kids[k].length === 1 ? 'part' : 'parts'}, ` : '') + `about ${minutesIn(k)} min` + (fin ? `, ${Math.round(fin / all.length * 100)}% done` : '') + (h.skip ? ', skipped' : '');
+    const bar = document.createElement('div'); bar.className = 'ov-bar'; const bi = document.createElement('i'); bi.style.width = Math.round(fin / all.length * 100) + '%'; bar.append(bi);
+    body.append(h3, meta, bar);
+    const go = document.createElement('button'); go.className = 'ov-go';
+    go.innerHTML = '<svg viewBox="0 0 24 24" fill="currentColor"><path d="M8 5v14l11-7z"/></svg><span>Listen</span>';
+    go.onclick = e => { e.stopPropagation(); hideOverview(); goSection(k); };
+    top.append(num, body);
+    if(subs.length){
+      const tog = document.createElement('button'); tog.className = 'ov-tog'; tog.setAttribute('aria-label', 'Show what’s inside ' + h.x);
+      tog.innerHTML = '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M9 6l6 6-6 6"/></svg>';
+      top.append(tog);
+      top.onclick = e => { if(e.target.closest('.ov-go')) return; li.classList.toggle('open'); };
+    }else top.onclick = e => { if(!e.target.closest('.ov-go')){ hideOverview(); goSection(k); } };
+    const add = document.createElement('button'); add.className = 'ov-add';
+    const inPl = inPlaylist(cur.id, h.x) >= 0; add.classList.toggle('in', inPl); add.textContent = inPl ? '✓' : '+';
+    add.title = inPl ? 'In your playlist (click to remove)' : 'Add this topic to your playlist';
+    add.onclick = e => { e.stopPropagation(); togglePlaylist(k, add); };
+    top.append(add, go);
+    const lf = lastFinished(cur, h.x);
+    if(lf){ const w = document.createElement('span'); w.className = 'when'; w.textContent = ', finished ' + fmtDate(lf); meta.append(w); }
+    li.append(top);
+    if(subs.length){
+      const ul = document.createElement('ol'); ul.className = 'ov-subs';
+      subs.forEach(c => {
+        const sli = document.createElement('li'); sli.className = 'd' + (TREE.depth[c] - TREE.depth[k]);
+        if(done.includes(c)) sli.classList.add('done');
+        if(c === curSec) sli.classList.add('cur');
+        const b = document.createElement('button');
+        const ck = document.createElement('span'); ck.className = 'ck';
+        const tx = document.createElement('span'); tx.textContent = H[c].x;
+        const mn = document.createElement('span'); mn.className = 'mins';
+        const lfc = lastFinished(cur, H[c].x);
+        mn.textContent = minutesIn(c) + ' min'; if(lfc){ const w = document.createElement('span'); w.className = 'when'; w.textContent = ', ' + fmtDate(lfc); mn.append(w); }
+        b.append(ck, tx, mn); b.onclick = () => { hideOverview(); goSection(c); };
+        const ad = document.createElement('button'); ad.className = 'add';
+        const ip = inPlaylist(cur.id, H[c].x) >= 0; ad.classList.toggle('in', ip); ad.textContent = ip ? '✓' : '+';
+        ad.title = ip ? 'In your playlist (click to remove)' : 'Add to playlist'; ad.setAttribute('aria-label', 'Add ' + H[c].x + ' to playlist');
+        ad.onclick = e => { e.stopPropagation(); togglePlaylist(c, ad); };
+        sli.append(b, ad); ul.append(sli);
+      });
+      li.append(ul);
+      if(all.includes(curSec)) li.classList.add('open');
+    }
+    list.append(li);
+  });
+  if(!tops.length){ const li = document.createElement('li'); li.className = 'side-empty'; li.textContent = 'This book has no headings, so there are no topics to show. Press Play to listen from the start.'; list.append(li); }
+  ovReturn = idx;
+  $('#text').hidden = true; $('#overview').hidden = false; $('#ovBtn').classList.add('on');
+  window.scrollTo(0, 0);
+}
+function hideOverview(){
+  if($('#overview').hidden) return;
+  $('#overview').hidden = true; $('#text').hidden = false; $('#ovBtn').classList.remove('on');
+}
+$('#ovBtn').onclick = () => { if($('#overview').hidden){ closeDrawer(); showOverview(); } else { hideOverview(); if(S[idx]) setActive(idx, true); } };
+$('#sdOverview').onclick = () => { closeDrawer(); showOverview(); };
+$('#ovBack').onclick = () => { hideOverview(); if(S[ovReturn >= 0 ? ovReturn : idx]) setActive(ovReturn >= 0 ? ovReturn : idx, true); };
+
+/* ---- listening record ---- */
+const dayKey = t => { const d = new Date(t); return d.getFullYear() + '-' + d.getMonth() + '-' + d.getDate(); };
+function fmtDate(t){
+  const d = new Date(t), now = new Date();
+  const abs = d.toLocaleDateString(undefined, d.getFullYear() === now.getFullYear() ? {month:'short', day:'numeric'} : {month:'short', day:'numeric', year:'numeric'});
+  if(dayKey(t) === dayKey(Date.now())) return abs + ' (today)';
+  if(dayKey(t) === dayKey(Date.now() - 86400000)) return abs + ' (yesterday)';
+  return abs;
+}
+function histOf(d, key){ d.hist = d.hist || {}; return d.hist[key] = d.hist[key] || {fin: [], last: 0}; }
+function recordFinished(d, k){
+  if(!H[k] || H[k].skip) return;
+  d.done = d.done || [];
+  if(!d.done.includes(k)){ d.done.push(k); const el = $('#secList').querySelector(`.oi[data-k="${k}"]`); if(el) el.classList.add('done'); }
+  const h = histOf(d, H[k].x), now = Date.now();
+  if(!h.fin.length || dayKey(h.fin[h.fin.length - 1]) !== dayKey(now)) h.fin.push(now);
+  h.last = now; saveSoon();
+}
+function lastFinished(d, key){ const h = d.hist && d.hist[key]; return h && h.fin.length ? h.fin[h.fin.length - 1] : 0; }
+
+/* ---- playlist ---- */
+let PLAYLIST = getJSON('ra2-playlist', []);
+const savePL = () => setJSON('ra2-playlist', PLAYLIST);
+const PL = {on:false, pos:0, doc:null, k:-1, end:0, navigating:false};
+function inPlaylist(docId, key){ return PLAYLIST.findIndex(it => it.doc === docId && it.key === key); }
+function togglePlaylist(k, btn){
+  const key = H[k].x, i = inPlaylist(cur.id, key);
+  if(i >= 0){ PLAYLIST.splice(i, 1); toast(`Removed from your playlist (${PLAYLIST.length} ${PLAYLIST.length === 1 ? 'item' : 'items'}).`); }
+  else{ PLAYLIST.push({id: Date.now().toString(36) + Math.random().toString(36).slice(2, 5), doc: cur.id, key, k, title: key, book: cur.title, added: Date.now(), played: []}); toast(`Added to your playlist (${PLAYLIST.length} ${PLAYLIST.length === 1 ? 'item' : 'items'}). Play it from your library.`); }
+  savePL();
+  if(btn){ const on = inPlaylist(cur.id, key) >= 0; btn.classList.toggle('in', on); btn.textContent = on ? '✓' : '+'; btn.title = on ? 'In your playlist (click to remove)' : 'Add to playlist'; }
+}
+function renderPlaylist(){
+  const sec = $('#plSec'), list = $('#plList'); list.innerHTML = '';
+  sec.hidden = !PLAYLIST.length; $('#plHint').hidden = !!PLAYLIST.length || !docs.length;
+  $('#plCount').textContent = `(${PLAYLIST.length})`;
+  $('#plClearDone').hidden = !PLAYLIST.some(it => it.played && it.played.length);
+  PLAYLIST.forEach((it, i) => {
+    const li = document.createElement('li'); li.className = 'pli' + (it.played && it.played.length ? ' played' : '') + (PL.on && PL.pos === i ? ' now' : '');
+    const n = document.createElement('span'); n.className = 'n'; n.textContent = it.played && it.played.length ? '✓' : i + 1;
+    const main = document.createElement('button'); main.className = 'main'; main.title = 'Play from here';
+    const b = document.createElement('b'); b.textContent = it.title;
+    const sm = document.createElement('small');
+    const d = docs.find(x => x.id === it.doc);
+    sm.textContent = (d ? d.title : 'Book no longer in your library') + ', ';
+    const w = document.createElement('span');
+    if(it.played && it.played.length){ w.className = 'when'; w.textContent = 'played ' + fmtDate(it.played[it.played.length - 1]).replace(/^/, 'on ') + (it.played.length > 1 ? ` (${it.played.length} times)` : ''); }
+    else w.textContent = 'not played yet';
+    sm.append(w); main.append(b, sm); main.onclick = () => startPlaylist(i);
+    const mk = (svg, label, fn) => { const x = document.createElement('button'); x.className = 'mini'; x.innerHTML = svg; x.setAttribute('aria-label', label); x.title = label; x.onclick = fn; return x; };
+    const up = mk('<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M6 15l6-6 6 6"/></svg>', 'Move up', () => { if(i > 0){ [PLAYLIST[i - 1], PLAYLIST[i]] = [PLAYLIST[i], PLAYLIST[i - 1]]; savePL(); renderPlaylist(); } });
+    const dn = mk('<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M6 9l6 6 6-6"/></svg>', 'Move down', () => { if(i < PLAYLIST.length - 1){ [PLAYLIST[i + 1], PLAYLIST[i]] = [PLAYLIST[i], PLAYLIST[i + 1]]; savePL(); renderPlaylist(); } });
+    const rm = mk('<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round"><path d="M6 6l12 12M18 6L6 18"/></svg>', 'Remove from playlist', () => { PLAYLIST.splice(i, 1); savePL(); renderPlaylist(); });
+    li.append(n, main, up, dn, rm); list.append(li);
+  });
+}
+function renderHistory(){
+  const items = [];
+  docs.forEach(d => Object.entries(d.hist || {}).forEach(([key, h]) => (h.fin || []).forEach(t => items.push({t, key, d}))));
+  items.sort((a, b) => b.t - a.t);
+  const sec = $('#histSec'), list = $('#histList'); list.innerHTML = '';
+  sec.hidden = !items.length;
+  items.slice(0, 40).forEach(({t, key, d}) => {
+    const li = document.createElement('li'), b = document.createElement('button');
+    const dd = document.createElement('span'); dd.className = 'd'; dd.textContent = fmtDate(t);
+    const w = document.createElement('span'); w.className = 'w';
+    const bb = document.createElement('b'); bb.textContent = key; const sm = document.createElement('small'); sm.textContent = d.title;
+    w.append(bb, sm); b.append(dd, w);
+    b.onclick = async () => { await openDoc(d.id); const k = H.findIndex(h => h.x === key); if(k >= 0){ hideOverview(); setActive(nextReadable(H[k].si) >= 0 ? nextReadable(H[k].si) : H[k].si, true); } };
+    li.append(b); list.append(li);
+  });
+}
+function startPlaylist(from){
+  if(!PLAYLIST.length) return;
+  PL.pos = Math.max(0, from || 0); PL.on = true;
+  playItem();
+}
+async function playItem(){
+  const it = PLAYLIST[PL.pos];
+  if(!it){ endPlaylist(true); return; }
+  const d = docs.find(x => x.id === it.doc);
+  if(!d){ PL.pos++; return playItem(); }
+  PL.navigating = true;
+  if(!cur || cur.id !== d.id) await openDoc(d.id);
+  hideOverview();
+  let k = H.findIndex(h => h.x === it.key); if(k < 0 && it.k < H.length) k = it.k;
+  if(k < 0 || H[k].skip){ PL.navigating = false; PL.pos++; return playItem(); }
+  PL.doc = d.id; PL.k = k; PL.end = rangeEnd(k); PL.on = true;
+  renderPlBar();
+  const j = nextReadable(H[k].si);
+  if(j < 0 || j >= PL.end){ PL.navigating = false; return playlistItemDone(); }
+  clearThink(); playing = true; updatePlay(); speakFrom(j);
+  PL.navigating = false;
+}
+function playlistItemDone(){
+  const it = PLAYLIST[PL.pos];
+  if(it){ it.played = it.played || []; it.played.push(Date.now()); savePL(); if(cur && PL.k >= 0){ recordFinished(cur, PL.k); descendants(PL.k).forEach(c => recordFinished(cur, c)); } }
+  PL.pos++;
+  if(PL.pos >= PLAYLIST.length){ endPlaylist(true); return; }
+  toast('Next in your playlist…', 2500);
+  setTimeout(() => { if(PL.on) playItem(); }, 600);
+}
+function endPlaylist(finished){
+  PL.on = false; PL.doc = null; $('#plBar').hidden = true;
+  if(finished){ playing = false; token++; updatePlay(); toast('Playlist finished. Each item’s play date is saved in your library.', 6000); }
+  if(!$('#library').hidden) renderLibrary();
+}
+function renderPlBar(){
+  const it = PLAYLIST[PL.pos]; if(!it){ $('#plBar').hidden = true; return; }
+  $('#plBar').hidden = false;
+  $('#plNow').textContent = it.title;
+  $('#plPos').textContent = `Playlist ${PL.pos + 1} of ${PLAYLIST.length}`;
+}
+$('#plPlay').onclick = () => startPlaylist(0);
+$('#plClearDone').onclick = () => { PLAYLIST = PLAYLIST.filter(it => !(it.played && it.played.length)); savePL(); renderPlaylist(); };
+$('#plSkip').onclick = () => { stop(); PL.pos++; if(PL.pos >= PLAYLIST.length) endPlaylist(true); else playItem(); };
+$('#plStop').onclick = () => { endPlaylist(false); toast('Playlist ended. Reading continues normally.'); };
+
+let lastSec = -1, lastIdx = -1;
 function markOutline(){
   const s = S[idx]; if(!s) return;
-  // a section counts as finished when listening moves on from it to a later one
-  if(playing && lastSec >= 0 && s.sec > lastSec){
+  // a section counts as finished only when listening runs through it into the next one (not when you jump)
+  let straight = lastIdx >= 0 && idx > lastIdx;
+  if(straight) for(let k = lastIdx + 1; k < idx; k++) if(readable(S[k])){ straight = false; break; }
+  lastIdx = idx;
+  if(playing && straight && lastSec >= 0 && s.sec > lastSec){
     cur.done = cur.done || [];
-    for(let k = lastSec; k < s.sec; k++){
-      if(!cur.done.includes(k) && H[k] && !H[k].skip){ cur.done.push(k); const el = $('#secList').querySelector(`.oi[data-k="${k}"]`); if(el) el.classList.add('done'); }
-    }
+    for(let k = lastSec; k < s.sec; k++) recordFinished(cur, k);
     saveSoon();
   }
+  if(s.sec !== lastSec && s.sec >= 0) openBranch(s.sec);
   lastSec = s.sec;
   const se = $('#secList').querySelector(`.oi[data-k="${s.sec}"]`);
   if(se !== curSecEl){ curSecEl && curSecEl.classList.remove('cur'); curSecEl = se; if(se){ se.classList.add('cur'); if(!$('#secList').hidden) se.scrollIntoView({block:'nearest'}); } }
@@ -1976,21 +2524,26 @@ function showTab(which, silent){
 
 async function openDoc(id){
   const d = docs.find(x => x.id === id); if(!d) return;
-  stop(); clearThink(); setSleep(0); cur = d; cur.ov = cur.ov || {}; viewerPdf = null;
+  const fresh = !(positions[id] > 0) && !(d.done && d.done.length);
+  stop(); clearThink(); if(!PL.navigating){ setSleep(0); if(PL.on) endPlaylist(false); } cur = d; cur.ov = cur.ov || {}; viewerPdf = null;
   buildModel();
   cur.sents = S.length; cur.updated = Date.now(); store.put(cur);
-  renderText(); renderOutline(); renderMarks(); lastSec = -1;
+  renderText(); renderOutline(); renderMarks(); lastSec = -1; lastIdx = -1;
   idx = Math.min(positions[id] || 0, Math.max(0, S.length - 1));
   $('#topTitle').textContent = cur.title;
   $('#scrub').max = Math.max(0, S.length - 1);
   $('#library').hidden = true; $('#text').hidden = false; $('#player').hidden = false;
   $('#sideLib').hidden = true; $('#sideDoc').hidden = false; $('#sideLibLink').hidden = false; $('#libBtn').hidden = false;
   $('#modeSeg').hidden = false; $('#pgBtns').hidden = !cur.pages; renderMode();
+  $('#ovBtn').hidden = false; $('#overview').hidden = true;
   document.body.classList.remove('lib-view');
   window.scrollTo(0, 0);
   const first = nextReadable(idx); setActive(first < 0 ? idx : first, true);
   if('mediaSession' in navigator){ try{ navigator.mediaSession.metadata = new MediaMetadata({title: cur.title, artist: 'Readaloud'}); }catch(e){} }
   try{ history.replaceState(null, '', '#' + id); }catch(e){}
+  // a book you haven't started yet opens on its overview, so you can pick a topic first
+  buildTree();
+  if(fresh && (TREE.top.length >= 2 || (TREE.top.length === 1 && TREE.kids[TREE.top[0]].length >= 2))) showOverview();
   if(cur.file && cur.pages && !cur.rescanning && ((cur.fmt || 0) < 6 || (prefs.figs && cur.blocks.some(b => isVis(b) && !b.src && !b.rows)))) rescan(cur);
 }
 // books added with an older version: find their figures and tables again, keeping explanations
@@ -2026,6 +2579,7 @@ function closeReader(){
   stop(); clearThink(); setSleep(0); cur = null; viewerPdf = null;
   $('#text').hidden = true; $('#player').hidden = true; $('#library').hidden = false;
   $('#curSec').hidden = true;
+  $('#ovBtn').hidden = true; $('#overview').hidden = true; $('#ovBtn').classList.remove('on');
   $('#sideLib').hidden = false; $('#sideDoc').hidden = true; $('#modeSeg').hidden = true; $('#sideLibLink').hidden = true; $('#libBtn').hidden = true; closeVoicePanel();
   $('#topTitle').textContent = 'Library';
   document.body.classList.add('lib-view');
@@ -2066,7 +2620,7 @@ function setActive(i, scroll){
     }
   }
   if(cur){ positions[cur.id] = i; setJSON('ra2-pos', positions); }
-  updateProgress(); markOutline();
+  updateProgress(); markOutline(); updateSpoilers();
 }
 function highlightWord(spokenCi){
   const s = S[idx]; if(!s) return;
@@ -2093,6 +2647,7 @@ function speakFrom(i){
   const busy = synth.speaking || synth.pending;
   if(busy) synth.cancel();
   const j = nextReadable(i);
+  if(PL.on && cur && PL.doc === cur.id && !PL.navigating && (j < 0 || j >= PL.end)){ playlistItemDone(); return; }
   if(j < 0){ playing = false; updatePlay(); toast('Finished.'); return; }
   const s = S[j], bi = s.b, b = cur.blocks[bi];
   if(sleepCheck(s)) return;
@@ -2278,6 +2833,8 @@ function step(dir){
   if(j >= 0) jumpTo(j);
 }
 function goSection(k){
+  if(PL.on && !PL.navigating) endPlaylist(false);
+  hideOverview();
   const h = H[k];
   if(h.skip){ toast('This section is set to skip. Click the eye next to it to read it.'); return; }
   closeDrawer();
@@ -2726,6 +3283,7 @@ $('#nextPage').onclick = nextPage;
 $('#scrub').oninput = e => { const s = S[+e.target.value]; if(s) $('#pct').textContent = (cur.pages && s.pg ? 'Page ' + s.pg : Math.round(e.target.value / S.length * 100) + '%'); };
 $('#scrub').onchange = e => { const j = nextReadable(+e.target.value); if(j >= 0) jumpTo(j); else updateProgress(); };
 $('#text').onclick = e => {
+  const sp = e.target.closest('.blk.spoil'); if(sp){ revealFrom(sp); return; }
   const sEl = e.target.closest('.s'); if(!sEl) return;
   const i = +sEl.dataset.i, s = S[i];
   if(s.skip){

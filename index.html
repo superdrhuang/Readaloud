@@ -44,7 +44,7 @@ button{cursor:pointer}
 .side h4{margin:.5rem 1rem .4rem;font-size:.85rem;font-weight:600;color:var(--muted)}
 .sd-title{margin:.25rem 1rem .75rem;font-family:'Literata',Georgia,serif;font-weight:600;font-size:1.02rem;line-height:1.3}
 .tabs{display:flex;gap:.25rem;margin:0 .75rem .25rem;padding:.2rem;background:var(--bg);border-radius:.6rem}
-.tabs button{flex:1;border:none;background:none;border-radius:.45rem;padding:.4rem;font-weight:600;font-size:.9rem;color:var(--muted)}
+.tabs button{flex:1;min-width:0;border:none;background:none;border-radius:.45rem;padding:.4rem;font-weight:600;font-size:.9rem;color:var(--muted)}
 .tabs button[aria-selected=true]{background:var(--surface);color:var(--ink);box-shadow:0 1px 2px rgba(0,0,0,.08)}
 .outline{list-style:none;margin:0;padding:.25rem .5rem 1.5rem}
 .oi{display:flex;align-items:center;border-radius:.5rem}
@@ -123,27 +123,104 @@ button{cursor:pointer}
 .w.on{background:var(--hl);color:var(--hl-ink);border-radius:.18em;box-shadow:0 0 0 .1em var(--hl)}
 .cite{color:var(--muted);font-size:.78em}
 
-.player{position:fixed;left:var(--side);right:0;bottom:0;z-index:6;background:var(--surface);border-top:1px solid var(--line);padding:.6rem 1rem calc(.75rem + env(safe-area-inset-bottom,0px))}
-.player .in{max-width:38rem;margin:0 auto}
-.now{font-size:.85rem;color:var(--muted);white-space:nowrap;overflow:hidden;text-overflow:ellipsis;margin-bottom:.3rem}
+.player{position:fixed;left:var(--side);right:0;bottom:0;z-index:6;background:var(--surface);border-top:1px solid var(--line);padding:.55rem 1rem calc(.7rem + env(safe-area-inset-bottom,0px))}
+.player .in{max-width:40rem;margin:0 auto}
+.nowrow{display:flex;align-items:center;gap:.5rem;margin-bottom:.3rem}
+.now{flex:1;min-width:0;font-size:.85rem;color:var(--muted);white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
 .now b{color:var(--ink);font-weight:600}
+.pgbtns{display:flex;gap:.25rem;flex:none}
+.pgbtns button{background:none;border:1.5px solid var(--line);border-radius:999px;padding:.2rem .6rem;font-size:.8rem;font-weight:600;color:var(--ink);display:inline-flex;align-items:center;gap:.15rem}
+.pgbtns button:hover{border-color:var(--accent);color:var(--accent)}
+.pgbtns svg{width:.9rem;height:.9rem}
 .scrub{width:100%;accent-color:var(--accent);margin:0}
-.times{display:flex;justify-content:space-between;color:var(--muted);font-size:.8rem;margin:.1rem 0 .4rem;font-variant-numeric:tabular-nums}
-.ctrls{display:grid;grid-template-columns:1fr auto 1fr;align-items:center}
-.ctrls .mid{display:flex;align-items:center;gap:1rem}
-.play{width:3.5rem;height:3.5rem;border-radius:50%;border:none;background:var(--accent);color:var(--on-accent);display:grid;place-items:center}
+.times{display:flex;justify-content:space-between;color:var(--muted);font-size:.8rem;margin:.1rem 0 .35rem;font-variant-numeric:tabular-nums}
+.ctrls{display:grid;grid-template-columns:1fr auto 1fr;grid-template-areas:"speed mid voice";align-items:center;gap:.5rem}
+.ctrls .mid{grid-area:mid;display:flex;align-items:center;gap:.35rem}
+.play{width:3.4rem;height:3.4rem;border-radius:50%;border:none;background:var(--accent);color:var(--on-accent);display:grid;place-items:center;margin:0 .3rem}
 .play svg{width:1.6rem;height:1.6rem}
-.skipb{background:none;border:none;color:var(--ink);padding:.5rem;border-radius:999px;display:inline-flex}
-.skipb svg{width:1.6rem;height:1.6rem}
-.pill{justify-self:start;background:none;border:1.5px solid var(--line);border-radius:999px;padding:.35rem .8rem;font-weight:600;font-size:.9rem;font-variant-numeric:tabular-nums;max-width:100%;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
-.pill.r{justify-self:end;max-width:8.5rem}
+.skipb{background:none;border:none;color:var(--ink);padding:.45rem;border-radius:999px;display:inline-flex;position:relative}
+.skipb:hover{background:var(--bg)}
+.skipb svg{width:1.45rem;height:1.45rem}
+.skipb.para svg{width:1.6rem;height:1.6rem}
+.seg{display:inline-flex;background:var(--bg);border-radius:999px;padding:.2rem;gap:.1rem}
+.seg button{border:none;background:none;border-radius:999px;padding:.32rem .55rem;font-weight:600;font-size:.85rem;color:var(--muted);font-variant-numeric:tabular-nums;white-space:nowrap}
+.seg button[aria-pressed=true]{background:var(--accent);color:var(--on-accent)}
+.speedseg{grid-area:speed;justify-self:start}
+.pill{background:none;border:1.5px solid var(--line);border-radius:999px;padding:.35rem .8rem;font-weight:600;font-size:.88rem;max-width:100%;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;color:var(--ink);display:inline-flex;align-items:center;gap:.35rem}
+.pill.r{grid-area:voice;justify-self:end;max-width:10rem}
+.pill svg{width:1rem;height:1rem;flex:none}
+.modeseg{margin-right:.25rem}
+.modeseg button{display:inline-flex;align-items:center;gap:.3rem}
+.modeseg svg{width:1rem;height:1rem}
+@media (max-width:640px){
+  .ctrls{grid-template-columns:1fr 1fr;grid-template-areas:"mid mid" "speed voice";row-gap:.45rem}
+  .ctrls .mid{justify-self:center}
+  .modeseg .ml{display:none}
+}
+
+/* voice panel */
+.vpanel{position:fixed;z-index:35;right:max(1rem,calc((100vw - var(--side) - 40rem)/2));bottom:calc(9.5rem + env(safe-area-inset-bottom,0px));width:min(24rem,calc(100vw - 2rem));max-height:min(32rem,calc(100dvh - 12rem));display:flex;flex-direction:column;background:var(--surface);border:1px solid var(--line);border-radius:1rem;box-shadow:0 1rem 2.5rem rgba(10,15,30,.25)}
+.vp-head{display:flex;align-items:center;gap:.5rem;padding:.75rem .75rem .5rem}
+.vp-head .seg{flex:1}
+.vp-head .seg button{flex:1}
+.vlist{list-style:none;margin:0;padding:.25rem .5rem;overflow-y:auto;flex:1}
+.vlist h5{margin:.6rem .5rem .3rem;font-size:.78rem;font-weight:600;color:var(--muted)}
+.vrow{display:flex;align-items:center;gap:.25rem;border-radius:.6rem}
+.vrow.sel{background:var(--sent)}
+.vrow .pick{flex:1;min-width:0;text-align:left;background:none;border:none;padding:.55rem .6rem;border-radius:.6rem;display:flex;align-items:center;gap:.5rem}
+.vrow .pick:hover{background:var(--bg)}
+.vrow .nm{flex:1;min-width:0;font-weight:600;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.vrow .q{font-size:.75rem;color:var(--muted);flex:none}
+.vrow .ck{width:1rem;height:1rem;color:var(--accent);flex:none}
+.vrow .try{background:none;border:none;padding:.45rem;border-radius:999px;color:var(--muted);display:inline-flex}
+.vrow .try:hover{color:var(--accent);background:var(--bg)}
+.vrow .try svg{width:1.05rem;height:1.05rem}
+.vp-foot{padding:.5rem .9rem .8rem;border-top:1px solid var(--line);font-size:.82rem;color:var(--muted)}
+.vp-foot .link{font-size:.82rem}
+@media (max-width:899px){ .vpanel{right:1rem} }
+@media (max-width:640px){ .vpanel{left:1rem;right:1rem;width:auto;bottom:calc(13.2rem + env(safe-area-inset-bottom,0px))} }
+
+/* professor notes */
+.pnote{margin:.7em 0 .2em;padding:.65rem .85rem;border-left:3px solid var(--accent);background:var(--surface);border-radius:0 .6rem .6rem 0;font-size:.9em;line-height:1.65}
+.pnote::before{content:"Professor";display:block;font-family:'Figtree',system-ui,sans-serif;font-size:.72rem;font-weight:600;color:var(--accent);margin-bottom:.15rem}
+.pnote.wait{color:var(--muted);font-style:italic}
+.s[data-k="pnl"]{display:none}
+body.mode-read .pnote{display:none}
+
+/* ---------- figures and tables ---------- */
+.blk.fig{margin:1.6em 0;padding:1rem;background:var(--surface);border:1px solid var(--line);border-radius:.9rem;font-family:'Figtree',system-ui,sans-serif}
+.fig-label{font-weight:600;font-size:.8rem;color:var(--muted);margin:0 0 .6rem}
+.fig img{display:block;max-width:100%;height:auto;margin:0 auto;border-radius:.4rem;cursor:zoom-in;background:#fff}
+.fig .tbl-wrap{overflow-x:auto;max-width:100%}
+.fig table{border-collapse:collapse;font-size:.8rem;line-height:1.4;min-width:100%}
+.fig td,.fig th{border-bottom:1px solid var(--line);padding:.35rem .5rem;text-align:left;vertical-align:top}
+.fig tr:first-child td{font-weight:600}
+.fig-actions{display:flex;flex-wrap:wrap;gap:.5rem;margin-top:.8rem}
+.fig-actions button{display:inline-flex;align-items:center;gap:.4rem;border-radius:999px;padding:.4rem .85rem;font-weight:600;font-size:.85rem;border:1.5px solid var(--line);background:none;color:var(--ink)}
+.fig-actions button.ai{border-color:var(--accent);color:var(--accent)}
+.fig-actions button:disabled{opacity:.6;cursor:progress}
+.fig-actions svg{width:1rem;height:1rem}
+.fx{margin-top:.9rem;padding-top:.8rem;border-top:1px solid var(--line);font-family:'Literata',Georgia,serif;font-size:.92em;line-height:1.7}
+.fx .s[data-k="figl"]{font-family:'Figtree',system-ui,sans-serif;font-weight:600;font-size:.8rem;color:var(--muted);display:block;margin-bottom:.3rem}
+.fx .s[data-k="figl"]::after{content:" AI explanation"}
+.pgmark .vp{margin-left:auto;order:2;background:none;border:none;padding:.15rem .3rem;color:var(--accent);font-weight:600;font-size:.8rem;border-radius:.3rem}
+.pgmark::after{order:1}
+.flist{list-style:none;margin:0;padding:.25rem .5rem 1.5rem}
+.flist li button{width:100%;display:flex;gap:.65rem;align-items:center;text-align:left;background:none;border:none;padding:.45rem .5rem;border-radius:.5rem}
+.flist li button:hover{background:var(--bg)}
+.flist li.cur button{background:var(--sent);box-shadow:inset 3px 0 0 var(--accent)}
+.flist .th{width:3.2rem;height:2.4rem;flex:none;border-radius:.3rem;background:var(--bg) center/cover no-repeat;border:1px solid var(--line);display:grid;place-items:center;color:var(--muted);font-size:.7rem;font-weight:600}
+.flist .fl{flex:1;min-width:0;font-size:.92rem;line-height:1.3}
+.flist .fl small{display:block;color:var(--muted);font-size:.78rem}
+.side-act{margin:.25rem 1rem .5rem}
+.side-act button{width:100%;border:1.5px solid var(--accent);color:var(--accent);background:none;border-radius:999px;padding:.45rem;font-weight:600;font-size:.88rem}
 
 /* ---------- dialogs ---------- */
 dialog{border:none;border-radius:1rem;background:var(--surface);color:var(--ink);width:min(36rem,calc(100vw - 2rem));max-height:calc(100dvh - 2rem);padding:1.25rem}
 dialog::backdrop{background:rgba(10,15,30,.55)}
 dialog h3{margin:0 0 1rem;font-family:'Literata',Georgia,serif;font-size:1.35rem;font-weight:600}
 dialog .lbl{display:block;font-weight:600;font-size:.9rem;margin:0 0 .4rem}
-dialog input[type=text],dialog textarea,dialog select{width:100%;background:var(--bg);border:1px solid var(--line);border-radius:.6rem;padding:.65rem .75rem;margin-bottom:1rem}
+dialog input[type=text],dialog input[type=password],dialog textarea,dialog select{width:100%;background:var(--bg);border:1px solid var(--line);border-radius:.6rem;padding:.65rem .75rem;margin-bottom:1rem}
 dialog textarea{min-height:40vh;resize:vertical;font-family:'Literata',Georgia,serif;line-height:1.6}
 .row{display:flex;justify-content:flex-end;gap:.6rem;flex-wrap:wrap}
 .speeds{display:flex;flex-wrap:wrap;gap:.4rem;margin-bottom:1rem}
@@ -159,6 +236,14 @@ dialog textarea{min-height:40vh;resize:vertical;font-family:'Literata',Georgia,s
 .checks b{display:block;font-weight:600}
 .checks span span{display:block;color:var(--muted);font-size:.85rem}
 
+.sect{border-top:1px solid var(--line);margin:1.25rem 0 1rem;padding-top:1rem}
+.sect h4{margin:0 0 .75rem;font-size:1.05rem;font-family:'Literata',Georgia,serif;font-weight:600}
+.fig .fx[hidden]{display:none}
+#viewDlg{width:min(60rem,calc(100vw - 1rem));padding:.75rem}
+.vbar{display:flex;align-items:center;gap:.5rem;margin-bottom:.5rem}
+.vbar span{flex:1;font-weight:600;font-variant-numeric:tabular-nums}
+.vbody{overflow:auto;max-height:calc(100dvh - 7rem);background:#fff;border-radius:.4rem;text-align:center}
+.vbody img,.vbody canvas{max-width:100%;height:auto;display:block;margin:0 auto}
 .toast{position:fixed;left:50%;transform:translateX(-50%);bottom:calc(10rem + env(safe-area-inset-bottom,0px));background:var(--ink);color:var(--bg);padding:.7rem 1rem;border-radius:.7rem;max-width:min(30rem,calc(100vw - 2rem));z-index:40;font-size:.95rem}
 .lib-view .toast{bottom:calc(1.5rem + env(safe-area-inset-bottom,0px))}
 
@@ -189,13 +274,18 @@ dialog textarea{min-height:40vh;resize:vertical;font-family:'Literata',Georgia,s
       <div class="tabs" role="tablist">
         <button role="tab" id="tabSec" aria-selected="true" aria-controls="secList">Sections</button>
         <button role="tab" id="tabPg" aria-selected="false" aria-controls="pgList">Pages</button>
+        <button role="tab" id="tabFig" aria-selected="false" aria-controls="figPanel">Figures</button>
       </div>
       <ol class="outline" id="secList" role="tabpanel"></ol>
       <ol class="outline" id="pgList" role="tabpanel" hidden></ol>
+      <div id="figPanel" role="tabpanel" hidden>
+        <div class="side-act"><button id="explainAll">Explain all with AI</button></div>
+        <ul class="flist" id="figList"></ul>
+      </div>
     </div>
   </div>
   <div class="side-foot">
-    <button id="sideSettings"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M4 7h10M18 7h2M4 17h4M12 17h8"/><circle cx="16" cy="7" r="2"/><circle cx="10" cy="17" r="2"/></svg>Voice and what to skip</button>
+    <button id="sideSettings"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M4 7h10M18 7h2M4 17h4M12 17h8"/><circle cx="16" cy="7" r="2"/><circle cx="10" cy="17" r="2"/></svg>Settings</button>
   </div>
 </aside>
 <div class="scrim" id="scrim" hidden></div>
@@ -205,13 +295,17 @@ dialog textarea{min-height:40vh;resize:vertical;font-family:'Literata',Georgia,s
     <button class="icon-btn menu-btn" id="menuBtn" aria-label="Show sections and pages">
       <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M4 6h16M4 12h16M4 18h10"/></svg></button>
     <h2 id="topTitle">Library</h2>
-    <button class="icon-btn" id="settingsBtn" aria-label="Voice and what to skip">
+    <div class="seg modeseg" id="modeSeg" role="group" aria-label="Listening mode" hidden>
+      <button data-mode="read" aria-pressed="true" title="Read the text only"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M2 5h7a3 3 0 0 1 3 3v12a2 2 0 0 0-2-2H2zM22 5h-7a3 3 0 0 0-3 3v12a2 2 0 0 1 2-2h8z"/></svg><span class="ml">Read</span></button>
+      <button data-mode="prof" aria-pressed="false" title="A professor explains each paragraph, figure and table"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M22 9L12 4 2 9l10 5 10-5z"/><path d="M6 11v5c3 2.5 9 2.5 12 0v-5"/></svg><span class="ml">Professor</span></button>
+    </div>
+    <button class="icon-btn" id="settingsBtn" aria-label="Settings">
       <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M4 7h10M18 7h2M4 17h4M12 17h8"/><circle cx="16" cy="7" r="2"/><circle cx="10" cy="17" r="2"/></svg></button>
   </header>
 
   <main id="library" class="lib">
     <h1>Readaloud</h1>
-    <p class="tag">Open a paper or paste an article and listen. References, citations and footnotes are skipped, and every section is listed on the left so you can start wherever you like.</p>
+    <p class="tag">Open a paper or book and listen. References, citations and footnotes are skipped, figures and tables stay in place, and every section is listed on the left so you can start wherever you like.</p>
     <div class="actions">
       <button class="btn primary" id="fileBtn">
         <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M14 3H6a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V9z"/><path d="M14 3v6h6"/></svg>Open file</button>
@@ -229,32 +323,54 @@ dialog textarea{min-height:40vh;resize:vertical;font-family:'Literata',Georgia,s
       <button class="link" id="importBtn">Restore from backup</button>
       <input type="file" id="importIn" accept=".json,application/json" hidden>
     </div>
-    <p class="lib-note">Your documents are saved in this browser on this device. Use “Back up library” to move them to another device or browser.</p>
+    <p class="lib-note" id="libNote">Everything you open is saved in this browser, so it’s here next time without uploading again. Use “Back up library” to move your books to another device or browser.</p>
   </main>
 
   <article class="text" id="text" hidden></article>
 
   <div class="player" id="player" hidden>
     <div class="in">
-      <div class="now" id="nowSec"></div>
+      <div class="nowrow">
+        <div class="now" id="nowSec"></div>
+        <div class="pgbtns" id="pgBtns">
+          <button id="prevPage" title="Previous page (Page Up)"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M15 18l-6-6 6-6"/></svg>Page</button>
+          <button id="nextPage" title="Next page (Page Down)">Page<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M9 18l6-6-6-6"/></svg></button>
+        </div>
+      </div>
       <input type="range" class="scrub" id="scrub" min="0" max="0" value="0" aria-label="Position in document">
       <div class="times"><span id="pct">0%</span><span id="left"></span></div>
       <div class="ctrls">
-        <button class="pill" id="speedBtn" aria-label="Playback speed">1×</button>
+        <div class="seg speedseg" id="speedSeg" role="group" aria-label="Reading speed"></div>
         <div class="mid">
-          <button class="skipb" id="prevBtn" aria-label="Previous sentence">
+          <button class="skipb para" id="prevPara" aria-label="Previous paragraph" title="Previous paragraph (Shift + Left)">
+            <svg viewBox="0 0 24 24" fill="currentColor"><path d="M11 6v12L2.5 12zM21 6v12l-8.5-6z"/></svg></button>
+          <button class="skipb" id="prevBtn" aria-label="Previous sentence" title="Previous sentence (Left)">
             <svg viewBox="0 0 24 24" fill="currentColor"><path d="M6 5h2v14H6zM20 5v14L9.5 12z"/></svg></button>
           <button class="play" id="playBtn" aria-label="Play">
             <svg id="playIco" viewBox="0 0 24 24" fill="currentColor"><path d="M8 5v14l11-7z"/></svg>
             <svg id="pauseIco" viewBox="0 0 24 24" fill="currentColor" hidden><path d="M7 5h4v14H7zM13 5h4v14h-4z"/></svg></button>
-          <button class="skipb" id="nextBtn" aria-label="Next sentence">
+          <button class="skipb" id="nextBtn" aria-label="Next sentence" title="Next sentence (Right)">
             <svg viewBox="0 0 24 24" fill="currentColor"><path d="M16 5h2v14h-2zM4 5v14l10.5-7z"/></svg></button>
+          <button class="skipb para" id="nextPara" aria-label="Next paragraph" title="Next paragraph (Shift + Right)">
+            <svg viewBox="0 0 24 24" fill="currentColor"><path d="M13 6v12l8.5-6zM3 6v12l8.5-6z"/></svg></button>
         </div>
-        <button class="pill r" id="voiceBtn" aria-label="Choose voice">Voice</button>
+        <button class="pill r" id="voiceBtn" aria-label="Choose voice" aria-expanded="false"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 2a3 3 0 0 0-3 3v7a3 3 0 0 0 6 0V5a3 3 0 0 0-3-3z"/><path d="M19 10v2a7 7 0 0 1-14 0v-2M12 19v3"/></svg><span id="voiceName">Voice</span></button>
       </div>
     </div>
   </div>
 </div>
+</div>
+
+<div class="vpanel" id="vpanel" role="dialog" aria-label="Choose a voice" hidden>
+  <div class="vp-head">
+    <div class="seg" role="group" aria-label="Which voice to change">
+      <button data-who="reader" aria-pressed="true">Reader</button>
+      <button data-who="prof" aria-pressed="false">Professor</button>
+    </div>
+    <button class="icon-btn" id="vpClose" aria-label="Close"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M6 6l12 12M18 6L6 18"/></svg></button>
+  </div>
+  <div class="vlist" id="vlist"></div>
+  <div class="vp-foot" id="vpFoot"></div>
 </div>
 
 <dialog id="pasteDlg">
@@ -270,12 +386,7 @@ dialog textarea{min-height:40vh;resize:vertical;font-family:'Literata',Georgia,s
 </dialog>
 
 <dialog id="setDlg">
-  <h3>Voice and what to skip</h3>
-  <label class="lbl" for="voiceSel">Voice</label>
-  <select id="voiceSel"></select>
-  <p class="note">Voices under “Most natural” sound best. <label style="display:inline;font-weight:400"><input type="checkbox" id="allLangs"> Show other languages</label></p>
-  <span class="lbl">Speed</span>
-  <div class="speeds" id="speeds"></div>
+  <h3>Settings</h3>
   <span class="lbl">Text size</span>
   <div class="sizes" id="sizes">
     <button data-fs="1.05rem" style="font-size:.95rem">Aa</button>
@@ -292,10 +403,36 @@ dialog textarea{min-height:40vh;resize:vertical;font-family:'Literata',Georgia,s
     <label><input type="checkbox" data-k="running"><span><b>Page headers, footers and page numbers</b></span></label>
   </div>
   <p class="note">Skipped text stays on the page, faded. You can also skip or include any single section with the eye button next to it in the sidebar.</p>
+  <div class="sect">
+    <h4>Professor mode (AI)</h4>
+    <p class="note" style="margin:0 0 1rem">In Professor mode, a second voice explains each paragraph, figure and table as you listen, like a professor teaching from the paper. It needs a Claude API key.</p>
+    <label class="lbl" for="aiKey">Claude API key</label>
+    <input type="password" id="aiKey" placeholder="sk-ant-…" autocomplete="off" spellcheck="false">
+    <p class="note">Create a key at console.anthropic.com and add some credit. Each explanation uses a small amount. The key is kept only in this browser, so don’t add it on a shared computer.</p>
+    <label class="lbl" for="aiModel">Model</label>
+    <select id="aiModel">
+      <option value="claude-sonnet-5-5">Claude Sonnet 5.5 (recommended)</option>
+      <option value="claude-opus-5-5">Claude Opus 5.5 (most thorough)</option>
+      <option value="claude-haiku-5-5">Claude Haiku 5.5 (fastest, lowest cost)</option>
+    </select>
+    <div class="checks">
+      <label><input type="checkbox" id="aiParas"><span><b>Explain paragraphs</b><span>Turn off to have the professor explain only figures and tables</span></span></label>
+    </div>
+    <div class="row" style="justify-content:flex-start"><button class="btn" id="aiTest">Check key</button></div>
+  </div>
   <div class="row">
-    <button class="btn" id="previewBtn">Preview voice</button>
     <button class="btn primary" id="setDone">Done</button>
   </div>
+</dialog>
+
+<dialog id="viewDlg" aria-label="Page viewer">
+  <div class="vbar">
+    <button class="icon-btn" id="vPrev" aria-label="Previous page"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M15 18l-6-6 6-6"/></svg></button>
+    <button class="icon-btn" id="vNext" aria-label="Next page"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M9 18l6-6-6-6"/></svg></button>
+    <span id="vTitle"></span>
+    <button class="icon-btn" id="vClose" aria-label="Close"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M6 6l12 12M18 6L6 18"/></svg></button>
+  </div>
+  <div class="vbody" id="vBody"></div>
 </dialog>
 
 <div class="toast" id="toast" role="status" hidden></div>
@@ -305,10 +442,13 @@ dialog textarea{min-height:40vh;resize:vertical;font-family:'Literata',Georgia,s
 'use strict';
 const $ = s => document.querySelector(s);
 const synth = window.speechSynthesis;
-const SPEEDS = [0.75, 1, 1.25, 1.5, 1.75, 2, 2.5, 3];
+const SPEEDS = [0.8, 0.85, 0.9, 1];
 const DEF_SKIP = {refs:true, cites:true, notes:true, captions:true, running:true};
 const ICON_EYE = '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M2 12s3.6-7 10-7 10 7 10 7-3.6 7-10 7S2 12 2 12z"/><circle cx="12" cy="12" r="3"/></svg>';
 const ICON_EYE_OFF = '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 3l18 18M10.6 5.1A10.4 10.4 0 0 1 12 5c6.4 0 10 7 10 7a17 17 0 0 1-3.2 4M6.6 6.6C3.8 8.4 2 12 2 12s3.6 7 10 7a9.6 9.6 0 0 0 5.4-1.6M9.9 9.9a3 3 0 0 0 4.2 4.2"/></svg>';
+const ICON_SPARK = '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 3l1.8 5.2L19 10l-5.2 1.8L12 17l-1.8-5.2L5 10l5.2-1.8z"/><path d="M19 16l.8 2.2L22 19l-2.2.8L19 22l-.8-2.2L16 19l2.2-.8z"/></svg>';
+const ICON_PAGE = '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M14 3H6a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V9z"/><path d="M14 3v6h6"/></svg>';
+const PDFJS = 'https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.11.174/';
 
 /* ======================= storage ======================= */
 function getJSON(k, d){ try{ const v = localStorage.getItem(k); return v ? JSON.parse(v) : d; }catch(e){ return d; } }
@@ -329,27 +469,38 @@ const DB = (() => {
 })();
 const store = {
   async all(){ if(!useLS){ try{ return await DB.all(); }catch(e){ useLS = true; } } return getJSON('ra2-docs', []); },
-  async put(d){ if(!useLS){ try{ await DB.put(d); return true; }catch(e){ useLS = true; } } return setJSON('ra2-docs', docs); },
-  async del(id){ if(!useLS){ try{ await DB.del(id); return true; }catch(e){ useLS = true; } } return setJSON('ra2-docs', docs); }
+  async put(d){ if(!useLS){ try{ await DB.put(d); return true; }catch(e){ useLS = true; } } return setJSON('ra2-docs', docs.map(x => Object.assign({}, x, {file: undefined}))); },
+  async del(id){ if(!useLS){ try{ await DB.del(id); return true; }catch(e){ useLS = true; } } return setJSON('ra2-docs', docs.map(x => Object.assign({}, x, {file: undefined}))); }
 };
+async function keepStorage(){ try{ if(navigator.storage && navigator.storage.persist && !(await navigator.storage.persisted())) await navigator.storage.persist(); }catch(e){} }
 
 let docs = [];
-let prefs = Object.assign({rate:1, voiceURI:'', fs:'1.2rem'}, getJSON('ra2-prefs', {}));
+let prefs = Object.assign({rate:0.8, voiceURI:'', profVoiceURI:'', fs:'1.2rem', mode:'read'}, getJSON('ra2-prefs', {}));
+if(prefs.v !== 4){ prefs.rate = 0.8; prefs.v = 4; }
 prefs.skip = Object.assign({}, DEF_SKIP, prefs.skip || {});
+prefs.ai = Object.assign({model:'claude-sonnet-5-5', paras:true}, prefs.ai || {});
 let positions = getJSON('ra2-pos', {});
 const savePrefs = () => setJSON('ra2-prefs', prefs);
+const aiKey = () => { try{ return localStorage.getItem('ra2-ai-key') || ''; }catch(e){ return ''; } };
 
 let tt;
 function toast(msg, ms){ const t = $('#toast'); t.textContent = msg; t.hidden = false; clearTimeout(tt); tt = setTimeout(() => t.hidden = true, ms || 4500); }
+const hideToast = () => { $('#toast').hidden = true; };
 
 /* ======================= recognising structure ======================= */
 const norm = s => String(s).replace(/\s+/g, ' ').trim();
 const END_RE = /^\s*(?:(?:\d+(?:\.\d+)*|[IVX]+)\.?\s+)?(?:references?(?: and notes)?|bibliography|works cited|literature cited|cited literature|acknowledge?ments?|funding(?: information| sources| statement)?|financial (?:support|disclosures?)|sources? of (?:funding|support)|conflicts? of interests?(?: statement)?|competing interests?|declarations?(?: of (?:competing )?interests?)?|disclosures?(?: statement)?|author(?:s'|s’|’s|'s)? contributions?|contributors|data (?:availability|sharing)(?: statement)?|ethics(?: approval| statement| declarations?)?(?: and consent(?: to participate)?)?|abbreviations|supplementary (?:material|materials|data|information|files?)|supporting information|footnotes|endnotes|notes|orcid|consent(?: for publication)?|institutional review board statement|informed consent statement|publisher[’']?s note)\s*:?\s*$/i;
 const KNOWN_H = /^\s*(?:(?:\d+(?:\.\d+)*|[IVX]+)\.?\s+)?(?:abstract|summary|introduction|background|methods?|materials and methods|patients and methods|methodology|study design|results|findings|discussion|conclusions?|case (?:report|presentation|description|history)s?|clinical (?:history|summary|presentation)|limitations|objectives?|aims?|purpose|design|setting|participants|statistical analysis|future directions|recommendations|overview|key points|highlights|clinical significance|pathology|pathologic findings|histology|gross (?:findings|description)|microscopic (?:findings|description)|immunohistochemistry|molecular (?:findings|analysis|studies|testing)|differential diagnosis|diagnosis|treatment|outcomes?|prognosis|appendix(?: [A-Z\d]+)?)\s*:?\s*$/i;
 const CAP_RE = /^(?:supplementary\s+|extended data\s+)?(?:fig(?:ure)?s?\.?|table|tab\.)\s*S?\d+[A-Za-z]?\s*[.:|—–-]/i;
+const CAP_LOOSE = /^(?:(supplementary|extended data)\s+)?(fig(?:ure)?s?\.?|table|tab\.)\s*(S?\d+[A-Za-z]?)(?:\s*[.:|—–-]|\s+[A-Z(])/i;
 const NOTE_RE = /^(?:[*†‡]\s*)?(?:correspondence|corresponding author|address (?:for )?correspondence|received|accepted|revised|published(?: online)?|available online|e-?mail|keywords?|key words|copyright|©|\(c\)\s?\d{4}|this (?:is an open access )?article|open access|citation:|to cite this|how to cite|article history|handling editor|edited by|reviewed by|reprints?|disclaimer|abbreviations:)/i;
 const AFFIL_RE = /^(?:\[?[\d*†a-z]{1,2}\]?\s*)?(?:department|division|dept\.|section|laboratory|institute|center|centre|school|faculty|university|hospital)\s+(?:of|for)\b/i;
 
+function capInfo(t){
+  const m = String(t).match(CAP_LOOSE); if(!m) return null;
+  const kind = /^t/i.test(m[2]) ? 'tbl' : 'fig';
+  return {kind, label: (m[1] ? 'Supplementary ' : '') + (kind === 'tbl' ? 'Table ' : 'Figure ') + m[3]};
+}
 function looksRef(t){
   if(t.length > 800 || t.length < 30) return false;
   let sc = 0;
@@ -367,12 +518,24 @@ function classifyPara(t, pos){
   if(pos > 0.45 && looksRef(t)) return 'ref';
   return 'p';
 }
+const isVis = b => b.t === 'fig' || b.t === 'tbl';
 function finalize(blocks){
   const n = blocks.length;
   const lvs = blocks.filter(b => b.t === 'h' && b.lv > 0).map(b => b.lv);
   if(lvs.length){ const shift = Math.min(...lvs) - 1; if(shift > 0) blocks.forEach(b => { if(b.t === 'h' && b.lv > 0) b.lv -= shift; }); }
-  blocks.forEach((b, i) => { b.x = norm(b.x); if(b.t === 'p') b.t = classifyPara(b.x, n ? i / n : 0); });
-  return blocks.filter(b => b.x);
+  blocks.forEach((b, i) => { if(isVis(b)) return; b.x = norm(String(b.x || '').replace(/-\u0000/g, '').replace(/\u0000/g, '')); if(b.t === 'p') b.t = classifyPara(b.x, n ? i / n : 0); });
+  // label figures and tables that came without one
+  let fn = 0, tn = 0;
+  blocks.forEach((b, i) => {
+    if(!isVis(b)) return;
+    if(!b.label){
+      const near = [blocks[i + 1], blocks[i - 1], blocks[i + 2], blocks[i - 2]].find(x => x && !isVis(x) && /^(cap|p)$/.test(x.t) && capInfo(x.x) && capInfo(x.x).kind === b.t);
+      if(near){ b.label = capInfo(near.x).label; near.t = 'cap'; }
+      else b.label = b.t === 'tbl' ? 'Table ' + (++tn) : 'Image ' + (++fn);
+    }
+    b.x = b.label;
+  });
+  return blocks.filter(b => isVis(b) || b.x);
 }
 
 /* ---- plain text ---- */
@@ -384,6 +547,7 @@ function textHeading(t){
   const m = t.match(/^(\d+(?:\.\d+)*)\.?\s+[A-Z]/);
   if(m && t.split(/\s+/).length <= 12) return Math.min(3, m[1].split('.').length);
   if(/^[IVX]+\.\s+[A-Z]/.test(t) && t.length < 70) return 1;
+  if(/^chapter\s+\w+/i.test(t) && t.length < 80) return 1;
   if(t === t.toUpperCase() && /[A-Z]{3}/.test(t) && t.split(/\s+/).length <= 10) return 1;
   return -1;
 }
@@ -392,7 +556,6 @@ function parsePlain(text){
   let paras = text.split(/\n\s*\n+/);
   const lines = text.split('\n').filter(l => l.trim());
   if(paras.length <= 2 && lines.length > 12){
-    // Text copied from a PDF: one line per visual line. Rebuild paragraphs.
     const lens = lines.map(l => l.trim().length).sort((a,b) => a - b), med = lens[Math.floor(lens.length / 2)];
     paras = []; let buf = '';
     lines.forEach(l => {
@@ -423,20 +586,27 @@ function mdInline(s){
 }
 function parseMd(src){
   src = src.replace(/\r/g, '').replace(/```[\s\S]*?```/g, '').replace(/^---\n[\s\S]*?\n---\n/, '');
-  const blocks = []; let buf = [];
-  const flush = () => { if(buf.length){ blocks.push({t:'p', x:mdInline(buf.join(' '))}); buf = []; } };
+  const blocks = []; let buf = [], tbl = null;
+  const flush = () => { if(buf.length){ blocks.push({t:'p', x:mdInline(buf.join(' '))}); buf = []; } if(tbl){ if(tbl.length) blocks.push({t:'tbl', rows:tbl}); tbl = null; } };
   src.split('\n').forEach(line => {
+    if(/^\s*\|/.test(line)){
+      if(buf.length){ blocks.push({t:'p', x:mdInline(buf.join(' '))}); buf = []; }
+      tbl = tbl || [];
+      if(!/^\s*\|?\s*:?-{2,}/.test(line)) tbl.push(line.trim().replace(/^\||\|$/g, '').split('|').map(c => mdInline(c.trim())));
+      return;
+    }
+    if(tbl) flush();
     const h = line.match(/^(#{1,6})\s+(.*)$/);
-    if(h){ flush(); blocks.push({t:'h', lv:Math.min(3, h[1].length - (h[1].length > 1 && !blocks.some(b => b.t === 'h') ? 0 : 0)), x:mdInline(h[2].replace(/#+\s*$/, ''))}); return; }
+    if(h){ flush(); blocks.push({t:'h', lv:Math.min(3, h[1].length), x:mdInline(h[2].replace(/#+\s*$/, ''))}); return; }
+    const im = line.match(/^\s*!\[([^\]]*)\]\((https?:[^)\s]+)/);
+    if(im){ flush(); blocks.push({t:'fig', src:im[2]}); return; }
     const fn = line.match(/^\[\^[^\]]+\]:\s*(.*)$/);
     if(fn){ flush(); blocks.push({t:'foot', x:mdInline(fn[1])}); return; }
     if(!line.trim() || /^\s*([-*_])\s*\1\s*\1[\s\1]*$/.test(line)){ flush(); return; }
     if(/^\s*(?:[-*+]|\d+[.)])\s+/.test(line)){ flush(); buf.push(line.replace(/^\s*(?:[-*+]|\d+[.)])\s+/, '')); return; }
-    if(/^\s*\|/.test(line)){ flush(); return; }
     buf.push(line.replace(/^>\s?/, ''));
   });
   flush();
-  // a single top-level # becomes the title
   const h1s = blocks.filter(b => b.t === 'h' && b.lv === 1);
   if(h1s.length === 1 && blocks[0] === h1s[0]) h1s[0].lv = 0;
   return finalize(blocks);
@@ -452,18 +622,29 @@ function parseHtml(src){
   });
   doc.querySelectorAll('br').forEach(e => e.replaceWith(doc.createTextNode(' ')));
   const SEL = 'h1,h2,h3,h4,h5,h6,p,li,blockquote,figcaption,caption,dd,dt,pre';
-  const els = [...doc.body.querySelectorAll(SEL)].filter(e => !e.querySelector(SEL));
   const blocks = [];
-  els.forEach(e => {
-    const x = norm(e.textContent); if(!x) return;
+  [...doc.body.querySelectorAll(SEL + ',img,table')].forEach(e => {
     const tag = e.tagName.toLowerCase();
+    if(tag !== 'table' && e.closest('table')) return;
+    if(tag === 'img'){
+      const src = e.getAttribute('src') || '';
+      if(/^(data:image\/(png|jpe?g|gif|webp)|https?:)/i.test(src)) blocks.push({t:'fig', src});
+      return;
+    }
+    if(tag === 'table'){
+      const rows = [...e.rows].map(r => [...r.cells].map(c => norm(c.textContent))).filter(r => r.some(Boolean));
+      if(rows.length) blocks.push({t:'tbl', rows});
+      return;
+    }
+    if(e.querySelector(SEL)) return;
+    const x = norm(e.textContent); if(!x) return;
     if(/^h[1-6]$/.test(tag)){ blocks.push({t:'h', lv:Math.min(3, +tag[1]), x}); return; }
     if(e.closest('[id*=footnote],[class*=footnote],[id*=endnote],[class*=endnote]')){ blocks.push({t:'foot', x}); return; }
     if(tag === 'li' && e.closest('[class*=reference],[id*=reference],[class*=bibliograph],[id*=bibliograph],[class*=citation],[class*=ref-list]')){ blocks.push({t:'ref', x}); return; }
     if(tag === 'figcaption' || tag === 'caption'){ blocks.push({t:'cap', x}); return; }
     blocks.push({t:'p', x});
   });
-  if(!blocks.length) return parsePlain(doc.body.textContent || '');
+  if(!blocks.some(b => !isVis(b))) return parsePlain(doc.body.textContent || '');
   const h1s = blocks.filter(b => b.t === 'h' && b.lv === 1);
   if(h1s.length === 1 && blocks.indexOf(h1s[0]) < 3) h1s[0].lv = 0;
   return finalize(blocks);
@@ -471,33 +652,72 @@ function parseHtml(src){
 
 /* ---- pdf ---- */
 function loadScript(src){ return new Promise((res, rej) => { const s = document.createElement('script'); s.src = src; s.onload = res; s.onerror = rej; document.head.append(s); }); }
+async function pdfLib(){
+  if(!window.pdfjsLib) await loadScript(PDFJS + 'pdf.min.js');
+  pdfjsLib.GlobalWorkerOptions.workerSrc = PDFJS + 'pdf.worker.min.js';
+  return pdfjsLib;
+}
+const mulM = (m, n) => [m[0]*n[0] + m[1]*n[2], m[0]*n[1] + m[1]*n[3], m[2]*n[0] + m[3]*n[2], m[2]*n[1] + m[3]*n[3], m[4]*n[0] + m[5]*n[2] + n[4], m[4]*n[1] + m[5]*n[3] + n[5]];
+async function imageBoxes(page, OPS, W, H){
+  const ol = await page.getOperatorList();
+  const IMG = new Set([OPS.paintImageXObject, OPS.paintInlineImageXObject, OPS.paintImageMaskXObject, OPS.paintImageXObjectRepeat, OPS.paintJpegXObject].filter(x => x !== undefined));
+  let ctm = [1,0,0,1,0,0]; const st = [], out = [];
+  for(let i = 0; i < ol.fnArray.length; i++){
+    const fn = ol.fnArray[i], a = ol.argsArray[i];
+    if(fn === OPS.save) st.push(ctm);
+    else if(fn === OPS.restore) ctm = st.pop() || ctm;
+    else if(fn === OPS.transform) ctm = mulM([...a], ctm);
+    else if(fn === OPS.paintFormXObjectBegin){ st.push(ctm); if(a && a[0] && a[0].length === 6) ctm = mulM([...a[0]], ctm); }
+    else if(fn === OPS.paintFormXObjectEnd) ctm = st.pop() || ctm;
+    else if(IMG.has(fn)){
+      const pts = [[0,0],[1,0],[0,1],[1,1]].map(([x,y]) => [x*ctm[0] + y*ctm[2] + ctm[4], x*ctm[1] + y*ctm[3] + ctm[5]]);
+      const xs = pts.map(p => p[0]), ys = pts.map(p => p[1]);
+      const b = {x0:Math.max(0, Math.min(...xs)), x1:Math.min(W, Math.max(...xs)), y0:Math.max(0, Math.min(...ys)), y1:Math.min(H, Math.max(...ys))};
+      const w = b.x1 - b.x0, h = b.y1 - b.y0;
+      if(w >= 36 && h >= 36 && w * h < W * H * 0.85) out.push(b);
+    }
+  }
+  // merge neighbouring images (multi-panel figures)
+  let merged = true;
+  while(merged){
+    merged = false;
+    for(let i = 0; i < out.length && !merged; i++) for(let j = i + 1; j < out.length; j++){
+      const a = out[i], b = out[j], g = 14;
+      if(a.x0 - g < b.x1 && b.x0 - g < a.x1 && a.y0 - g < b.y1 && b.y0 - g < a.y1){
+        out[i] = {x0:Math.min(a.x0,b.x0), x1:Math.max(a.x1,b.x1), y0:Math.min(a.y0,b.y0), y1:Math.max(a.y1,b.y1)}; out.splice(j, 1); merged = true; break;
+      }
+    }
+  }
+  return out;
+}
+const overlapX = (a0, a1, b0, b1) => Math.min(a1, b1) - Math.max(a0, b0);
+
 async function parsePdf(file){
-  const base = 'https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.11.174/';
-  if(!window.pdfjsLib) await loadScript(base + 'pdf.min.js');
-  pdfjsLib.GlobalWorkerOptions.workerSrc = base + 'pdf.worker.min.js';
-  const pdf = await pdfjsLib.getDocument({data: await file.arrayBuffer()}).promise;
+  const lib = await pdfLib();
+  const pdf = await lib.getDocument({data: await file.arrayBuffer()}).promise;
   const pages = [];
   for(let n = 1; n <= pdf.numPages; n++){
-    if(pdf.numPages > 8 && n % 5 === 0) toast(`Reading page ${n} of ${pdf.numPages}…`, 60000);
+    if(pdf.numPages > 6 && (n === 1 || n % 5 === 0)) toast(`Reading page ${n} of ${pdf.numPages}…`, 60000);
     const page = await pdf.getPage(n), vp = page.getViewport({scale:1}), c = await page.getTextContent();
     const items = [];
     for(const it of c.items){
-      if(!('str' in it)) continue;
+      if(!('str' in it) || !it.str.trim()) continue;
       items.push({s:it.str, x:it.transform[4], y:it.transform[5], h:Math.abs(it.height || it.transform[3]) || 10, w:it.width || 0});
     }
-    pages.push({n, H:vp.height, items});
+    let imgs = [];
+    try{ imgs = await imageBoxes(page, lib.OPS, vp.width + (vp.viewBox ? vp.viewBox[0] : 0), vp.height + (vp.viewBox ? vp.viewBox[1] : 0)); }catch(e){}
+    pages.push({n, H:vp.height, W:vp.width, items, imgs});
+    page.cleanup();
   }
-  // the most common font size is the body text
   const hist = {};
-  pages.forEach(p => p.items.forEach(it => { if(it.s.trim()){ const k = Math.round(it.h * 2) / 2; hist[k] = (hist[k] || 0) + it.s.length; } }));
+  pages.forEach(p => p.items.forEach(it => { const k = Math.round(it.h * 2) / 2; hist[k] = (hist[k] || 0) + it.s.length; }));
   const body = +(Object.entries(hist).sort((a,b) => b[1] - a[1])[0] || [10])[0] || 10;
 
-  // group items into lines; small raised numbers become [n] markers
+  /* lines */
   const lines = [];
   for(const p of pages){
     let line = null;
     for(const it of p.items){
-      if(!it.s.trim()){ continue; }
       const ref = line ? Math.max(line.size, it.h) : it.h;
       const same = line && Math.abs(it.y - line.y) < ref * 0.6 && it.x > line.x0 - ref && it.x >= line.x1 - ref * 3;
       if(same){
@@ -506,13 +726,14 @@ async function parsePdf(file){
         const gap = it.x - line.x1;
         if(sup){ line.t = line.t.replace(/\s+$/, '') + '[' + it.s.trim() + ']'; }
         else{
+          if(gap > Math.max(line.size, it.h) * 1.5) line.gaps++;
           if(gap > Math.min(it.h, line.size) * 0.12 && !/\s$/.test(line.t) && !/^\s/.test(it.s)) line.t += ' ';
           line.t += it.s;
           if(it.h > line.size * 1.05){ line.size = it.h; line.y = it.y; }
         }
         line.x1 = Math.max(line.x1, it.x + it.w);
       }else{
-        line = {pg:p.n, H:p.H, t:it.s, x0:it.x, x1:it.x + it.w, y:it.y, size:it.h};
+        line = {pg:p.n, H:p.H, t:it.s, x0:it.x, x1:it.x + it.w, y:it.y, size:it.h, gaps:0};
         lines.push(line);
       }
     }
@@ -520,8 +741,9 @@ async function parsePdf(file){
   lines.forEach(l => { l.t = l.t.replace(/\s+/g, ' ').trim(); l.w = l.x1 - l.x0; });
   const bodyW = lines.filter(l => Math.abs(l.size - body) < body * 0.1).map(l => l.w).sort((a,b) => a - b);
   const medW = bodyW[Math.floor(bodyW.length * 0.6)] || 300;
+  const isLongBody = l => l.w >= medW * 0.6 && l.size >= body * 0.9 && l.size < body * 1.12;
 
-  // running headers and footers
+  /* running headers and footers */
   const edge = l => l.y > l.H * 0.92 || l.y < l.H * 0.07;
   const key = l => l.t.toLowerCase().replace(/\d+/g, '#').replace(/\s+/g, ' ');
   const seen = {};
@@ -529,65 +751,189 @@ async function parsePdf(file){
   const minRep = Math.max(2, Math.ceil(pages.length * 0.3));
   lines.forEach(l => { if(edge(l) && (seen[key(l)].size >= minRep || /^(?:page\s*)?#(?:\s*(?:of|\/)\s*#)?$/i.test(key(l)))) l.k = 'run'; });
 
-  // footnotes: small lines at the bottom of each page
+  /* captions */
+  lines.forEach(l => { if(!l.k && l.t.length > 6){ const ci = capInfo(l.t); if(ci) l.cap = ci; } });
+
+  /* figures */
+  const visuals = [];
   for(const p of pages){
-    const pl = lines.filter(l => l.pg === p.n && l.k !== 'run' && l.y < l.H * 0.4).sort((a,b) => a.y - b.y);
-    for(const l of pl){ if(l.size < body * 0.88 && !CAP_RE.test(l.t)) l.k = 'foot'; else break; }
+    const pl = lines.filter(l => l.pg === p.n && l.k !== 'run');
+    const figCaps = pl.filter(l => l.cap && l.cap.kind === 'fig');
+    const groups = new Map(), loose = [];
+    for(const r of p.imgs){
+      // a picture that sits under a lot of body text is a background, not a figure
+      if(pl.filter(l => isLongBody(l) && !l.cap && l.y > r.y0 && l.y < r.y1 && overlapX(l.x0, l.x1, r.x0, r.x1) > l.w * 0.5).length >= 3) continue;
+      let best = null, bd = 1e9;
+      for(const c of figCaps){
+        let d = c.y <= r.y0 + 6 ? r.y0 - (c.y + c.size) : c.y - r.y1 + 150;
+        if(overlapX(c.x0, Math.max(c.x1, c.x0 + 60), r.x0, r.x1) <= 0) d += 250;
+        if(d < bd){ bd = d; best = c; }
+      }
+      if(best && bd < 320){ const g = groups.get(best); groups.set(best, g ? {x0:Math.min(g.x0,r.x0), x1:Math.max(g.x1,r.x1), y0:Math.min(g.y0,r.y0), y1:Math.max(g.y1,r.y1)} : Object.assign({}, r)); }
+      else loose.push(Object.assign({}, r));
+    }
+    // captions with no picture: the figure is drawn (a chart or diagram), so take the space above the caption
+    for(const c of figCaps){
+      if(groups.has(c)) continue;
+      const cx0 = c.x0 - 4, cx1 = Math.max(c.x1, c.x0 + medW * 0.9);
+      const above = pl.filter(l => l !== c && l.y > c.y + c.size * 0.5 && overlapX(l.x0, l.x1, cx0, cx1) > 0);
+      const anchor = above.filter(l => (isLongBody(l) && !l.cap) || l.size >= body * 1.12).sort((a,b) => a.y - b.y)[0];
+      const top = anchor ? anchor.y - anchor.size * 0.3 - 5 : Math.max(...pl.map(l => l.y + l.size), c.y) + 2;
+      const r = {x0:cx0, x1:cx1, y0:c.y + c.size + 5, y1:top};
+      const inside = above.filter(l => l.y + l.size * 0.3 < r.y1 && l.y > r.y0);
+      if(inside.length){ r.x0 = Math.min(r.x0, ...inside.map(l => l.x0)) - 2; r.x1 = Math.max(r.x1, ...inside.map(l => l.x1)) + 2; }
+      const h = r.y1 - r.y0;
+      if(h >= 40 && h <= p.H * 0.85) groups.set(c, r);
+    }
+    const addVis = (r, c) => {
+      // short labels around the picture (panel letters, axis labels) belong to it
+      for(const l of pl){
+        if(l.cap || l.k) continue;
+        const cy = l.y + l.size * 0.3, cxm = (l.x0 + l.x1) / 2, m = body * 2.5;
+        const inside = cxm > r.x0 - 2 && cxm < r.x1 + 2 && cy > r.y0 - 2 && cy < r.y1 + 2;
+        const near = l.w < medW * 0.45 && cxm > r.x0 - m && cxm < r.x1 + m && cy > r.y0 - m && cy < r.y1 + m;
+        if(inside || near){ l.k = 'figtext'; r.x0 = Math.min(r.x0, l.x0); r.x1 = Math.max(r.x1, l.x1); r.y0 = Math.min(r.y0, l.y - l.size * 0.3); r.y1 = Math.max(r.y1, l.y + l.size); }
+      }
+      const v = {t:'fig', pg:p.n, box:r, label: c ? c.cap.label : 'Figure on page ' + p.n};
+      visuals.push(v);
+      if(c) (c.visBefore = c.visBefore || []).push(v);
+      else{
+        const after = pl.filter(l => !l.k && l.y < r.y0).sort((a,b) => lines.indexOf(a) - lines.indexOf(b))[0];
+        if(after) (after.visBefore = after.visBefore || []).push(v);
+        else{ const last = pl.filter(l => !l.k).pop(); if(last) (last.visAfter = last.visAfter || []).push(v); else (pl[pl.length-1] || lines[lines.length-1]).visAfter = [v]; }
+      }
+    };
+    groups.forEach((r, c) => addVis(r, c));
+    loose.forEach(r => addVis(r, null));
   }
 
-  // headings
-  const bigSizes = [...new Set(lines.filter(l => !l.k && l.size >= body * 1.12 && l.t.length < 200 && /[A-Za-z]{2}/.test(l.t)).map(l => Math.round(l.size)))].sort((a,b) => b - a);
+  /* tables */
+  const makeTable = (acc, label, pg, capLine) => {
+    const r = {x0:Math.min(...acc.map(l => l.x0)) - 3, x1:Math.max(...acc.map(l => l.x1)) + 3, y0:Math.min(...acc.map(l => l.y - l.size * 0.4)), y1:Math.max(...acc.map(l => l.y + l.size * 1.1))};
+    acc.forEach(l => l.k = 'tbl');
+    const v = {t:'tbl', pg, box:r, label};
+    visuals.push(v); acc[0].tblStart = v;
+  };
+  lines.forEach((c, i) => {
+    if(!c.cap || c.cap.kind !== 'tbl' || c.k) return;
+    const acc = []; let cont = 0, lastY = c.y, minY = c.y;
+    for(let j = i + 1; j < lines.length; j++){
+      const L = lines[j];
+      if(L.pg !== c.pg) break;
+      if(L.k === 'run') continue;
+      if(L.k || L.cap) break;
+      const dy = lastY - L.y, tab = L.gaps >= 1, short = L.w < medW * 0.55;
+      if(!acc.length){
+        if(!tab && !short && cont < 2 && dy > 0 && dy < L.size * 2.4){ cont++; L.capCont = true; lastY = L.y; continue; }
+        if((tab || short) && dy > 0 && dy < L.size * 4){ acc.push(L); lastY = L.y; minY = L.y; continue; }
+        break;
+      }
+      if(dy < 0){
+        if(L.y <= c.y && L.y >= minY - L.size * 1.5 && (tab || short)){ acc.push(L); continue; }
+        break;
+      }
+      if(dy > L.size * 3.2) break;
+      if(tab || short || L.size < body * 0.92){ acc.push(L); lastY = L.y; minY = Math.min(minY, L.y); }
+      else break;
+    }
+    if(acc.length >= 2) makeTable(acc, c.cap.label, c.pg, c);
+  });
+  // tables without a caption: three or more rows with several columns
+  for(let i = 0; i < lines.length; i++){
+    if(lines[i].k || lines[i].gaps < 2) continue;
+    let j = i; const acc = [];
+    while(j < lines.length && lines[j].pg === lines[i].pg && !lines[j].k && lines[j].gaps >= 2){ acc.push(lines[j]); j++; }
+    if(acc.length >= 3) makeTable(acc, 'Table on page ' + lines[i].pg, lines[i].pg, null);
+    i = j;
+  }
+
+  /* footnotes: small lines at the bottom of each page */
+  for(const p of pages){
+    const pl = lines.filter(l => l.pg === p.n && !l.k && l.y < l.H * 0.4).sort((a,b) => a.y - b.y);
+    for(const l of pl){ if(l.size < body * 0.88 && !l.cap) l.k = 'foot'; else break; }
+  }
+
+  /* headings */
+  const isHeadSize = l => l.size >= body * 1.12 && l.t.length < 200 && /[A-Za-z]{2}/.test(l.t);
+  const bigSizes = [...new Set(lines.filter(l => !l.k && !l.cap && isHeadSize(l)).map(l => Math.round(l.size)))].sort((a,b) => b - a);
   lines.forEach(l => {
-    if(l.k) return;
-    if(l.size >= body * 1.12 && l.t.length < 200 && /[A-Za-z]{2}/.test(l.t)){ l.k = 'h'; l.lv = 1 + Math.max(0, bigSizes.indexOf(Math.round(l.size))); return; }
+    if(l.k || l.cap) return;
+    if(isHeadSize(l)){ l.k = 'h'; l.lv = 1 + Math.max(0, bigSizes.indexOf(Math.round(l.size))); return; }
     if(l.size >= body * 0.9 && l.t.length < 90 && (KNOWN_H.test(l.t) || END_RE.test(l.t))){ l.k = 'h'; const m = l.t.match(/^(\d+(?:\.\d+)+)/); l.lv = m ? Math.min(3, m[1].split('.').length) : 1; return; }
     const m = l.t.match(/^(\d+(?:\.\d+)*)\.?\s+[A-Z][^.!?]{2,80}$/);
-    if(m && l.w < medW * 0.6 && l.t.split(/\s+/).length <= 10 && l.size >= body * 0.9){ l.k = 'h'; l.lv = Math.min(3, m[1].split('.').length); }
+    if(m && l.w < medW * 0.6 && l.t.split(/\s+/).length <= 10 && l.size >= body * 0.9){ l.k = 'h'; l.lv = Math.min(3, m[1].split('.').length); return; }
+    if(/^chapter\s+\w+/i.test(l.t) && l.t.length < 80){ l.k = 'h'; l.lv = 1; }
   });
-  // title: the largest heading on page 1
   const p1 = lines.filter(l => l.pg === 1 && l.k === 'h');
   if(p1.length){ const mx = Math.max(...p1.map(l => l.size)); if(mx >= body * 1.3) p1.forEach(l => { if(l.size === mx) l.lv = 0; }); }
-  // keep levels within 0–3
   lines.forEach(l => { if(l.k === 'h') l.lv = Math.min(3, l.lv); });
 
-  // lines → blocks
+  /* lines → blocks */
   const blocks = []; let lastBody = null, lastBodyLine = null, prevH = null;
+  const pushVis = arr => { if(arr){ arr.forEach(v => blocks.push(v)); lastBody = null; prevH = null; } };
   for(const l of lines){
+    if(l.k === 'figtext') continue;
+    if(l.k === 'tbl'){ if(l.tblStart){ blocks.push(l.tblStart); lastBody = null; prevH = null; } continue; }
     if(l.k === 'run'){ blocks.push({t:'run', x:l.t, pg:l.pg}); continue; }
+    pushVis(l.visBefore);
     if(l.k === 'foot'){
       const b = blocks[blocks.length - 1];
       if(b && b.t === 'foot' && b.pg === l.pg && !/^[\[(]?(?:\d{1,2}|[*†‡§¶])[\])]?\s/.test(l.t)) b.x += joiner(b.x, l.t);
       else blocks.push({t:'foot', x:l.t, pg:l.pg});
-      continue;
-    }
-    if(l.k === 'h'){
+    }else if(l.k === 'h'){
       const b = blocks[blocks.length - 1];
       if(b && b === prevH && b.pg === l.pg && b.lv === l.lv && Math.abs(b.y - l.y) < l.size * 2.6){ b.x += joiner(b.x, l.t); b.y = l.y; }
       else{ prevH = {t:'h', lv:l.lv, x:l.t, pg:l.pg, y:l.y}; blocks.push(prevH); }
-      lastBody = null; continue;
-    }
-    // body text
-    let cont = false;
-    if(lastBody && lastBodyLine){
-      const pl = lastBodyLine, dy = pl.y - l.y, ended = /[.!?:]["”’)\]]*$/.test(lastBody.x);
-      if(pl.pg === l.pg && dy > 0 && dy < pl.size * 1.9){
-        cont = !(ended && (l.x0 > pl.x0 + body * 0.8 || pl.w < medW * 0.7));
-      }else if(dy <= 0 || pl.pg !== l.pg){
-        cont = !ended;
+      lastBody = null;
+    }else if(l.cap){
+      lastBody = {t:'cap', x:l.t, pg:l.pg}; blocks.push(lastBody); lastBodyLine = l; prevH = null;
+    }else{
+      let cont = false;
+      if(l.capCont && lastBody && lastBody.t === 'cap') cont = true;
+      else if(lastBody && lastBodyLine){
+        const pl = lastBodyLine, dy = pl.y - l.y, ended = /[.!?:]["”’)\]]*$/.test(lastBody.x);
+        if(pl.pg === l.pg && dy > 0 && dy < pl.size * 1.9) cont = !(ended && (l.x0 > pl.x0 + body * 0.8 || pl.w < medW * 0.7));
+        else if(dy <= 0 || pl.pg !== l.pg) cont = !ended && lastBody.t !== 'cap';
       }
+      if(cont) lastBody.x += joiner(lastBody.x, l.t);
+      else{ lastBody = {t:'p', x:l.t, pg:l.pg}; blocks.push(lastBody); }
+      lastBodyLine = l; prevH = null;
     }
-    if(cont) lastBody.x += joiner(lastBody.x, l.t);
-    else{ lastBody = {t:'p', x:l.t, pg:l.pg}; blocks.push(lastBody); }
-    lastBodyLine = l; prevH = null;
+    pushVis(l.visAfter);
   }
-  blocks.forEach(b => delete b.y);
+  blocks.forEach(b => { if(!isVis(b)) delete b.y; });
+
+  /* picture crops of figures and tables */
+  const byPage = {};
+  visuals.forEach(v => (byPage[v.pg] = byPage[v.pg] || []).push(v));
+  const pgs = Object.keys(byPage);
+  for(let k = 0; k < pgs.length; k++){
+    const n = +pgs[k];
+    if(pgs.length > 4) toast(`Saving figures and tables (${k + 1} of ${pgs.length} pages)…`, 60000);
+    try{
+      const page = await pdf.getPage(n), vp = page.getViewport({scale:2});
+      const cv = document.createElement('canvas'); cv.width = Math.ceil(vp.width); cv.height = Math.ceil(vp.height);
+      const ctx = cv.getContext('2d'); ctx.fillStyle = '#fff'; ctx.fillRect(0, 0, cv.width, cv.height);
+      await page.render({canvasContext:ctx, viewport:vp}).promise;
+      for(const v of byPage[n]){
+        const b = v.box, r = vp.convertToViewportRectangle([b.x0 - 4, b.y0 - 4, b.x1 + 4, b.y1 + 4]);
+        let x = Math.max(0, Math.min(r[0], r[2])), y = Math.max(0, Math.min(r[1], r[3]));
+        let w = Math.min(cv.width, Math.max(r[0], r[2])) - x, h = Math.min(cv.height, Math.max(r[1], r[3])) - y;
+        if(w < 20 || h < 20) continue;
+        const sc = Math.min(1, 1600 / Math.max(w, h));
+        const out = document.createElement('canvas'); out.width = Math.round(w * sc); out.height = Math.round(h * sc);
+        const o = out.getContext('2d'); o.fillStyle = '#fff'; o.fillRect(0, 0, out.width, out.height);
+        o.drawImage(cv, x, y, w, h, 0, 0, out.width, out.height);
+        v.src = out.toDataURL('image/jpeg', 0.86);
+      }
+      page.cleanup();
+    }catch(e){ console.warn('crop failed', e); }
+  }
+  visuals.forEach(v => { delete v.box; });
+  hideToast();
   return {blocks: finalize(blocks), pages: pages.length, title: (blocks.find(b => b.t === 'h' && b.lv === 0) || {}).x};
 }
-function joiner(a, b){
-  if(/[A-Za-z]-$/.test(a) && /^[a-z]/.test(b)) return '\u0000' + b; // marker: remove hyphen
-  return ' ' + b;
-}
-function fixJoins(blocks){ blocks.forEach(b => { b.x = b.x.replace(/-\u0000/g, '').replace(/\u0000/g, ''); }); return blocks; }
+function joiner(a, b){ return (/[A-Za-z]-$/.test(a) && /^[a-z]/.test(b)) ? '\u0000' + b : ' ' + b; }
 
 /* ======================= citations inside sentences ======================= */
 const CITE_RES = (() => {
@@ -608,20 +954,76 @@ function citeRanges(t){
   const R = [];
   for(const re of CITE_RES){ re.lastIndex = 0; let m; while((m = re.exec(t))){ if(!m[0].length){ re.lastIndex++; continue; } R.push([m.index, m.index + m[0].length]); } }
   R.sort((a,b) => a[0] - b[0]);
+  for(let i = R.length - 1; i >= 0; i--){ const a = R[i][0]; if(t[a] === '(' && a > 0 && /[A-Za-z0-9]/.test(t[a - 1])) R.splice(i, 1); }
   const out = [];
   for(const r of R){ const l = out[out.length - 1]; if(l && r[0] <= l[1]) l[1] = Math.max(l[1], r[1]); else out.push(r.slice()); }
   return out;
 }
-function prep(s){
-  const t = s.t, R = prefs.skip.cites ? citeRanges(t) : [];
-  let spk = '', last = 0; const segs = [];
-  for(const [a,b] of R.concat([[t.length, t.length]])){
-    if(a > last){ segs.push({s:spk.length, d:last, n:a - last}); spk += t.slice(last, a); }
-    last = Math.max(last, b);
+/* ---- saying symbols as words ---- */
+const GREEK = {'α':'alpha','β':'beta','γ':'gamma','δ':'delta','ε':'epsilon','κ':'kappa','λ':'lambda','σ':'sigma','τ':'tau','θ':'theta','ω':'omega','Δ':'delta','Σ':'sigma','φ':'phi','π':'pi','η':'eta','ζ':'zeta','ρ':'rho','ψ':'psi','χ':'chi','ν':'nu','ξ':'xi'};
+const UNITS = {'mg':'milligrams','g':'grams','kg':'kilograms','μg':'micrograms','µg':'micrograms','ng':'nanograms','mL':'milliliters','ml':'milliliters','L':'liters','dL':'deciliters','μL':'microliters','µL':'microliters','mmol':'millimoles','mol':'moles','cm':'centimeters','mm':'millimeters','μm':'micrometers','µm':'micrometers','nm':'nanometers','h':'hours','hr':'hours','d':'days','min':'minutes','HPF':'high power fields','hpf':'high power fields','m2':'square meters','m²':'square meters','mm2':'square millimeters','mm²':'square millimeters','mm3':'cubic millimeters','mm³':'cubic millimeters','cells':'cells','day':'day','kb':'kilobases','Mb':'megabases'};
+const PER = {'kg':'kilogram','dL':'deciliter','L':'liter','mL':'milliliter','ml':'milliliter','day':'day','d':'day','h':'hour','hr':'hour','min':'minute','week':'week','wk':'week','mm2':'square millimeter','mm²':'square millimeter','mm3':'cubic millimeter','mm³':'cubic millimeter','m2':'square meter','m²':'square meter','HPF':'high power field','hpf':'high power field','μL':'microliter','µL':'microliter'};
+function lb(src, fallback){ try{ return new RegExp(src, 'g'); }catch(e){ return fallback; } }
+const UNIT_RE = '(?:mg|kg|μg|µg|ng|mL|ml|dL|μL|µL|mmol|mol|cm|mm|μm|µm|nm|mm2|mm²|mm3|mm³|m2|m²|g|L)';
+const SAY = [
+  [/\bt\(\s*([0-9XY]{1,2})\s*;\s*([0-9XY]{1,2})\s*\)(?:\s*\(\s*([pq][\d.]+)\s*;\s*([pq][\d.]+)\s*\))?/g, m => ` translocation ${m[1]} ${m[2]}` + (m[3] ? `, ${m[3]} ${m[4]}` : '')],
+  [/\be\.g\.,?/g, () => 'for example,'], [/\bi\.e\.,?/g, () => 'that is,'], [/\bvs?\.(?=\s)/g, () => 'versus'], [/\bet al\.?/g, () => 'and colleagues'],
+  [/\bapprox\.(?=\s)/g, () => 'approximately'], [/\bcf\.(?=\s)/g, () => 'compare'], [/\bca\.(?=\s*\d)/g, () => 'about'],
+  [/\bFigs\.(?=\s*S?\d)/g, () => 'Figures'], [/\bFig\.(?=\s*S?\d)/g, () => 'Figure'], [/\bNo\.(?=\s*\d)/g, () => 'number'], [/\bResp\.(?=\s)/g, () => 'respectively'],
+  [new RegExp('(\\d)\\s?(' + UNIT_RE + ')\\s?\\/\\s?(kg|dL|L|mL|ml|day|d|h|hr|min|mm2|mm²|mm3|mm³|m2|m²|HPF|hpf|μL|µL)\\b(?:\\s?\\/\\s?(day|d|h|hr|min|week|wk)\\b)?', 'g'), m => `${m[1]} ${UNITS[m[2]] || m[2]} per ${PER[m[3]] || m[3]}` + (m[4] ? ` per ${PER[m[4]] || m[4]}` : '')],
+  [/(\d)\s?\/\s?(\d+)\s?(HPF|hpf)\b/g, m => `${m[1]} per ${m[2]} high power fields`],
+  [/\/\s?(HPF|hpf)\b/g, () => ' per high power field'],
+  [lb('(?<=\\d)\\s?\\/\\s?(?=\\d)', /(\d)\s?\/\s?(?=\d)/g), m => (m[1] || '') + ' of '],
+  [/([A-Za-z])\/([A-Za-z])/g, m => `${m[1]} or ${m[2]}`],
+  [lb('(?<=\\d)\\s?[x×]\\s?(?=\\d)', /(\d)\s?[x×]\s?(?=\d)/g), m => (m[1] || '') + ' by '],
+  [/(\d)\s?[x×](?=[\s,;.)]|$)/g, m => `${m[1]} times`],
+  [lb('(?<=\\d)\\s?[–—]\\s?(?=\\d)', /(\d)\s?[–—]\s?(?=\d)/g), m => (m[1] || '') + ' to '],
+  [lb('(?<=\\d)\\s?-\\s?(?=\\d+\\s?(?:%|years?|months?|weeks?|days?|hours?|cm|mm|mg|kg|patients|cases)\\b)', /(\d)\s?-\s?(?=\d+\s?(?:%|years?|months?|weeks?|days?|hours?|cm|mm|mg|kg|patients|cases)\b)/g), m => (m[1] || '') + ' to '],
+  [/([A-Za-z0-9])\+(?=[\s,;.)/]|$)/g, m => `${m[1]} positive`],
+  [/\b([A-Z][A-Za-z0-9]{1,})[−–](?=[\s,;.)/]|$)/g, m => `${m[1]} negative`],
+  [/\b([A-Z][A-Z0-9]{1,})-(?=[\s,;.)/]|$)/g, m => `${m[1]} negative`],
+  [/±/g, () => ' plus or minus '], [/≥|=>/g, () => ' greater than or equal to '], [/≤|=</g, () => ' less than or equal to '],
+  [/\s?<\s?(?=[\d.])/g, () => ' less than '], [/\s?>\s?(?=[\d.])/g, () => ' greater than '], [/\s?=\s?/g, () => ' equals '],
+  [/≈|~|∼/g, () => ' about '], [/→|⟶|->/g, () => ' to '], [/↑/g, () => ' increased '], [/↓/g, () => ' decreased '],
+  [/°C/g, () => ' degrees Celsius'], [/°F/g, () => ' degrees Fahrenheit'], [/°/g, () => ' degrees'],
+  [/(\d)\s?(μm|µm)\b/g, m => `${m[1]} micrometers`], [/(\d)\s?(μg|µg)\b/g, m => `${m[1]} micrograms`], [/(\d)\s?(μL|µL)\b/g, m => `${m[1]} microliters`],
+  [/(\d)\s?(mm²|mm2)\b/g, m => `${m[1]} square millimeters`], [/(\d)\s?mm\b/g, m => `${m[1]} millimeters`], [/(\d)\s?cm\b/g, m => `${m[1]} centimeters`],
+  [/(\d)\s?['′](?=\s|-|[A-Z]|$)/g, m => `${m[1]} prime `],
+  [/²/g, () => ' squared'], [/³/g, () => ' cubed'],
+  [/[αβγδεκλσςτθωΔΣφπηζρψχνξ]/g, m => ' ' + GREEK[m[0]] + ' '], [/[μµ]/g, () => ' mu '],
+  [/&/g, () => ' and '], [/\s\+\s/g, () => ' plus '], [/%/g, () => ' percent'],
+  [/[•▪■◆●○◦►▸†‡§¶*#|^_\\{}<>\[\]]+/g, () => ' '],
+  [/\(\s*\)/g, () => ' '],
+  [/\s[;,]\s*(?=[;,.])/g, () => ' ']
+];
+function speechEdits(t, R){
+  const edits = R.map(([a, b]) => [a, b, '']);
+  const taken = (a, b) => edits.some(e => a < e[1] && b > e[0]);
+  for(const [re, fn] of SAY){
+    re.lastIndex = 0; let m;
+    while((m = re.exec(t))){
+      if(!m[0].length){ re.lastIndex++; continue; }
+      const a = m.index, b = a + m[0].length;
+      if(!taken(a, b)) edits.push([a, b, fn(m)]);
+    }
   }
-  s.R = R; s.segs = segs; s.spk = spk; s.ok = /[A-Za-z0-9]/.test(spk);
+  return edits.sort((x, y) => x[0] - y[0]);
 }
-function toDisplay(s, ci){ for(const g of s.segs) if(ci < g.s + g.n) return g.d + Math.max(0, ci - g.s); return s.t.length; }
+function prep(s){
+  const t = s.t, R = prefs.skip.cites && s.k !== 'figl' ? citeRanges(t) : [];
+  const edits = speechEdits(t, R);
+  let spk = '', last = 0; const segs = [];
+  const keep = (a, b) => { if(b > a){ segs.push({s:spk.length, d:a, n:b - a}); spk += t.slice(a, b); } };
+  for(const [a, b, rep] of edits){
+    if(a < last) continue;
+    keep(last, a);
+    if(rep){ segs.push({s:spk.length, d:a, n:rep.length, fixed:true}); spk += rep; }
+    last = b;
+  }
+  keep(last, t.length);
+  s.R = R; s.segs = segs; s.spk = spk.replace(/\s{2,}/g, m => ' '.repeat(m.length)); s.ok = /[A-Za-z0-9]/.test(spk);
+}
+function toDisplay(s, ci){ for(const g of s.segs) if(ci < g.s + g.n) return g.fixed ? g.d : g.d + Math.max(0, ci - g.s); return s.t.length; }
 
 /* ======================= sentences ======================= */
 function chunk(s){
@@ -675,7 +1077,9 @@ function docMeta(d){
   const n = d.words || 0, pos = positions[d.id] || 0, total = d.sents || 1;
   const pct = Math.min(100, Math.round(pos / total * 100));
   const mins = Math.max(1, Math.round(n * (1 - pos / total) / (165 * prefs.rate)));
-  return {pct, text: pct === 0 ? `About ${mins} min${d.pages ? `, ${d.pages} pages` : ''}` : `${pct}% read, about ${mins} min left`};
+  const figs = (d.blocks || []).filter(isVis).length;
+  const extras = [d.pages ? `${d.pages} pages` : '', figs ? `${figs} figures and tables` : ''].filter(Boolean).join(', ');
+  return {pct, text: pct === 0 ? `About ${mins} min` + (extras ? ` (${extras})` : '') : `${pct}% read, about ${mins} min left`};
 }
 function renderLibrary(){
   const ul = $('#docList'); ul.innerHTML = '';
@@ -694,7 +1098,7 @@ function renderLibrary(){
     ren.onclick = async () => { const nt = prompt('Rename', d.title); if(nt && nt.trim()){ d.title = nt.trim(); await store.put(d); renderLibrary(); } };
     const del = document.createElement('button'); del.className = 'icon-btn'; del.setAttribute('aria-label', 'Delete ' + d.title);
     del.innerHTML = '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 7h16M9 7V4h6v3M6 7l1 13h10l1-13"/></svg>';
-    del.onclick = async () => { if(confirm(`Delete “${d.title}”?`)){ docs = docs.filter(x => x.id !== d.id); delete positions[d.id]; setJSON('ra2-pos', positions); await store.del(d.id); renderLibrary(); } };
+    del.onclick = async () => { if(confirm(`Delete “${d.title}” from your library?`)){ docs = docs.filter(x => x.id !== d.id); delete positions[d.id]; setJSON('ra2-pos', positions); await store.del(d.id); renderLibrary(); } };
     li.append(b, ren, del); ul.append(li);
   });
   const sl = $('#sideDocs'); sl.innerHTML = '';
@@ -705,15 +1109,24 @@ function renderLibrary(){
     b.onclick = () => { openDoc(d.id); closeDrawer(); };
     li.append(b); sl.append(li);
   });
+  showUsage();
+}
+async function showUsage(){
+  try{
+    if(!docs.length || !navigator.storage || !navigator.storage.estimate) return;
+    const e = await navigator.storage.estimate(), mb = Math.max(1, Math.round((e.usage || 0) / 1048576));
+    $('#libNote').textContent = `${docs.length} ${docs.length === 1 ? 'book is' : 'books are'} saved in this browser (${mb} MB), so they’re here next time without uploading again. Use “Back up library” to move them to another device or browser.`;
+  }catch(e){}
 }
 async function addDoc(title, blocks, extra){
-  blocks = fixJoins(blocks || []);
-  if(!blocks.some(b => /[A-Za-z0-9]/.test(b.x))){ toast('There’s no text to read. Paste or open something with words in it.'); return null; }
-  if(!title) title = (blocks.find(b => b.t === 'h') || blocks[0]).x.slice(0, 80);
+  blocks = blocks || [];
+  if(!blocks.some(b => !isVis(b) && /[A-Za-z0-9]/.test(b.x))){ toast('There’s no text to read. Paste or open something with words in it.'); return null; }
+  if(!title) title = (blocks.find(b => b.t === 'h') || blocks.find(b => !isVis(b))).x.slice(0, 80);
   const d = Object.assign({id: Date.now().toString(36) + Math.random().toString(36).slice(2,6), title, blocks, ov:{}, added: Date.now(), updated: Date.now()}, extra || {});
-  d.words = blocks.reduce((n, b) => n + wc(b.x), 0);
+  d.words = blocks.reduce((n, b) => n + (isVis(b) ? 0 : wc(b.x)), 0);
   docs.push(d);
-  if(!(await store.put(d))) toast('This document is too large to save in the browser. You can still listen to it now.');
+  keepStorage();
+  if(!(await store.put(d))) toast('This book is too large to save in the browser. You can still listen to it now.');
   renderLibrary(); return d;
 }
 
@@ -725,9 +1138,9 @@ async function openFile(f){
     let blocks, extra = {};
     if(/\.pdf$/i.test(f.name) || f.type === 'application/pdf'){
       toast('Reading the PDF…', 60000);
-      const r = await parsePdf(f); blocks = r.blocks; extra.pages = r.pages;
+      const r = await parsePdf(f); blocks = r.blocks; extra.pages = r.pages; extra.file = f;
       if(r.title && r.title.length >= 8 && r.title.length <= 160) title = r.title;
-      if(!blocks.length){ toast('No text found in that PDF. Scanned PDFs contain pictures of text, so they can’t be read aloud.'); return; }
+      if(!blocks.some(b => !isVis(b))){ toast('No text found in that PDF. Scanned PDFs contain pictures of text, so they can’t be read aloud.'); return; }
     }else if(/\.docx$/i.test(f.name)){
       toast('Reading the Word file…', 60000);
       if(!window.mammoth) await loadScript('https://cdnjs.cloudflare.com/ajax/libs/mammoth/1.6.0/mammoth.browser.min.js');
@@ -736,60 +1149,111 @@ async function openFile(f){
     }else if(/\.html?$/i.test(f.name)) blocks = parseHtml(await f.text());
     else if(/\.(md|markdown)$/i.test(f.name)) blocks = parseMd(await f.text());
     else blocks = parsePlain(await f.text());
-    $('#toast').hidden = true;
+    hideToast();
+    const h0 = blocks.find(b => b.t === 'h' && b.lv === 0);
+    if(!extra.file && h0 && name.length < 6) title = h0.x.slice(0, 120);
     const d = await addDoc(title, blocks, extra); if(d) openDoc(d.id);
   }catch(e){ console.error(e); toast('That file couldn’t be opened. Try a PDF with selectable text, a Word (.docx), .txt, .md or .html file.'); }
 }
 
+
 /* ======================= voices ======================= */
 function voices(){ return synth ? synth.getVoices() : []; }
-function quality(v){ const s = v.voiceURI + ' ' + v.name; return /premium/i.test(s) ? 2 : /enhanced|natural|neural/i.test(s) ? 1 : 0; }
-function currentVoice(){
+function quality(v){ const s = v.voiceURI + ' ' + v.name; return /premium/i.test(s) ? 3 : /natural|neural/i.test(s) ? 2 : /enhanced|siri/i.test(s) ? 1 : 0; }
+const NOVELTY = /^(Albert|Bad News|Bahh|Bells|Boing|Bubbles|Cellos|Good News|Jester|Organ|Superstar|Trinoids|Whisper|Wobble|Zarvox|Fred|Junior|Ralph|Kathy|Grandma|Grandpa|Eddy|Flo|Reed|Rocko|Sandy|Shelley)\b/i;
+const myLang = () => (navigator.language || 'en').slice(0,2).toLowerCase();
+const nl = v => v.lang.toLowerCase().replace('_','-');
+function voiceList(){
+  const lang = myLang(), region = (navigator.language || '').toLowerCase();
+  const mine = voices().filter(v => nl(v).startsWith(lang) && !NOVELTY.test(v.name.replace(/^(Microsoft|Google|Apple)\s+/, '')));
+  return mine.sort((a,b) => quality(b) - quality(a) || (nl(b) === region) - (nl(a) === region) || a.name.localeCompare(b.name));
+}
+function currentVoice(who){
   const vs = voices(); if(!vs.length) return null;
-  const lang = (navigator.language || 'en').slice(0,2).toLowerCase();
-  return vs.find(v => v.voiceURI === prefs.voiceURI)
-      || vs.find(v => quality(v) > 0 && v.lang.toLowerCase().startsWith(lang))
-      || vs.find(v => v.default && v.lang.toLowerCase().startsWith(lang))
-      || vs.find(v => v.lang.toLowerCase().startsWith(lang)) || vs[0];
+  const list = voiceList();
+  const reader = vs.find(v => v.voiceURI === prefs.voiceURI) || list.find(v => quality(v) > 0) || vs.find(v => v.default && nl(v).startsWith(myLang())) || list[0] || vs[0];
+  if(who !== 'prof') return reader;
+  return vs.find(v => v.voiceURI === prefs.profVoiceURI) || list.find(v => quality(v) > 0 && v !== reader) || list.find(v => v !== reader) || reader;
 }
-const NOVELTY = /^(Albert|Bad News|Bahh|Bells|Boing|Bubbles|Cellos|Good News|Jester|Organ|Superstar|Trinoids|Whisper|Wobble|Zarvox|Fred|Junior|Ralph|Kathy)$/i;
-function label(v){
-  const q = quality(v);
-  const n = v.name.replace(/^(Microsoft|Google|Apple)\s+/,'').replace(/\s+-\s+.*$/,'').replace(/\s*\((Enhanced|Premium|Natural)\)/ig,'').replace(/\s+Online$/,'').trim();
-  const tag = q === 2 ? ' (Premium)' : q === 1 ? (/natural|neural/i.test(v.name + v.voiceURI) ? ' (Natural)' : ' (Enhanced)') : '';
-  const reg = (v.lang.split(/[-_]/)[1] || '').toUpperCase();
-  return n + tag + (reg ? ', ' + reg : '');
+function voiceLabel(v){
+  return v.name.replace(/^(Microsoft|Google|Apple)\s+/,'').replace(/\s+-\s+.*$/,'').replace(/\s*\((Enhanced|Premium|Natural)\)/ig,'').replace(/\s+Online.*$/,'').trim();
 }
-function shortName(v){ return v ? v.name.replace(/^(Microsoft|Google)\s+/,'').replace(/\s*\(.*\)$/,'').replace(/ Online.*$/,'').replace(/\s+-\s+.*$/,'') : 'Voice'; }
-function fillVoices(){
-  const sel = $('#voiceSel'), vs = voices(), cv = currentVoice();
-  sel.innerHTML = '';
-  const lang = (navigator.language || 'en').slice(0,2).toLowerCase(), region = (navigator.language || '').toLowerCase();
-  const nl = v => v.lang.toLowerCase().replace('_','-');
-  const all = $('#allLangs').checked, mine = vs.filter(v => nl(v).startsWith(lang));
-  const byBest = (a,b) => quality(b) - quality(a) || (nl(b) === region) - (nl(a) === region) || a.name.localeCompare(b.name);
-  const add = (title, list) => {
-    if(!list.length) return;
-    const og = document.createElement('optgroup'); og.label = title;
-    list.sort(byBest).forEach(v => { const o = document.createElement('option'); o.value = v.voiceURI; o.textContent = label(v); if(cv && v.voiceURI === cv.voiceURI) o.selected = true; og.append(o); });
-    sel.append(og);
-  };
-  const shown = all || !mine.length ? vs : mine.filter(v => !NOVELTY.test(v.name));
-  if(cv && !shown.includes(cv)) add('Current voice', [cv]);
-  add('Most natural', shown.filter(v => mine.includes(v) && quality(v) > 0));
-  add('Standard', shown.filter(v => mine.includes(v) && quality(v) === 0));
-  if(all || !mine.length){
-    const others = {};
-    vs.filter(v => !mine.includes(v)).forEach(v => (others[v.lang] = others[v.lang] || []).push(v));
-    Object.keys(others).sort().forEach(l => add(l, others[l]));
-  }
-  if(!vs.length){ const o = document.createElement('option'); o.textContent = 'Loading voices…'; sel.append(o); }
-  $('#voiceBtn').textContent = shortName(cv);
-}
+function qualityTag(v){ const q = quality(v); return q === 3 ? 'Premium' : q === 2 ? 'Natural' : q === 1 ? 'Enhanced' : ''; }
+function regionOf(v){ const r = (v.lang.split(/[-_]/)[1] || '').toUpperCase(); return {US:'American', GB:'British', AU:'Australian', IE:'Irish', IN:'Indian', ZA:'South African', CA:'Canadian', NZ:'New Zealand'}[r] || r; }
+function fillVoices(){ const v = currentVoice('reader'); $('#voiceName').textContent = v ? voiceLabel(v) : 'Voice'; if(!$('#vpanel').hidden) renderVoicePanel(); }
 if(synth) synth.onvoiceschanged = fillVoices;
 
+let vpWho = 'reader', vpAll = false;
+const ICON_CHECK = '<svg class="ck" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12l5 5L20 7"/></svg>';
+const ICON_PLAY_SM = '<svg viewBox="0 0 24 24" fill="currentColor"><path d="M8 5v14l11-7z"/></svg>';
+function renderVoicePanel(){
+  document.querySelectorAll('#vpanel [data-who]').forEach(b => b.setAttribute('aria-pressed', b.dataset.who === vpWho));
+  const box = $('#vlist'); box.innerHTML = '';
+  const list = voiceList(), nat = list.filter(v => quality(v) > 0), std = list.filter(v => quality(v) === 0);
+  const sel = currentVoice(vpWho);
+  const group = (title, arr) => {
+    if(!arr.length) return;
+    const h = document.createElement('h5'); h.textContent = title; box.append(h);
+    arr.forEach(v => {
+      const row = document.createElement('div'); row.className = 'vrow' + (sel && v.voiceURI === sel.voiceURI ? ' sel' : '');
+      const pick = document.createElement('button'); pick.className = 'pick';
+      const nm = document.createElement('span'); nm.className = 'nm'; nm.textContent = voiceLabel(v);
+      const q = document.createElement('span'); q.className = 'q'; q.textContent = [regionOf(v), qualityTag(v)].filter(Boolean).join(', ');
+      pick.append(nm, q); if(sel && v.voiceURI === sel.voiceURI) pick.insertAdjacentHTML('beforeend', ICON_CHECK);
+      pick.onclick = () => { if(vpWho === 'prof') prefs.profVoiceURI = v.voiceURI; else prefs.voiceURI = v.voiceURI; savePrefs(); fillVoices(); renderVoicePanel(); preview(v, vpWho); if(playing){ const i = idx; setTimeout(() => { if(playing) speakFrom(i); }, 1600); } };
+      const tr = document.createElement('button'); tr.className = 'try'; tr.innerHTML = ICON_PLAY_SM; tr.setAttribute('aria-label', 'Hear ' + voiceLabel(v)); tr.title = 'Hear this voice';
+      tr.onclick = () => preview(v, vpWho);
+      row.append(pick, tr); box.append(row);
+    });
+  };
+  group(nat.length ? 'Most natural' : 'Voices', nat.length ? nat : std);
+  if(nat.length && vpAll) group('Standard', std);
+  const foot = $('#vpFoot'); foot.innerHTML = '';
+  if(!list.length){ foot.textContent = 'Voices are still loading. If none appear, try Chrome, Edge or Safari.'; return; }
+  if(!nat.length){ foot.textContent = 'This device has no natural-sounding voices yet. Microsoft Edge on Windows and Safari on a Mac or iPhone offer the best ones; see the README for how to add them.'; return; }
+  if(std.length){ const l = document.createElement('button'); l.className = 'link'; l.textContent = vpAll ? 'Show natural voices only' : `Show all voices (${list.length})`; l.onclick = () => { vpAll = !vpAll; renderVoicePanel(); }; foot.append(l); }
+  if(vpWho === 'prof'){ const n = document.createElement('div'); n.style.marginTop = '.35rem'; n.textContent = 'Pick a different voice from the reader so you can tell them apart.'; foot.append(n); }
+}
+function preview(v, who){
+  if(!synth) return;
+  if(playing) stop();
+  synth.cancel();
+  const u = new SpeechSynthesisUtterance(who === 'prof' ? 'Let me explain what this means and why it matters.' : 'Hello. This is how I will sound reading to you.');
+  u.voice = v; u.lang = v.lang; u.rate = prefs.rate; synth.speak(u);
+}
+function openVoicePanel(){ vpWho = 'reader'; renderVoicePanel(); $('#vpanel').hidden = false; $('#voiceBtn').setAttribute('aria-expanded', 'true'); }
+function closeVoicePanel(){ $('#vpanel').hidden = true; $('#voiceBtn').setAttribute('aria-expanded', 'false'); }
+document.querySelectorAll('#vpanel [data-who]').forEach(b => b.onclick = () => { vpWho = b.dataset.who; renderVoicePanel(); });
+$('#vpClose').onclick = closeVoicePanel;
+document.addEventListener('pointerdown', e => { if(!$('#vpanel').hidden && !e.target.closest('#vpanel,#voiceBtn')) closeVoicePanel(); });
+
+/* ======================= speed and mode ======================= */
+function renderSpeed(){
+  const seg = $('#speedSeg'); seg.innerHTML = '';
+  SPEEDS.forEach(r => {
+    const b = document.createElement('button'); b.textContent = r + '×'; b.setAttribute('aria-pressed', r === prefs.rate); b.title = `Read at ${r} times normal speed`;
+    b.onclick = () => setRate(r); seg.append(b);
+  });
+}
+function setRate(r){ prefs.rate = r; savePrefs(); renderSpeed(); if(cur) updateProgress(); if(playing) speakFrom(idx); }
+const profOn = () => prefs.mode === 'prof' && !!aiKey();
+function renderMode(){
+  document.querySelectorAll('#modeSeg button').forEach(b => b.setAttribute('aria-pressed', b.dataset.mode === (profOn() ? 'prof' : 'read')));
+  document.body.classList.toggle('mode-read', !profOn()); document.body.classList.toggle('mode-prof', profOn());
+}
+function setMode(m){
+  if(m === 'prof' && !aiKey()){ openSettings(true); toast('Professor mode needs a Claude API key. Paste it here, then choose Professor again.', 7000); return; }
+  prefs.mode = m; savePrefs(); renderMode();
+  if(!cur) return;
+  if(m === 'prof') cur.blocks.forEach(b => { delete b.exFailed; delete b.pnFailed; });
+  refreshSkips();
+  if(m === 'prof'){ toast(prefs.ai.paras ? 'Professor mode: each paragraph, figure and table will be explained.' : 'Professor mode: figures and tables will be explained.'); prefetch(idx); }
+  else toast('Read mode: just the text.');
+}
+document.querySelectorAll('#modeSeg button').forEach(b => b.onclick = () => setMode(b.dataset.mode));
+
 /* ======================= reader ======================= */
-let cur = null, S = [], H = [], idx = 0, playing = false, token = 0, words = [], activeEl = null, activeWord = null, curSecEl = null, curPgEl = null;
+let cur = null, S = [], H = [], idx = 0, playing = false, token = 0, words = [], activeEl = null, activeWord = null, curSecEl = null, curPgEl = null, curFigEl = null, forceB = -1;
 const KIND_LABEL = {foot:'Footnote, skipped', note:'Publishing note, skipped', cap:'Caption, skipped'};
 
 function kindSkip(k){ return k === 'ref' ? prefs.skip.refs : (k === 'foot' || k === 'note') ? prefs.skip.notes : k === 'cap' ? prefs.skip.captions : false; }
@@ -802,22 +1266,44 @@ function computeSkips(){
     else if(parent >= 0 && H[parent].hasOv){ h.hasOv = true; h.skip = H[parent].skip; }
     else{ h.hasOv = false; h.skip = prefs.skip.refs && h.auto; }
   });
+  const prof = profOn();
   S.forEach(s => {
     if(s.k === 'run'){ s.skip = prefs.skip.running; return; }
     const h = s.sec >= 0 ? H[s.sec] : null;
     if(h && h.skip){ s.skip = true; return; }
+    if(s.k === 'figl' || s.k === 'fx'){
+      const b = cur.blocks[s.b];
+      s.skip = !prof || (s.k === 'figl' && !b.ex && b.exFailed);
+      return;
+    }
+    if(s.k === 'pnl' || s.k === 'pn'){
+      const b = cur.blocks[s.b];
+      s.skip = !prof || !prefs.ai.paras || (s.k === 'pnl' && !b.pn && (b.pnFailed || b.pnSkip)) || kindSkip(b.t);
+      return;
+    }
     if(h && h.hasOv && h.auto){ s.skip = false; return; }
     s.skip = kindSkip(s.k);
   });
 }
-const readable = s => !s.skip && s.ok;
+const readable = s => (!s.skip || (s.b === forceB && (s.k === 'figl' || s.k === 'fx'))) && s.ok;
+const noteEligible = b => b.t === 'p' && wc(b.x) >= 30;
 
 function buildModel(){
   S = []; H = [];
   cur.blocks.forEach((b, bi) => {
     if(b.t === 'h') H.push({x:b.x, lv:b.lv || 0, pg:b.pg || 0, si:S.length, bi});
+    const sec = H.length - 1, base = {b:bi, sec, pg:b.pg || 0};
+    if(isVis(b)){
+      S.push(Object.assign({t:b.label + '.', k:'figl'}, base));
+      if(b.ex) sentences(norm(b.ex)).forEach(t => S.push(Object.assign({t, k:'fx'}, base)));
+      return;
+    }
     const parts = b.t === 'h' || b.t === 'run' ? chunk(b.x) : sentences(b.x);
-    parts.forEach(t => S.push({t, b:bi, sec:H.length - 1, pg:b.pg || 0, k:b.t}));
+    parts.forEach(t => S.push(Object.assign({t, k:b.t}, base)));
+    if(noteEligible(b)){
+      S.push(Object.assign({t:'Professor', k:'pnl'}, base));
+      if(b.pn) sentences(norm(b.pn)).forEach(t => S.push(Object.assign({t, k:'pn'}, base)));
+    }
   });
   S.forEach(prep);
   computeSkips();
@@ -839,6 +1325,28 @@ function fillSentence(el, s, withWords){
   if(pos < t.length) put(pos, t.length);
   return ws;
 }
+function makeVisual(b, bi){
+  const fig = document.createElement('figure'); fig.className = 'blk fig'; fig.dataset.b = bi; fig.id = 'fig-' + bi;
+  const lab = document.createElement('div'); lab.className = 'fig-label'; lab.textContent = b.label + (cur.pages && b.pg ? `, page ${b.pg}` : ''); fig.append(lab);
+  if(b.src){
+    const img = document.createElement('img'); img.src = b.src; img.alt = b.label; img.loading = 'lazy';
+    img.onclick = () => openImage(b); fig.append(img);
+  }else if(b.rows){
+    const wrap = document.createElement('div'); wrap.className = 'tbl-wrap';
+    const tb = document.createElement('table');
+    b.rows.forEach(r => { const tr = document.createElement('tr'); r.forEach(c => { const td = document.createElement('td'); td.textContent = c; tr.append(td); }); tb.append(tr); });
+    wrap.append(tb); fig.append(wrap);
+  }
+  const act = document.createElement('div'); act.className = 'fig-actions';
+  const ex = document.createElement('button'); ex.className = 'ai';
+  ex.innerHTML = ICON_SPARK + '<span>' + (b.ex ? 'Explain again' : 'Explain with AI') + '</span>';
+  ex.onclick = () => explainClick(bi, ex);
+  act.append(ex);
+  if(cur.file && b.pg){ const vp = document.createElement('button'); vp.innerHTML = ICON_PAGE + `<span>View page ${b.pg}</span>`; vp.onclick = () => openPage(b.pg); act.append(vp); }
+  fig.append(act);
+  const fx = document.createElement('div'); fx.className = 'fx'; fx.hidden = !b.ex; fig.append(fx);
+  return {wrap: fig, inner: fx};
+}
 function renderText(){
   const art = $('#text'); art.innerHTML = ''; activeEl = null;
   let lastPg = 0, el = null, lastB = -1;
@@ -846,14 +1354,24 @@ function renderText(){
     if(s.b !== lastB){
       const b = cur.blocks[s.b];
       if(cur.pages && b.pg && b.pg !== lastPg && b.t !== 'run'){
-        const pm = document.createElement('div'); pm.className = 'pgmark'; pm.id = 'page-' + b.pg; pm.textContent = 'Page ' + b.pg; art.append(pm); lastPg = b.pg;
+        const pm = document.createElement('div'); pm.className = 'pgmark'; pm.id = 'page-' + b.pg;
+        const sp = document.createElement('span'); sp.textContent = 'Page ' + b.pg; pm.append(sp);
+        if(cur.file){ const vb = document.createElement('button'); vb.className = 'vp'; vb.textContent = 'View page'; const n = b.pg; vb.onclick = () => openPage(n); pm.append(vb); }
+        art.append(pm); lastPg = b.pg;
       }
-      el = document.createElement(b.t === 'h' ? (b.lv <= 1 ? 'h2' : 'h3') : 'div');
-      el.className = 'blk ' + (b.t === 'h' ? 'h' + (b.lv || 0) : b.t);
-      el.dataset.b = s.b;
-      art.append(el); lastB = s.b;
-    }else el.append(' ');
-    const sp = document.createElement('span'); sp.className = 's'; sp.dataset.i = i; fillSentence(sp, s, false); el.append(sp);
+      if(isVis(b)){ const v = makeVisual(b, s.b); art.append(v.wrap); el = v.inner; }
+      else{
+        el = document.createElement(b.t === 'h' ? (b.lv <= 1 ? 'h2' : 'h3') : 'div');
+        el.className = 'blk ' + (b.t === 'h' ? 'h' + (b.lv || 0) : b.t);
+        el.dataset.b = s.b; art.append(el);
+      }
+      lastB = s.b;
+    }else if(s.k !== 'pnl') el.append(' ');
+    if(s.k === 'pnl'){
+      const box = document.createElement('div'); box.className = 'pnote'; box.hidden = !cur.blocks[s.b].pn;
+      el.append(box); el = box;
+    }
+    const sp = document.createElement('span'); sp.className = 's'; sp.dataset.i = i; sp.dataset.k = s.k; fillSentence(sp, s, false); el.append(sp);
   });
   applySkipClasses();
 }
@@ -861,7 +1379,9 @@ function applySkipClasses(){
   const byB = {};
   S.forEach(s => { (byB[s.b] = byB[s.b] || []).push(s); });
   $('#text').querySelectorAll('.blk').forEach(el => {
-    const ss = byB[el.dataset.b] || [], sk = ss.length && ss.every(s => s.skip), b = cur.blocks[+el.dataset.b];
+    const b = cur.blocks[+el.dataset.b];
+    if(isVis(b)) return;
+    const ss = byB[el.dataset.b] || [], sk = ss.length && ss.every(s => s.skip);
     el.classList.toggle('skip', !!sk);
     let lab = '';
     if(sk && b.t === 'h') lab = 'Skipped section';
@@ -892,12 +1412,10 @@ function renderOutline(){
     li.append(go, eye); sl.append(li);
   });
   const pl = $('#pgList'); pl.innerHTML = '';
-  $('#tabPg').hidden = !cur.pages;
-  if(!cur.pages) showTab('sec');
   for(let n = 1; n <= (cur.pages || 0); n++){
     const first = S.findIndex(s => s.pg >= n && s.k !== 'run');
     if(first < 0 || S[first].pg !== n) continue;
-    const snip = S.find(s => s.pg === n && readable(s)) || S[first];
+    const snip = S.find(s => s.pg === n && readable(s) && s.k !== 'figl') || S[first];
     const li = document.createElement('li'); li.className = 'oi lv1'; li.dataset.pg = n;
     if(!S.some(s => s.pg === n && readable(s))) li.classList.add('skipped');
     const go = document.createElement('button'); go.className = 'go';
@@ -906,38 +1424,57 @@ function renderOutline(){
     go.append(p, t); go.onclick = () => goPage(n);
     li.append(go); pl.append(li);
   }
-  curSecEl = curPgEl = null;
+  const fl = $('#figList'); fl.innerHTML = '';
+  const vis = cur.blocks.map((b, bi) => [b, bi]).filter(([b]) => isVis(b));
+  vis.forEach(([b, bi]) => {
+    const li = document.createElement('li'); li.dataset.b = bi;
+    const go = document.createElement('button');
+    const th = document.createElement('span'); th.className = 'th';
+    if(b.src) th.style.backgroundImage = `url("${b.src}")`; else th.textContent = 'Table';
+    const t = document.createElement('span'); t.className = 'fl'; t.textContent = b.label;
+    const sm = document.createElement('small'); sm.textContent = [cur.pages && b.pg ? 'page ' + b.pg : '', b.ex ? 'explained' : ''].filter(Boolean).join(', '); t.append(sm);
+    go.append(th, t); go.onclick = () => goFigure(bi);
+    li.append(go); fl.append(li);
+  });
+  $('#explainAll').parentElement.hidden = !vis.some(([b]) => !b.ex);
+  $('#tabPg').hidden = !cur.pages;
+  $('#tabFig').hidden = !vis.length;
+  const want = prefs.tab === 'pg' && cur.pages ? 'pg' : prefs.tab === 'fig' && vis.length ? 'fig' : 'sec';
+  showTab(want, true);
+  curSecEl = curPgEl = curFigEl = null;
   markOutline();
 }
 function markOutline(){
   const s = S[idx]; if(!s) return;
   const se = $('#secList').querySelector(`.oi[data-k="${s.sec}"]`);
-  if(se !== curSecEl){ curSecEl && curSecEl.classList.remove('cur'); curSecEl = se; if(se){ se.classList.add('cur'); se.scrollIntoView({block:'nearest'}); } }
+  if(se !== curSecEl){ curSecEl && curSecEl.classList.remove('cur'); curSecEl = se; if(se){ se.classList.add('cur'); if(!$('#secList').hidden) se.scrollIntoView({block:'nearest'}); } }
   const pe = $('#pgList').querySelector(`.oi[data-pg="${s.pg}"]`);
   if(pe !== curPgEl){ curPgEl && curPgEl.classList.remove('cur'); curPgEl = pe; if(pe){ pe.classList.add('cur'); if(!$('#pgList').hidden) pe.scrollIntoView({block:'nearest'}); } }
+  const fe = (s.k === 'figl' || s.k === 'fx') ? $('#figList').querySelector(`li[data-b="${s.b}"]`) : null;
+  if(fe !== curFigEl){ curFigEl && curFigEl.classList.remove('cur'); curFigEl = fe; if(fe){ fe.classList.add('cur'); if(!$('#figPanel').hidden) fe.scrollIntoView({block:'nearest'}); } }
   const h = s.sec >= 0 ? H[s.sec] : null;
   const nowEl = $('#nowSec'); nowEl.textContent = '';
   if(h){ const b = document.createElement('b'); b.textContent = h.x; nowEl.append(b); }
   if(cur.pages && s.pg){ nowEl.append((h ? ', ' : '') + 'page ' + s.pg); }
 }
-function showTab(which){
-  $('#tabSec').setAttribute('aria-selected', which === 'sec'); $('#tabPg').setAttribute('aria-selected', which === 'pg');
-  $('#secList').hidden = which !== 'sec'; $('#pgList').hidden = which !== 'pg';
-  prefs.tab = which; savePrefs();
+function showTab(which, silent){
+  $('#tabSec').setAttribute('aria-selected', which === 'sec'); $('#tabPg').setAttribute('aria-selected', which === 'pg'); $('#tabFig').setAttribute('aria-selected', which === 'fig');
+  $('#secList').hidden = which !== 'sec'; $('#pgList').hidden = which !== 'pg'; $('#figPanel').hidden = which !== 'fig';
+  if(!silent){ prefs.tab = which; savePrefs(); }
 }
 
 async function openDoc(id){
   const d = docs.find(x => x.id === id); if(!d) return;
-  stop(); cur = d; cur.ov = cur.ov || {};
+  stop(); cur = d; cur.ov = cur.ov || {}; viewerPdf = null;
   buildModel();
   cur.sents = S.length; cur.updated = Date.now(); store.put(cur);
   renderText(); renderOutline();
-  showTab(cur.pages && prefs.tab === 'pg' ? 'pg' : 'sec');
   idx = Math.min(positions[id] || 0, Math.max(0, S.length - 1));
   $('#topTitle').textContent = cur.title;
   $('#scrub').max = Math.max(0, S.length - 1);
   $('#library').hidden = true; $('#text').hidden = false; $('#player').hidden = false;
   $('#sideLib').hidden = true; $('#sideDoc').hidden = false;
+  $('#modeSeg').hidden = false; $('#pgBtns').hidden = !cur.pages; renderMode();
   document.body.classList.remove('lib-view');
   window.scrollTo(0, 0);
   const first = nextReadable(idx); setActive(first < 0 ? idx : first, true);
@@ -945,30 +1482,43 @@ async function openDoc(id){
   try{ history.replaceState(null, '', '#' + id); }catch(e){}
 }
 function closeReader(){
-  stop(); cur = null;
+  stop(); cur = null; viewerPdf = null;
   $('#text').hidden = true; $('#player').hidden = true; $('#library').hidden = false;
-  $('#sideLib').hidden = false; $('#sideDoc').hidden = true;
+  $('#sideLib').hidden = false; $('#sideDoc').hidden = true; $('#modeSeg').hidden = true; closeVoicePanel();
   $('#topTitle').textContent = 'Library';
   document.body.classList.add('lib-view');
   renderLibrary(); window.scrollTo(0, 0);
   try{ history.replaceState(null, '', location.pathname + location.search); }catch(e){}
+}
+// rebuild after a change in content (a new explanation), keeping the reading position
+function rebuild(){
+  const s = S[idx], keepB = s ? s.b : 0, off = s ? S.slice(0, idx).filter(x => x.b === keepB).length : 0;
+  buildModel(); cur.sents = S.length;
+  renderText(); renderOutline();
+  let ni = S.findIndex(x => x.b === keepB); if(ni < 0) ni = 0;
+  for(let k = 0; k < off && S[ni + 1] && S[ni + 1].b === keepB; k++) ni++;
+  $('#scrub').max = Math.max(0, S.length - 1);
+  setActive(Math.min(ni, S.length - 1), false);
 }
 
 function nextReadable(i){ for(let j = Math.max(0, i); j < S.length; j++) if(readable(S[j])) return j; return -1; }
 function prevReadable(i){ for(let j = Math.min(S.length - 1, i); j >= 0; j--) if(readable(S[j])) return j; return -1; }
 
 function setActive(i, scroll){
-  if(activeEl){ activeEl.classList.remove('on'); fillSentence(activeEl, S[+activeEl.dataset.i], false); }
+  if(activeEl){ activeEl.classList.remove('on'); const os = S[+activeEl.dataset.i]; if(os) fillSentence(activeEl, os, false); }
   idx = i; words = []; activeWord = null;
+  if(S[i] && S[i].b !== forceB) forceB = -1;
   const el = $('#text').querySelector(`.s[data-i="${i}"]`); activeEl = el;
   if(el){
     el.classList.add('on');
     words = fillSentence(el, S[i], true);
     if(scroll !== false){
-      const r = el.getBoundingClientRect(), vh = window.innerHeight;
-      if(r.top < vh * 0.15 || r.bottom > vh * 0.6){
+      const target = S[i].k === 'figl' ? el.closest('figure') || el : el;
+      const r = target.getBoundingClientRect(), vh = window.innerHeight;
+      if(r.top < vh * 0.12 || r.bottom > vh * 0.62 || S[i].k === 'figl'){
         const reduce = matchMedia('(prefers-reduced-motion: reduce)').matches;
-        window.scrollTo({top: window.scrollY + r.top - vh * 0.28, behavior: reduce ? 'auto' : 'smooth'});
+        const off = S[i].k === 'figl' ? vh * 0.08 : vh * 0.28;
+        window.scrollTo({top: window.scrollY + r.top - off, behavior: reduce ? 'auto' : 'smooth'});
       }
     }
   }
@@ -976,7 +1526,8 @@ function setActive(i, scroll){
   updateProgress(); markOutline();
 }
 function highlightWord(spokenCi){
-  const ci = toDisplay(S[idx], spokenCi);
+  const s = S[idx]; if(!s) return;
+  const ci = toDisplay(s, spokenCi);
   let w = null; for(const x of words){ if(x.start <= ci) w = x; else break; }
   if(w && w !== activeWord){ if(activeWord) activeWord.el.classList.remove('on'); w.el.classList.add('on'); activeWord = w; }
 }
@@ -998,12 +1549,35 @@ function speakFrom(i){
   synth.cancel();
   const j = nextReadable(i);
   if(j < 0){ playing = false; updatePlay(); toast('Finished.'); return; }
+  const s = S[j], bi = s.b, b = cur.blocks[bi];
+  // AI slots: a figure explanation or a professor note
+  if(s.k === 'figl' || s.k === 'pnl'){
+    const field = s.k === 'figl' ? 'ex' : 'pn', next = S[j + 1];
+    const inModel = next && next.b === bi && next.k === (s.k === 'figl' ? 'fx' : 'pn');
+    if(b[field] && !inModel){ rebuild(); return speakFrom(S.findIndex(x => x.b === bi && x.k === s.k)); }
+    if(!b[field]){
+      setActive(j);
+      let shown = false; const tm = setTimeout(() => { shown = true; toast(s.k === 'figl' ? `The professor is looking at ${b.label}…` : 'The professor is thinking…', 60000); }, 350);
+      const p = s.k === 'figl' ? ensureFigure(bi) : ensureNote(bi);
+      p.then(ok => {
+        clearTimeout(tm); if(shown) hideToast();
+        if(my !== token || !playing){ if(ok) rebuild(); return; }
+        if(ok){ rebuild(); const k = S.findIndex(x => x.b === bi && x.k === s.k); speakFrom(s.k === 'pnl' ? k + 1 : k); }
+        else{ computeSkips(); const k = S.findIndex(x => x.b === bi && x.k === s.k); speakFrom(k + 1); }
+      });
+      return;
+    }
+    if(s.k === 'pnl') return speakFrom(j + 1);
+  }
   setActive(j);
-  const u = new SpeechSynthesisUtterance(S[j].spk);
-  const v = currentVoice(); if(v){ u.voice = v; u.lang = v.lang; }
+  if(profOn()) prefetch(j);
+  const u = new SpeechSynthesisUtterance(s.spk);
+  const prof = s.k === 'pn' || s.k === 'fx';
+  const v = currentVoice(prof ? 'prof' : 'reader'); if(v){ u.voice = v; u.lang = v.lang; }
+  if(prof && v && v === currentVoice('reader')) u.pitch = 0.85;
   u.rate = prefs.rate;
   u.onboundary = e => { if(my === token && (!e.name || e.name === 'word')) highlightWord(e.charIndex); };
-  u.onend = () => { if(my === token && playing) speakFrom(j + 1); };
+  u.onend = () => { if(my === token && playing){ const ni = S.indexOf(s); speakFrom(ni >= 0 ? ni + 1 : idx + 1); } };
   u.onerror = e => {
     if(my !== token || e.error === 'interrupted' || e.error === 'canceled') return;
     playing = false; updatePlay(); toast('Playback stopped (' + e.error + '). Press play to try again.');
@@ -1020,6 +1594,32 @@ function toggle(){ playing ? stop() : play(); }
 function jumpTo(i, autoplay){
   if(i < 0) return;
   if(playing || autoplay){ playing = true; updatePlay(); speakFrom(i); } else setActive(i);
+}
+function firstReadableOfBlock(b){ for(let k = 0; k < S.length; k++) if(S[k].b === b && readable(S[k])) return k; return -1; }
+function nextPara(){
+  const b0 = S[idx] ? S[idx].b : -1;
+  for(let k = idx + 1; k < S.length; k++) if(S[k].b !== b0 && readable(S[k]) && S[k].k !== 'pnl') return jumpTo(k);
+  toast('This is the last paragraph.');
+}
+function prevPara(){
+  const b0 = S[idx] ? S[idx].b : -1, st = firstReadableOfBlock(b0);
+  if(st >= 0 && st < idx) return jumpTo(st);
+  for(let k = (st >= 0 ? st : idx) - 1; k >= 0; k--){
+    if(readable(S[k])){ const f = firstReadableOfBlock(S[k].b); return jumpTo(f >= 0 ? f : k); }
+  }
+  jumpTo(nextReadable(0));
+}
+function nextPage(){
+  const pg = S[idx] ? S[idx].pg : 0;
+  const k = S.findIndex(s => s.pg > pg && readable(s));
+  if(k >= 0) jumpTo(k); else toast('This is the last page.');
+}
+function prevPage(){
+  const pg = S[idx] ? S[idx].pg : 0;
+  const first = S.findIndex(s => s.pg === pg && readable(s));
+  if(first >= 0 && first < idx) return jumpTo(first);
+  for(let p = pg - 1; p >= 1; p--){ const k = S.findIndex(s => s.pg === p && readable(s)); if(k >= 0) return jumpTo(k); }
+  toast('This is the first page.');
 }
 function step(dir){
   const j = dir > 0 ? nextReadable(idx + 1) : prevReadable(idx - 1);
@@ -1039,63 +1639,269 @@ function goPage(n){
   if(j < 0){ toast('Nothing left to read from this page on.'); return; }
   jumpTo(j, true);
 }
+function goFigure(bi){
+  closeDrawer();
+  const fi = S.findIndex(s => s.b === bi && s.k === 'figl');
+  if(fi < 0) return;
+  if(readable(S[fi])) jumpTo(fi, playing);
+  else{ setActive(fi, true); }
+}
 async function toggleSection(k){
   const h = H[k];
-  cur.ov[k] = h.skip; // skipped → read it; read → skip it
-  // clear overrides on its subsections so they follow the parent
+  cur.ov[k] = h.skip;
   for(let j = k + 1; j < H.length && H[j].lv > h.lv; j++) delete cur.ov[j];
   refreshSkips();
   await store.put(cur);
 }
 function refreshSkips(){
-  const wasPlaying = playing;
   computeSkips(); applySkipClasses(); renderOutline(); updateProgress();
-  if(wasPlaying && S[idx] && S[idx].skip) speakFrom(idx);
+  if(playing && S[idx] && S[idx].skip) speakFrom(idx);
 }
+
+/* ======================= AI explanations ======================= */
+const AI_SYSTEM = `You are a professor explaining a figure or table to a learner who is listening to the document read aloud and cannot see it.
+Assume the listener is a professional reader of this kind of document; for a medical or scientific paper, assume a physician or scientist in the field, and use correct technical terms without defining basic ones.
+Say what the figure or table shows, the key findings with the most important numbers, and what it means for the document's argument. For images such as micrographs, describe the important features you can see, and note stains or markers when the caption gives them.
+Write 100 to 220 words of plain spoken prose. No markdown, headings, bullet points or lists. Write numbers and symbols the way they should be said aloud. Do not begin with "This figure" or "This table"; begin with the substance.
+If the image is unclear or cut off, say so briefly and explain what you can from the caption and text.`;
+
+function contextFor(bi, d){
+  d = d || cur; const b = d.blocks[bi];
+  const num = (b.label.match(/(S?\d+[A-Za-z]?)$/) || [])[1];
+  let cap = '';
+  for(const off of [1, -1, 2, -2, 3, -3]){
+    const x = d.blocks[bi + off];
+    if(x && x.t === 'cap' && (!num || (capInfo(x.x) && capInfo(x.x).label === b.label) || !capInfo(x.x))){ cap = x.x; break; }
+  }
+  const mentions = [];
+  if(num){
+    const re = new RegExp('\\b' + (b.t === 'tbl' ? 'Tables?' : 'Fig(?:ure)?s?\\.?') + '\\s*' + num.replace(/([.*+?^${}()|[\]\\])/g, '\\$1') + '\\b', 'i');
+    for(const x of d.blocks){
+      if(x.t !== 'p') continue;
+      for(const sen of sentences(x.x)) if(re.test(sen) && mentions.join(' ').length < 1800) mentions.push(sen);
+    }
+  }
+  let sec = ''; for(let k = bi; k >= 0; k--) if(d.blocks[k].t === 'h'){ sec = d.blocks[k].x; break; }
+  let text = `Document: ${d.title}\nSection: ${sec || '(unknown)'}\nItem: ${b.label}\nCaption: ${cap || '(no caption found)'}\nWhat the document says about it: ${mentions.join(' ') || '(no mentions found)'}`;
+  if(b.rows) text += '\nTable contents (tab-separated):\n' + b.rows.map(r => r.join('\t')).join('\n').slice(0, 15000);
+  return text;
+}
+async function callClaude(content, maxTokens, system){
+  const key = aiKey();
+  if(!key) throw new Error('nokey');
+  const res = await fetch('https://api.anthropic.com/v1/messages', {
+    method: 'POST',
+    headers: {'content-type':'application/json', 'x-api-key':key, 'anthropic-version':'2023-06-01', 'anthropic-dangerous-direct-browser-access':'true'},
+    body: JSON.stringify({model: prefs.ai.model, max_tokens: maxTokens, system, messages:[{role:'user', content}]})
+  });
+  const data = await res.json().catch(() => ({}));
+  if(!res.ok){
+    const msg = (data.error && data.error.message) || ('error ' + res.status);
+    if(res.status === 401) throw new Error('Your Claude API key wasn’t accepted. Check it in Settings.');
+    if(/credit balance/i.test(msg)) throw new Error('Your Anthropic account has no credit left. Add credit at console.anthropic.com.');
+    throw new Error('The AI request failed: ' + msg);
+  }
+  return (data.content || []).filter(c => c.type === 'text').map(c => c.text).join('\n').trim();
+}
+const PROF_SYSTEM = `You are an expert, warm professor teaching a learner who is listening to a document read aloud. After each paragraph is read, you pause to teach, the way a professor would during a lecture.
+Explain the key point in plainer words, unpack jargon, abbreviations or methods, and say why it matters, linking to practice or to earlier parts of the document when useful.
+Assume the listener is a professional in the field (for a medical paper, a physician such as a pathologist), so skip basics and add real insight.
+Use 2 to 4 sentences, about 40 to 90 words. Spoken prose only: no markdown, lists, headings or symbols, and write numbers and abbreviations the way they are said aloud. Do not repeat the paragraph, and do not begin with "This paragraph" or "Here".
+If the paragraph has nothing worth teaching (author lists, dates, permissions), reply with exactly: SKIP`;
+
+const pending = new Map(); let inFlight = 0; const queue = [];
+function runQueued(key, fn){
+  if(pending.has(key)) return pending.get(key);
+  const p = new Promise(res => {
+    const go = async () => { inFlight++; let ok = false; try{ ok = await fn(); }catch(e){ ok = false; } inFlight--; pending.delete(key); res(ok); if(queue.length) queue.shift()(); };
+    if(inFlight < 2) go(); else queue.push(go);
+  });
+  pending.set(key, p); return p;
+}
+let saveT;
+function saveSoon(){ const d = cur; clearTimeout(saveT); saveT = setTimeout(() => d && store.put(d), 1500); }
+function ensureFigure(bi){ const d = cur; return runQueued(d.id + ':f' + bi, () => explainBlock(bi, d, true)); }
+function ensureNote(bi){ const d = cur; return runQueued(d.id + ':n' + bi, () => fetchNote(bi, d)); }
+async function fetchNote(bi, d){
+  const b = d.blocks[bi]; if(b.pn) return true;
+  let prev = ''; for(let k = bi - 1; k >= 0 && k > bi - 6; k--) if(d.blocks[k].t === 'p'){ prev = d.blocks[k].x; break; }
+  let sec = ''; for(let k = bi; k >= 0; k--) if(d.blocks[k].t === 'h'){ sec = d.blocks[k].x; break; }
+  const prevNote = (() => { for(let k = bi - 1; k >= 0 && k > bi - 6; k--) if(d.blocks[k].pn) return d.blocks[k].pn; return ''; })();
+  const text = `Document: ${d.title}\nSection: ${sec || '(unknown)'}\nPrevious paragraph: ${prev.slice(0, 1500) || '(none)'}\n` + (prevNote ? `Your previous comment: ${prevNote}\n` : '') + `\nParagraph just read:\n${b.x.slice(0, 6000)}\n\nGive your teaching comment.`;
+  try{
+    const out = await callClaude([{type:'text', text}], 400, PROF_SYSTEM);
+    if(/^\s*SKIP\s*\.?\s*$/i.test(out) || !out){ b.pnSkip = true; saveSoon(); return false; }
+    b.pn = out.replace(/[*#_`]+/g, '').replace(/\n+/g, ' ').trim(); delete b.pnFailed;
+    saveSoon(); return true;
+  }catch(e){
+    b.pnFailed = true;
+    if(e.message !== 'nokey') toast(e.message || 'The professor couldn’t answer.', 6000);
+    return false;
+  }
+}
+function prefetch(j){
+  if(!profOn() || !cur) return;
+  let notes = 0, figs = 0;
+  for(let k = cur.blocks.length, bi = S[j] ? S[j].b : 0; bi < k && (notes < 3 || figs < 1) && bi < (S[j] ? S[j].b : 0) + 40; bi++){
+    const b = cur.blocks[bi];
+    const secSkip = S.some(s => s.b === bi && s.skip && s.k !== 'pnl' && s.k !== 'pn' && s.k !== 'figl' && s.k !== 'fx');
+    if(prefs.ai.paras && notes < 3 && noteEligible(b) && !b.pn && !b.pnFailed && !b.pnSkip && !secSkip){ ensureNote(bi); notes++; }
+    if(figs < 1 && isVis(b) && !b.ex && !b.exFailed){ ensureFigure(bi); figs++; }
+  }
+}
+async function explainBlock(bi, d, quiet){
+  d = d || cur;
+  const b = d.blocks[bi];
+  if(b.ex && quiet) return true;
+  try{
+    const content = [];
+    if(b.src){
+      const m = b.src.match(/^data:(image\/(?:png|jpeg|gif|webp));base64,(.+)$/);
+      if(m) content.push({type:'image', source:{type:'base64', media_type:m[1], data:m[2]}});
+      else if(/^https?:/i.test(b.src)) content.push({type:'image', source:{type:'url', url:b.src}});
+    }
+    content.push({type:'text', text: contextFor(bi, d) + '\n\nExplain this ' + (b.t === 'tbl' ? 'table' : 'figure') + ' for the listener.'});
+    const text = await callClaude(content, 900, AI_SYSTEM);
+    if(!text) throw new Error('The AI returned an empty explanation. Try again.');
+    b.ex = text.replace(/[*#_`]+/g, '').replace(/\n{2,}/g, ' ').trim(); delete b.exFailed;
+    saveSoon();
+    return true;
+  }catch(e){
+    if(quiet) b.exFailed = true;
+    if(e.message === 'nokey'){ toast('Add your Claude API key in Settings to get explanations.', 6000); return false; }
+    toast(e.message || 'The AI request failed.', 7000);
+    return false;
+  }
+}
+async function explainClick(bi, btn){
+  if(!aiKey()){ openSettings(true); toast('Add your Claude API key to get explanations.', 6000); return; }
+  const wasPlaying = playing; stop();
+  btn.disabled = true; btn.querySelector('span').textContent = 'Explaining…';
+  delete cur.blocks[bi].ex;
+  const ok = await explainBlock(bi);
+  if(!ok){ btn.disabled = false; btn.querySelector('span').textContent = 'Explain with AI'; if(wasPlaying) play(); return; }
+  rebuild();
+  const fi = S.findIndex(s => s.b === bi && s.k === 'figl');
+  if(fi >= 0){ forceB = bi; jumpTo(fi, true); }
+}
+let explainingAll = false;
+$('#explainAll').onclick = async () => {
+  if(!aiKey()){ openSettings(true); toast('Add your Claude API key to get explanations.', 6000); return; }
+  if(explainingAll) return;
+  const list = cur.blocks.map((b, bi) => [b, bi]).filter(([b]) => isVis(b) && !b.ex);
+  if(!list.length) return;
+  explainingAll = true; const doc = cur; let n = 0;
+  for(const [, bi] of list){
+    if(cur !== doc) break;
+    toast(`Explaining ${++n} of ${list.length}…`, 120000);
+    if(!(await explainBlock(bi))) break;
+    store.put(doc);
+    if(!playing) rebuild();
+  }
+  explainingAll = false;
+  if(cur === doc){ rebuild(); if(n === list.length) toast(`Explained ${n} figures and tables.`); }
+};
+
+/* ======================= page and image viewer ======================= */
+let viewerPdf = null, viewPg = 1;
+async function getViewerPdf(){
+  if(viewerPdf && viewerPdf.id === cur.id) return viewerPdf.pdf;
+  const lib = await pdfLib();
+  const pdf = await lib.getDocument({data: await cur.file.arrayBuffer()}).promise;
+  viewerPdf = {id: cur.id, pdf}; return pdf;
+}
+async function openPage(n){
+  if(!cur || !cur.file){ toast('The original file isn’t saved for this book, so its pages can’t be shown. Open the file again to add it.'); return; }
+  viewPg = n; $('#vPrev').hidden = $('#vNext').hidden = false;
+  if(!$('#viewDlg').open) $('#viewDlg').showModal();
+  await renderViewPage();
+}
+async function renderViewPage(){
+  const body = $('#vBody'); body.innerHTML = '';
+  $('#vTitle').textContent = `Page ${viewPg} of ${cur.pages}`;
+  $('#vPrev').disabled = viewPg <= 1; $('#vNext').disabled = viewPg >= cur.pages;
+  try{
+    const pdf = await getViewerPdf(), page = await pdf.getPage(viewPg);
+    const want = Math.min(body.clientWidth || 900, 1100) * (window.devicePixelRatio || 1);
+    const vp1 = page.getViewport({scale:1}), vp = page.getViewport({scale: want / vp1.width});
+    const cv = document.createElement('canvas'); cv.width = Math.ceil(vp.width); cv.height = Math.ceil(vp.height);
+    body.append(cv);
+    await page.render({canvasContext: cv.getContext('2d'), viewport: vp}).promise;
+  }catch(e){ body.textContent = 'This page couldn’t be shown.'; }
+}
+function openImage(b){
+  $('#vTitle').textContent = b.label; $('#vPrev').hidden = $('#vNext').hidden = true;
+  const body = $('#vBody'); body.innerHTML = '';
+  const img = document.createElement('img'); img.src = b.src; img.alt = b.label; body.append(img);
+  $('#viewDlg').showModal();
+}
+$('#vPrev').onclick = () => { if(viewPg > 1){ viewPg--; renderViewPage(); } };
+$('#vNext').onclick = () => { if(viewPg < cur.pages){ viewPg++; renderViewPage(); } };
+$('#vClose').onclick = () => $('#viewDlg').close();
+$('#viewDlg').addEventListener('click', e => { if(e.target === $('#viewDlg')) $('#viewDlg').close(); });
 
 /* ======================= settings ======================= */
 function renderSettings(){
-  fillVoices();
-  const sp = $('#speeds'); sp.innerHTML = '';
-  SPEEDS.forEach(r => {
-    const b = document.createElement('button'); b.textContent = r + '×'; b.setAttribute('aria-pressed', r === prefs.rate);
-    b.onclick = () => { setRate(r); renderSettings(); };
-    sp.append(b);
-  });
   document.querySelectorAll('#sizes button').forEach(b => b.setAttribute('aria-pressed', b.dataset.fs === prefs.fs));
-  document.querySelectorAll('#checks input').forEach(c => c.checked = !!prefs.skip[c.dataset.k]);
+  document.querySelectorAll('#checks input[data-k]').forEach(c => c.checked = !!prefs.skip[c.dataset.k]);
+  $('#aiKey').value = aiKey(); $('#aiModel').value = prefs.ai.model; $('#aiParas').checked = prefs.ai.paras;
 }
-function setRate(r){ prefs.rate = r; savePrefs(); $('#speedBtn').textContent = r + '×'; if(cur) updateProgress(); if(playing) speakFrom(idx); }
+function openSettings(focusAi){
+  closeDrawer(); closeVoicePanel(); renderSettings(); if(!$('#setDlg').open) $('#setDlg').showModal();
+  if(focusAi) setTimeout(() => { $('#aiKey').scrollIntoView({block:'center'}); $('#aiKey').focus(); }, 50);
+}
 function applyFs(){ document.documentElement.style.setProperty('--fs', prefs.fs); }
-document.querySelectorAll('#checks input').forEach(c => c.onchange = () => {
+document.querySelectorAll('#checks input[data-k]').forEach(c => c.onchange = () => {
   prefs.skip[c.dataset.k] = c.checked; savePrefs();
   if(!cur) return;
   if(c.dataset.k === 'cites'){ const wasPlaying = playing; stop(); S.forEach(prep); computeSkips(); renderText(); renderOutline(); setActive(idx, false); if(wasPlaying) play(); }
   else refreshSkips();
 });
+$('#aiKey').onchange = () => { try{ const v = $('#aiKey').value.trim(); if(v) localStorage.setItem('ra2-ai-key', v); else localStorage.removeItem('ra2-ai-key'); }catch(e){} renderMode(); if(cur) refreshSkips(); };
+$('#aiModel').onchange = () => { prefs.ai.model = $('#aiModel').value; savePrefs(); };
+$('#aiParas').onchange = () => { prefs.ai.paras = $('#aiParas').checked; savePrefs(); if(cur){ cur.blocks.forEach(b => delete b.pnFailed); refreshSkips(); } };
+$('#aiTest').onclick = async () => {
+  $('#aiKey').onchange();
+  if(!aiKey()){ toast('Paste your Claude API key first.'); return; }
+  const btn = $('#aiTest'); btn.disabled = true; btn.textContent = 'Checking…';
+  try{ await callClaude([{type:'text', text:'Reply with the single word OK.'}], 5, 'You reply with one word.'); toast('Your key works. Choose Professor at the top to start.'); }
+  catch(e){ toast(e.message === 'nokey' ? 'Paste your Claude API key first.' : e.message, 7000); }
+  btn.disabled = false; btn.textContent = 'Check key';
+};
 
 /* ======================= drawer (small screens) ======================= */
 function openDrawer(){ $('#side').classList.add('open'); $('#scrim').hidden = false; }
 function closeDrawer(){ $('#side').classList.remove('open'); $('#scrim').hidden = true; }
 
 /* ======================= backup ======================= */
-$('#exportBtn').onclick = () => {
+const blobToData = b => new Promise((res, rej) => { const r = new FileReader(); r.onload = () => res(r.result); r.onerror = rej; r.readAsDataURL(b); });
+async function dataToBlob(u){ return (await fetch(u)).blob(); }
+$('#exportBtn').onclick = async () => {
   if(!docs.length){ toast('Your library is empty, so there’s nothing to back up yet.'); return; }
-  const blob = new Blob([JSON.stringify({app:'readaloud', version:2, docs, positions}, null, 0)], {type:'application/json'});
+  toast('Preparing your backup…', 60000);
+  const out = [];
+  for(const d of docs){ const c = Object.assign({}, d); if(d.file instanceof Blob) c.file = await blobToData(d.file); out.push(c); }
+  const blob = new Blob([JSON.stringify({app:'readaloud', version:3, docs:out, positions})], {type:'application/json'});
   const a = document.createElement('a'); a.href = URL.createObjectURL(blob);
   a.download = 'readaloud-library-' + new Date().toISOString().slice(0,10) + '.json';
-  document.body.append(a); a.click(); a.remove(); setTimeout(() => URL.revokeObjectURL(a.href), 2000);
+  document.body.append(a); a.click(); a.remove(); setTimeout(() => URL.revokeObjectURL(a.href), 5000);
+  hideToast();
 };
 $('#importBtn').onclick = () => $('#importIn').click();
 $('#importIn').onchange = async e => {
   const f = e.target.files[0]; e.target.value = ''; if(!f) return;
   try{
+    toast('Restoring…', 60000);
     const data = JSON.parse(await f.text());
     if(!data || !Array.isArray(data.docs)) throw new Error('bad');
     let n = 0;
-    for(const d of data.docs){ if(!d.id || !Array.isArray(d.blocks)) continue; docs = docs.filter(x => x.id !== d.id); docs.push(d); await store.put(d); n++; }
+    for(const d of data.docs){
+      if(!d.id || !Array.isArray(d.blocks)) continue;
+      if(typeof d.file === 'string' && d.file.startsWith('data:')) d.file = await dataToBlob(d.file); else delete d.file;
+      docs = docs.filter(x => x.id !== d.id); docs.push(d); await store.put(d); n++;
+    }
     Object.assign(positions, data.positions || {}); setJSON('ra2-pos', positions);
-    renderLibrary(); toast(`Restored ${n} document${n === 1 ? '' : 's'}.`);
+    keepStorage(); renderLibrary(); toast(`Restored ${n} ${n === 1 ? 'book' : 'books'}.`);
   }catch(err){ toast('That file isn’t a Readaloud backup. Choose a file made with “Back up library”.'); }
 };
 
@@ -1111,37 +1917,39 @@ $('#menuBtn').onclick = openDrawer;
 $('#scrim').onclick = closeDrawer;
 $('#tabSec').onclick = () => showTab('sec');
 $('#tabPg').onclick = () => { showTab('pg'); curPgEl && curPgEl.scrollIntoView({block:'nearest'}); };
+$('#tabFig').onclick = () => { showTab('fig'); curFigEl && curFigEl.scrollIntoView({block:'nearest'}); };
 $('#playBtn').onclick = toggle;
 $('#prevBtn').onclick = () => step(-1);
 $('#nextBtn').onclick = () => step(1);
+$('#prevPara').onclick = prevPara;
+$('#nextPara').onclick = nextPara;
+$('#prevPage').onclick = prevPage;
+$('#nextPage').onclick = nextPage;
 $('#scrub').oninput = e => { const s = S[+e.target.value]; if(s) $('#pct').textContent = (cur.pages && s.pg ? 'Page ' + s.pg : Math.round(e.target.value / S.length * 100) + '%'); };
 $('#scrub').onchange = e => { const j = nextReadable(+e.target.value); if(j >= 0) jumpTo(j); else updateProgress(); };
 $('#text').onclick = e => {
   const sEl = e.target.closest('.s'); if(!sEl) return;
   const i = +sEl.dataset.i, s = S[i];
-  if(s.skip){ toast(s.sec >= 0 && H[s.sec].skip ? 'This section is set to skip. Use the eye next to it in the sidebar to read it.' : 'This part is skipped. You can change what’s skipped in Voice and what to skip.'); return; }
+  if(s.skip){
+    if(s.k === 'figl' || s.k === 'fx') return;
+    toast(s.sec >= 0 && H[s.sec].skip ? 'This section is set to skip. Use the eye next to it in the sidebar to read it.' : 'This part is skipped. You can change what’s skipped in Settings.'); return;
+  }
   if(!s.ok){ const j = nextReadable(i); if(j >= 0) jumpTo(j); return; }
   jumpTo(i);
 };
-$('#speedBtn').onclick = () => setRate(SPEEDS[(SPEEDS.indexOf(prefs.rate) + 1) % SPEEDS.length]);
-$('#voiceBtn').onclick = $('#settingsBtn').onclick = $('#sideSettings').onclick = () => { closeDrawer(); renderSettings(); $('#setDlg').showModal(); };
-$('#setDone').onclick = () => $('#setDlg').close();
-$('#voiceSel').onchange = e => { prefs.voiceURI = e.target.value; savePrefs(); $('#voiceBtn').textContent = shortName(currentVoice()); if(playing) speakFrom(idx); };
-$('#allLangs').onchange = fillVoices;
-$('#previewBtn').onclick = () => {
-  if(!synth) return; if(playing) stop(); synth.cancel();
-  const u = new SpeechSynthesisUtterance('Hello. This is how I’ll sound reading to you.');
-  const v = currentVoice(); if(v){ u.voice = v; u.lang = v.lang; } u.rate = prefs.rate; synth.speak(u);
-};
+$('#voiceBtn').onclick = () => $('#vpanel').hidden ? openVoicePanel() : closeVoicePanel();
+$('#settingsBtn').onclick = $('#sideSettings').onclick = () => openSettings(false);
+$('#setDone').onclick = () => { $('#aiKey').onchange(); $('#setDlg').close(); };
 document.querySelectorAll('#sizes button').forEach(b => b.onclick = () => { prefs.fs = b.dataset.fs; savePrefs(); applyFs(); renderSettings(); });
 document.addEventListener('keydown', e => {
-  if(e.key === 'Escape') closeDrawer();
+  if(e.key === 'Escape'){ closeDrawer(); closeVoicePanel(); }
   if(!cur || e.target.closest('input,textarea,select,dialog')) return;
   if(e.code === 'Space' && !e.target.closest('button')){ e.preventDefault(); toggle(); }
-  if(e.key === 'ArrowRight') step(1);
-  if(e.key === 'ArrowLeft') step(-1);
+  if(e.key === 'ArrowRight'){ e.preventDefault(); e.shiftKey ? nextPara() : step(1); }
+  if(e.key === 'ArrowLeft'){ e.preventDefault(); e.shiftKey ? prevPara() : step(-1); }
+  if(e.key === 'PageDown' && cur.pages){ e.preventDefault(); nextPage(); }
+  if(e.key === 'PageUp' && cur.pages){ e.preventDefault(); prevPage(); }
 });
-// drag and drop a file anywhere
 let dragDepth = 0;
 document.addEventListener('dragenter', e => { if(e.dataTransfer && [...e.dataTransfer.types].includes('Files')){ dragDepth++; document.body.classList.add('dropping'); } });
 document.addEventListener('dragleave', () => { if(--dragDepth <= 0){ dragDepth = 0; document.body.classList.remove('dropping'); } });
@@ -1151,16 +1959,16 @@ if('mediaSession' in navigator){
   try{
     navigator.mediaSession.setActionHandler('play', play);
     navigator.mediaSession.setActionHandler('pause', stop);
-    navigator.mediaSession.setActionHandler('previoustrack', () => step(-1));
-    navigator.mediaSession.setActionHandler('nexttrack', () => step(1));
+    navigator.mediaSession.setActionHandler('previoustrack', prevPara);
+    navigator.mediaSession.setActionHandler('nexttrack', nextPara);
   }catch(e){}
 }
 window.addEventListener('pagehide', () => { if(synth) synth.cancel(); });
 
 /* ======================= start ======================= */
 (async function init(){
-  if(!SPEEDS.includes(prefs.rate)) prefs.rate = 1;
-  $('#speedBtn').textContent = prefs.rate + '×';
+  if(!SPEEDS.includes(prefs.rate)){ prefs.rate = 0.8; savePrefs(); }
+  renderSpeed(); renderMode();
   applyFs(); fillVoices();
   docs = await store.all();
   renderLibrary();
@@ -1170,5 +1978,7 @@ window.addEventListener('pagehide', () => { if(synth) synth.cancel(); });
 })();
 })();
 </script>
+
+
 </body>
 </html>

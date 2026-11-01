@@ -364,7 +364,7 @@ dialog textarea{min-height:40vh;resize:vertical;font-family:'Literata',Georgia,s
 
   <main id="library" class="lib">
     <h1>Readaloud</h1>
-    <p class="tag">Open a paper or book and listen. References, citations and footnotes are skipped, figures and tables stay in place, and every section is listed on the left so you can start wherever you like.</p>
+    <p class="tag">Open a paper or book and listen. References, citations and footnotes are skipped, and every section is listed on the left so you can start wherever you like.</p>
     <div class="actions">
       <button class="btn primary" id="fileBtn">
         <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M14 3H6a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V9z"/><path d="M14 3v6h6"/></svg>Open file</button>
@@ -390,7 +390,7 @@ dialog textarea{min-height:40vh;resize:vertical;font-family:'Literata',Georgia,s
       <input type="file" id="importIn" accept=".json,application/json" hidden>
     </div>
     <p class="lib-note" id="libNote">Everything you open is saved in this browser, so it’s here next time without uploading again. Use “Back up library” to move your books to another device or browser.</p>
-    <p class="lib-note version">Readaloud version 8 (November 1, 2026)</p>
+    <p class="lib-note version">Readaloud version 9 (November 1, 2026)</p>
   </main>
 
   <article class="text" id="text" hidden></article>
@@ -462,6 +462,9 @@ dialog textarea{min-height:40vh;resize:vertical;font-family:'Literata',Georgia,s
     <button data-fs="1.4rem" style="font-size:1.3rem">Aa</button>
     <button data-fs="1.65rem" style="font-size:1.5rem">Aa</button>
   </div>
+  <div class="checks" style="margin-bottom:1rem">
+    <label><input type="checkbox" id="figsOn"><span><b>Show figures and tables as pictures</b><span>Off: Readaloud reads the text only, and opens books faster. On: pictures of figures and tables appear in the text, and Professor mode explains them.</span></span></label>
+  </div>
   <span class="lbl">Don’t read</span>
   <div class="checks" id="checks">
     <label><input type="checkbox" data-k="refs"><span><b>References and end matter</b><span>Reference list, acknowledgments, funding, disclosures, author contributions</span></span></label>
@@ -489,7 +492,7 @@ dialog textarea{min-height:40vh;resize:vertical;font-family:'Literata',Georgia,s
     <div class="row" style="justify-content:flex-start"><button class="btn" id="aiTest">Check key</button></div>
   </div>
   <div class="row">
-    <span class="note" style="margin:0 auto 0 0;align-self:center">Version 8</span>
+    <span class="note" style="margin:0 auto 0 0;align-self:center">Version 9</span>
     <button class="btn primary" id="setDone">Done</button>
   </div>
 </dialog>
@@ -552,7 +555,7 @@ const store = {
 async function keepStorage(){ try{ if(navigator.storage && navigator.storage.persist && !(await navigator.storage.persisted())) await navigator.storage.persist(); }catch(e){} }
 
 let docs = [];
-let prefs = Object.assign({rate:0.8, voiceURI:'', profVoiceURI:'', fs:'1.2rem', mode:'read'}, getJSON('ra2-prefs', {}));
+let prefs = Object.assign({rate:0.8, voiceURI:'', profVoiceURI:'', fs:'1.2rem', mode:'read', figs:false}, getJSON('ra2-prefs', {}));
 if(prefs.v !== 4){ prefs.rate = 0.8; prefs.v = 4; }
 prefs.skip = Object.assign({}, DEF_SKIP, prefs.skip || {});
 prefs.ai = Object.assign({model:'claude-sonnet-5-5', paras:true}, prefs.ai || {});
@@ -1007,7 +1010,7 @@ async function parsePdf(file){
     }
     delete v.grow;
   }
-  if(cand.length){
+  if(cand.length && prefs.figs){
     const byPg = {}; cand.forEach(c => (byPg[c.pg] = byPg[c.pg] || []).push(c));
     const pgList = Object.keys(byPg);
     for(let k = 0; k < pgList.length; k++){
@@ -1124,7 +1127,7 @@ async function parsePdf(file){
   /* picture crops of figures and tables */
   const byPage = {};
   visuals.forEach(v => (byPage[v.pg] = byPage[v.pg] || []).push(v));
-  const pgs = Object.keys(byPage);
+  const pgs = prefs.figs ? Object.keys(byPage) : [];
   for(let k = 0; k < pgs.length; k++){
     const n = +pgs[k];
     if(pgs.length > 4) toast(`Saving figures and tables (${k + 1} of ${pgs.length} pages)…`, 60000);
@@ -1295,7 +1298,7 @@ function docMeta(d){
   const n = d.words || 0, pos = positions[d.id] || 0, total = d.sents || 1;
   const pct = Math.min(100, Math.round(pos / total * 100));
   const mins = Math.max(1, Math.round(n * (1 - pos / total) / (165 * prefs.rate)));
-  const figs = (d.blocks || []).filter(isVis).length;
+  const figs = prefs.figs ? (d.blocks || []).filter(isVis).length : 0;
   const extras = [d.pages ? `${d.pages} ${d.pages === 1 ? 'page' : 'pages'}` : '', figs ? `${figs} ${figs === 1 ? 'figure or table' : 'figures and tables'}` : ''].filter(Boolean).join(', ');
   return {pct, text: pct === 0 ? `About ${mins} min` + (extras ? ` (${extras})` : '') : `${pct}% read, about ${mins} min left`};
 }
@@ -1614,6 +1617,7 @@ function buildModel(){
     if(b.t === 'h') H.push({x:b.x, lv:b.lv || 0, pg:b.pg || 0, si:S.length, bi});
     const sec = H.length - 1, base = {b:bi, sec, pg:b.pg || 0};
     if(isVis(b)){
+      if(!prefs.figs) return;
       S.push(Object.assign({t:b.label + '.', k:'figl'}, base));
       if(b.ex) sentences(norm(b.ex)).forEach(t => S.push(Object.assign({t, k:'fx'}, base)));
       return;
@@ -1676,7 +1680,7 @@ function makeVisual(b, bi){
 }
 function renderText(){
   const art = $('#text'); art.innerHTML = ''; activeEl = null;
-  if(!cur.fmt && !cur.blocks.some(isVis)){
+  if(prefs.figs && !cur.fmt && !cur.blocks.some(isVis)){
     const n = document.createElement('div'); n.className = 'oldnote';
     n.innerHTML = '<b>Figures and tables are missing from this book.</b> It was added with an older version of Readaloud that didn’t keep them. Open the same file again to add them; your place in the book is kept.';
     const b = document.createElement('button'); b.className = 'btn primary'; b.textContent = 'Open the file again';
@@ -1772,10 +1776,10 @@ function renderOutline(){
   });
   $('#explainAll').parentElement.hidden = !vis.some(([b]) => !b.ex);
   $('#tabPg').hidden = !cur.pages;
-  $('#tabFig').hidden = false;
+  $('#tabFig').hidden = !prefs.figs;
   $('#capPage').hidden = !(cur.file && cur.pages);
   if(!vis.length){ const li = document.createElement('li'); li.className = 'side-empty'; li.textContent = 'No figures or tables yet. Add them with the buttons above.'; fl.append(li); }
-  const want = prefs.tab === 'pg' && cur.pages ? 'pg' : prefs.tab === 'fig' ? 'fig' : 'sec';
+  const want = prefs.tab === 'pg' && cur.pages ? 'pg' : prefs.tab === 'fig' && prefs.figs ? 'fig' : 'sec';
   showTab(want, true);
   curSecEl = curPgEl = curFigEl = null;
   markOutline();
@@ -1816,13 +1820,13 @@ async function openDoc(id){
   const first = nextReadable(idx); setActive(first < 0 ? idx : first, true);
   if('mediaSession' in navigator){ try{ navigator.mediaSession.metadata = new MediaMetadata({title: cur.title, artist: 'Readaloud'}); }catch(e){} }
   try{ history.replaceState(null, '', '#' + id); }catch(e){}
-  if(cur.file && cur.pages && (cur.fmt || 0) < 6 && !cur.rescanning) rescan(cur);
+  if(cur.file && cur.pages && !cur.rescanning && ((cur.fmt || 0) < 6 || (prefs.figs && cur.blocks.some(b => isVis(b) && !b.src && !b.rows)))) rescan(cur);
 }
 // books added with an older version: find their figures and tables again, keeping explanations
 async function rescan(d){
   d.rescanning = true;
   const before = d.blocks.filter(isVis).length;
-  toast('Finding the figures and tables in this book…', 60000);
+  toast(prefs.figs ? 'Finding the figures and tables in this book…' : 'Updating this book…', 60000);
   try{
     const r = await parsePdf(d.file);
     const pnBy = new Map(d.blocks.filter(b => b.pn).map(b => [b.x, b.pn]));
@@ -1843,6 +1847,7 @@ async function rescan(d){
       if(wasPlaying) play();
     }
     const n = d.blocks.filter(isVis).length;
+    if(!prefs.figs){ hideToast(); return; }
     toast(n > before ? `Added ${n - before} figures and tables to this book.` : (n ? `This book has ${n} figures and tables.` : 'No figures or tables were found in this book.'), 6000);
   }catch(e){ d.fmt = 6; delete d.rescanning; store.put(d); hideToast(); }
 }
@@ -2297,7 +2302,7 @@ async function removeVisual(b){
 }
 // paste a screenshot anywhere while a book is open
 document.addEventListener('paste', async e => {
-  if(!cur || (e.target.closest && e.target.closest('input,textarea'))) return;
+  if(!cur || !prefs.figs || (e.target.closest && e.target.closest('input,textarea'))) return;
   const items = [...((e.clipboardData && e.clipboardData.items) || [])];
   const it = items.find(x => x.type && x.type.startsWith('image/'));
   if(!it) return;
@@ -2373,7 +2378,16 @@ function renderSettings(){
   document.querySelectorAll('#sizes button').forEach(b => b.setAttribute('aria-pressed', b.dataset.fs === prefs.fs));
   document.querySelectorAll('#checks input[data-k]').forEach(c => c.checked = !!prefs.skip[c.dataset.k]);
   $('#aiKey').value = aiKey(); $('#aiModel').value = prefs.ai.model; $('#aiParas').checked = prefs.ai.paras;
+  $('#figsOn').checked = !!prefs.figs;
 }
+$('#figsOn').onchange = () => {
+  prefs.figs = $('#figsOn').checked; savePrefs();
+  if(!cur){ renderLibrary(); return; }
+  const wasPlaying = playing; stop();
+  rebuild();
+  if(prefs.figs && cur.file && cur.pages && cur.blocks.some(b => isVis(b) && !b.src && !b.rows)) rescan(cur);
+  if(wasPlaying) play();
+};
 function openSettings(focusAi){
   closeDrawer(); closeVoicePanel(); renderSettings(); if(!$('#setDlg').open) $('#setDlg').showModal();
   if(focusAi) setTimeout(() => { $('#aiKey').scrollIntoView({block:'center'}); $('#aiKey').focus(); }, 50);

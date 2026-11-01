@@ -1469,12 +1469,26 @@ function voiceList(){
   const mine = voices().filter(v => nl(v).startsWith(lang) && !NOVELTY.test(v.name.replace(/^(Microsoft|Google|Apple)\s+/, '')));
   return mine.sort((a,b) => quality(b) - quality(a) || (nl(b) === region) - (nl(a) === region) || a.name.localeCompare(b.name));
 }
+const broken = new Set();
 function currentVoice(who){
   const vs = voices(); if(!vs.length) return null;
-  const list = voiceList();
-  const reader = vs.find(v => v.voiceURI === prefs.voiceURI) || list.find(v => quality(v) > 0) || vs.find(v => v.default && nl(v).startsWith(myLang())) || list[0] || vs[0];
+  const ok = v => v && !broken.has(v.voiceURI);
+  const list = voiceList().filter(ok), all = vs.filter(ok);
+  const pick = uri => { const v = vs.find(x => x.voiceURI === uri); return ok(v) ? v : null; };
+  const reader = pick(prefs.voiceURI) || list.find(v => quality(v) > 0) || list.find(v => v.localService) || all.find(v => v.default && nl(v).startsWith(myLang())) || list[0] || all[0] || vs[0];
   if(who !== 'prof') return reader;
-  return vs.find(v => v.voiceURI === prefs.profVoiceURI) || list.find(v => quality(v) > 0 && v !== reader) || list.find(v => v !== reader) || reader;
+  return pick(prefs.profVoiceURI) || list.find(v => quality(v) > 0 && v !== reader) || list.find(v => v !== reader) || reader;
+}
+// a voice that won't speak: stop using it and move to a voice that works on this device
+function replaceVoice(bad, who){
+  if(!bad) return null;
+  broken.add(bad.voiceURI);
+  const list = voiceList().filter(v => !broken.has(v.voiceURI));
+  const nv = list.find(v => v.localService && quality(v) > 0) || list.find(v => v.localService) || list[0] || voices().find(v => !broken.has(v.voiceURI));
+  if(!nv) return null;
+  if(who === 'prof') prefs.profVoiceURI = nv.voiceURI; else prefs.voiceURI = nv.voiceURI;
+  savePrefs(); fillVoices();
+  return nv;
 }
 function voiceLabel(v){
   return v.name.replace(/^(Microsoft|Google|Apple)\s+/,'').replace(/\s+-\s+.*$/,'').replace(/\s*\((Enhanced|Premium|Natural)\)/ig,'').replace(/\s+Online.*$/,'').trim();
@@ -1518,7 +1532,7 @@ function renderVoicePanel(){
 function preview(v, who){
   if(!synth) return;
   if(playing) stop();
-  synth.cancel();
+  if(synth.speaking || synth.pending) synth.cancel();
   const u = new SpeechSynthesisUtterance(who === 'prof' ? 'Let me explain what this means and why it matters.' : 'Hello. This is how I will sound reading to you.');
   u.voice = v; u.lang = v.lang; u.rate = prefs.rate; synth.speak(u);
 }
@@ -1554,7 +1568,7 @@ function setMode(m){
 document.querySelectorAll('#modeSeg button').forEach(b => b.onclick = () => setMode(b.dataset.mode));
 
 /* ======================= reader ======================= */
-let fastEnds = 0;
+let sayFails = 0, voiceSwitches = 0;
 let cur = null, S = [], H = [], idx = 0, playing = false, token = 0, words = [], activeEl = null, activeWord = null, curSecEl = null, curPgEl = null, curFigEl = null, forceB = -1;
 const KIND_LABEL = {foot:'Footnote, skipped', note:'Publishing note, skipped', cap:'Caption, skipped'};
 
@@ -1895,7 +1909,9 @@ function updatePlay(){
 function speakFrom(i){
   if(!synth){ toast('This browser can’t read text aloud. Try Chrome, Edge or Safari.'); playing = false; updatePlay(); return; }
   const my = ++token;
-  synth.cancel();
+  // Chrome drops a sentence that is spoken right after cancel(), so only cancel when something is actually playing
+  const busy = synth.speaking || synth.pending;
+  if(busy) synth.cancel();
   const j = nextReadable(i);
   if(j < 0){ playing = false; updatePlay(); toast('Finished.'); return; }
   const s = S[j], bi = s.b, b = cur.blocks[bi];
@@ -1925,28 +1941,48 @@ function speakFrom(i){
   const v = currentVoice(prof ? 'prof' : 'reader'); if(v){ u.voice = v; u.lang = v.lang; }
   if(prof && v && v === currentVoice('reader')) u.pitch = 0.85;
   u.rate = prefs.rate;
-  const t0 = Date.now();
+  const t0 = Date.now(), who = prof ? 'prof' : 'reader';
+  let ended = false;
+  const failed = why => {
+    // the voice didn't speak: try the sentence again, then switch to a voice that works, and only then stop
+    if(my !== token || !playing) return;
+    sayFails++;
+    if(sayFails === 1){ setTimeout(() => { if(my === token && playing) speakFrom(j); }, 350); return; }
+    if(voiceSwitches < 3){
+      const nv = replaceVoice(v, who);
+      if(nv && nv !== v){
+        voiceSwitches++; sayFails = 0;
+        toast(`“${v ? voiceLabel(v) : 'That voice'}” isn’t speaking in this browser, so Readaloud switched to “${voiceLabel(nv)}”. You can pick another voice with the voice button.`, 9000);
+        setTimeout(() => { if(my === token && playing) speakFrom(j); }, 250);
+        return;
+      }
+    }
+    sayFails = 0; playing = false; updatePlay(); setActive(j, false);
+    toast('Speech isn’t working in this browser right now' + (why ? ' (' + why + ')' : '') + '. Refresh the page and press Play, or open Readaloud in Microsoft Edge or Safari.', 10000);
+  };
   u.onboundary = e => { if(my === token && (!e.name || e.name === 'word')) highlightWord(e.charIndex); };
   u.onend = () => {
+    if(ended) return; ended = true;
     if(my !== token || !playing) return;
-    const expected = s.spk.length * 30 / prefs.rate;            // a rough minimum time to say it, in ms
-    if(s.spk.length > 30 && Date.now() - t0 < Math.min(400, expected * 0.15)) fastEnds++; else fastEnds = 0;
-    if(fastEnds >= 3){
-      fastEnds = 0; playing = false; updatePlay(); setActive(j, false);
-      toast('The voice stopped speaking, so playback was paused here. Choose another voice with the voice button, then press Play.', 9000);
-      return;
-    }
+    const ms = Date.now() - t0, expected = s.spk.length * 30 / prefs.rate;   // a rough minimum time to say it
+    if(s.spk.length > 30 && ms < Math.min(400, expected * 0.15)) return failed('');
+    sayFails = 0; voiceSwitches = 0;
     const ni = S.indexOf(s); speakFrom(ni >= 0 ? ni + 1 : idx + 1);
   };
   u.onerror = e => {
+    if(ended) return; ended = true;
     if(my !== token || e.error === 'interrupted' || e.error === 'canceled') return;
-    playing = false; updatePlay(); toast('Playback stopped (' + e.error + '). Press play to try again.');
+    if(e.error === 'not-allowed'){ playing = false; updatePlay(); toast('Your browser needs a tap first. Press Play.'); return; }
+    failed(e.error);
   };
-  synth.speak(u);
+  window.__readaloudUtterance = u;   // keeps Chrome from discarding the sentence mid-way
+  const go = () => { if(my !== token) return; try{ synth.resume(); }catch(e){} synth.speak(u); };
+  if(busy) setTimeout(go, 80); else go();
 }
 function play(){
   if(!S.length) return;
   if(nextReadable(idx) < 0) idx = 0;
+  sayFails = 0; voiceSwitches = 0;
   playing = true; updatePlay(); speakFrom(idx);
 }
 function stop(){ playing = false; token++; if(synth) synth.cancel(); updatePlay(); }

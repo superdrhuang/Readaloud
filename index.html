@@ -142,8 +142,12 @@ button{cursor:pointer}
 .times{display:flex;justify-content:space-between;color:var(--muted);font-size:.8rem;margin:.1rem 0 .35rem;font-variant-numeric:tabular-nums}
 .ctrls{display:grid;grid-template-columns:1fr auto 1fr;grid-template-areas:"speed mid voice";align-items:center;gap:.5rem}
 .ctrls .mid{grid-area:mid;display:flex;align-items:center;gap:.35rem}
-.play{width:3.4rem;height:3.4rem;border-radius:50%;border:none;background:var(--accent);color:var(--on-accent);display:grid;place-items:center;margin:0 .3rem}
-.play svg{width:1.6rem;height:1.6rem}
+.play{min-width:4.6rem;height:3.1rem;border-radius:999px;border:2px solid var(--accent);background:var(--surface);color:var(--accent);display:inline-flex;align-items:center;justify-content:center;gap:.3rem;padding:0 .9rem;font-weight:600;font-size:.95rem}
+.play svg{width:1.35rem;height:1.35rem;flex:none}
+.play.on{background:var(--accent);color:var(--on-accent)}
+.play:hover{box-shadow:0 0 0 3px var(--sent)}
+.ctrls .mid .play + .play{margin-left:.1rem}
+@media (max-width:420px){ .play{min-width:0;padding:0 .7rem} .play span{display:none} .skipb{padding:.35rem} }
 .skipb{background:none;border:none;color:var(--ink);padding:.45rem;border-radius:999px;display:inline-flex;position:relative}
 .skipb:hover{background:var(--bg)}
 .skipb svg{width:1.45rem;height:1.45rem}
@@ -267,6 +271,20 @@ dialog textarea{min-height:40vh;resize:vertical;font-family:'Literata',Georgia,s
 .sect{border-top:1px solid var(--line);margin:1.25rem 0 1rem;padding-top:1rem}
 .sect h4{margin:0 0 .75rem;font-size:1.05rem;font-family:'Literata',Georgia,serif;font-weight:600}
 .fig .fx[hidden]{display:none}
+.snipbar{display:flex;flex-wrap:wrap;align-items:center;gap:.5rem;margin:0 0 .5rem;padding:.5rem .6rem;background:var(--sent);border-radius:.6rem;font-size:.9rem;font-weight:600}
+.snipbar input{flex:1;min-width:10rem;margin:0!important}
+.snipbar .btn{padding:.45rem .9rem}
+.vpage{position:relative;display:inline-block;max-width:100%;line-height:0}
+.vpage canvas{display:block;max-width:100%;height:auto}
+.snipping .vpage{cursor:crosshair}
+.snipping .snaplayer{position:absolute;inset:0;touch-action:none}
+.sniprect{position:absolute;border:2px solid #2E4A9E;background:rgba(46,74,158,.14);box-shadow:0 0 0 9999px rgba(10,15,30,.28);pointer-events:none}
+.side-add{margin:.25rem 1rem .75rem;display:grid;grid-template-columns:1fr 1fr;gap:.4rem}
+.side-add button{display:flex;flex-direction:column;align-items:center;gap:.25rem;background:var(--bg);border:1.5px solid var(--line);border-radius:.6rem;padding:.55rem .3rem;font-weight:600;font-size:.82rem;color:var(--ink)}
+.side-add button:hover{border-color:var(--accent);color:var(--accent)}
+.side-add svg{width:1.3rem;height:1.3rem}
+.side-add p{grid-column:1/-1;margin:.1rem 0 0;font-size:.78rem;color:var(--muted);line-height:1.4}
+.fig-actions .mini{padding:.4rem .55rem}
 #viewDlg{width:min(60rem,calc(100vw - 1rem));padding:.75rem}
 .vbar{display:flex;align-items:center;gap:.5rem;margin-bottom:.5rem}
 .vbar span{flex:1;font-weight:600;font-variant-numeric:tabular-nums}
@@ -308,6 +326,12 @@ dialog textarea{min-height:40vh;resize:vertical;font-family:'Literata',Georgia,s
       <ol class="outline" id="secList" role="tabpanel"></ol>
       <ol class="outline" id="pgList" role="tabpanel" hidden></ol>
       <div id="figPanel" role="tabpanel" hidden>
+        <div class="side-add">
+          <button id="addPic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="5" width="18" height="14" rx="2"/><circle cx="9" cy="10" r="1.6"/><path d="M21 16l-5-5-8 8"/></svg>Add a picture</button>
+          <button id="capPage"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 8V4h4M16 4h4v4M20 16v4h-4M8 20H4v-4"/></svg>Capture from page</button>
+          <input type="file" id="picIn" accept="image/*" hidden>
+          <p>Or take a screenshot of any figure or table and paste it with Ctrl+V (Cmd+V on a Mac). It goes in after the paragraph you’re on.</p>
+        </div>
         <div class="side-act"><button id="explainAll">Explain all with AI</button></div>
         <ul class="flist" id="figList"></ul>
       </div>
@@ -383,9 +407,10 @@ dialog textarea{min-height:40vh;resize:vertical;font-family:'Literata',Georgia,s
             <svg viewBox="0 0 24 24" fill="currentColor"><path d="M11 6v12L2.5 12zM21 6v12l-8.5-6z"/></svg></button>
           <button class="skipb" id="prevBtn" aria-label="Previous sentence" title="Previous sentence (Left)">
             <svg viewBox="0 0 24 24" fill="currentColor"><path d="M6 5h2v14H6zM20 5v14L9.5 12z"/></svg></button>
-          <button class="play" id="playBtn" aria-label="Play">
-            <svg id="playIco" viewBox="0 0 24 24" fill="currentColor"><path d="M8 5v14l11-7z"/></svg>
-            <svg id="pauseIco" viewBox="0 0 24 24" fill="currentColor" hidden><path d="M7 5h4v14H7zM13 5h4v14h-4z"/></svg></button>
+          <button class="play" id="playBtn" aria-label="Play" title="Play (Space)">
+            <svg viewBox="0 0 24 24" fill="currentColor"><path d="M8 5v14l11-7z"/></svg><span>Play</span></button>
+          <button class="play pause" id="pauseBtn" aria-label="Pause" title="Pause (Space)">
+            <svg viewBox="0 0 24 24" fill="currentColor"><path d="M7 5h4v14H7zM13 5h4v14h-4z"/></svg><span>Pause</span></button>
           <button class="skipb" id="nextBtn" aria-label="Next sentence" title="Next sentence (Right)">
             <svg viewBox="0 0 24 24" fill="currentColor"><path d="M16 5h2v14h-2zM4 5v14l10.5-7z"/></svg></button>
           <button class="skipb para" id="nextPara" aria-label="Next paragraph" title="Next paragraph (Shift + Right)">
@@ -467,7 +492,14 @@ dialog textarea{min-height:40vh;resize:vertical;font-family:'Literata',Georgia,s
     <button class="icon-btn" id="vPrev" aria-label="Previous page"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M15 18l-6-6 6-6"/></svg></button>
     <button class="icon-btn" id="vNext" aria-label="Next page"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M9 18l6-6-6-6"/></svg></button>
     <span id="vTitle"></span>
+    <button class="pill" id="vSnip" hidden><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 8V4h4M16 4h4v4M20 16v4h-4M8 20H4v-4"/></svg><span>Capture a figure or table</span></button>
     <button class="icon-btn" id="vClose" aria-label="Close"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M6 6l12 12M18 6L6 18"/></svg></button>
+  </div>
+  <div class="snipbar" id="snipHint" hidden>Drag a box around the figure or table you want to add.</div>
+  <div class="snipbar" id="snipBar" hidden>
+    <input type="text" id="snipLabel" aria-label="Name for this picture">
+    <button class="btn primary" id="snipAdd">Add to book</button>
+    <button class="btn" id="snipCancel">Cancel</button>
   </div>
   <div class="vbody" id="vBody"></div>
 </dialog>
@@ -798,6 +830,13 @@ async function parsePdf(file){
 
   /* figures */
   const visuals = [];
+  // real reading text is never swallowed by a figure: count the text inside an area
+  const textCharsIn = (r, pg) => lines.reduce((n, l) => {
+    if(l.pg !== pg || l.k === 'run' || l.cap) return n;
+    const cx = (l.x0 + l.x1) / 2, cy = l.y + l.size * 0.3;
+    return (cx > r.x0 && cx < r.x1 && cy > r.y0 && cy < r.y1) ? n + l.t.length : n;
+  }, 0);
+  const MAX_FIG_TEXT = 220;
   for(const p of pages){
     const pl = lines.filter(l => l.pg === p.n && l.k !== 'run');
     const figCaps = pl.filter(l => l.cap && l.cap.kind === 'fig');
@@ -805,6 +844,7 @@ async function parsePdf(file){
     for(const r of p.imgs){
       // a picture that sits under a lot of body text is a background, not a figure
       if(pl.filter(l => isLongBody(l) && !l.cap && l.y > r.y0 && l.y < r.y1 && overlapX(l.x0, l.x1, r.x0, r.x1) > l.w * 0.5).length >= 3) continue;
+      if(textCharsIn(r, p.n) > MAX_FIG_TEXT) continue;
       let best = null, bd = 1e9;
       for(const c of figCaps){
         let d = c.y <= r.y0 + 6 ? r.y0 - (c.y + c.size) : c.y - r.y1 + 150;
@@ -825,18 +865,25 @@ async function parsePdf(file){
       const inside = above.filter(l => l.y + l.size * 0.3 < r.y1 && l.y > r.y0);
       if(inside.length){ r.x0 = Math.min(r.x0, ...inside.map(l => l.x0)) - 2; r.x1 = Math.max(r.x1, ...inside.map(l => l.x1)) + 2; }
       const h = r.y1 - r.y0;
-      if(h >= 40 && h <= p.H * 0.85) groups.set(c, r);
+      if(h >= 40 && h <= p.H * 0.85 && textCharsIn(r, p.n) <= MAX_FIG_TEXT) groups.set(c, r);
     }
     const addVis = (r, c) => {
-      // short labels around the picture (panel letters, axis labels) belong to it
+      // short labels on or right next to the picture (panel letters, axis labels) belong to it;
+      // decided against the original area so it can't keep growing into the text
+      const o = Object.assign({}, r), m = body * 2;
+      const take = [];
       for(const l of pl){
         if(l.cap || l.k) continue;
-        const cy = l.y + l.size * 0.3, cxm = (l.x0 + l.x1) / 2, m = body * 2.5;
-        const inside = cxm > r.x0 - 2 && cxm < r.x1 + 2 && cy > r.y0 - 2 && cy < r.y1 + 2;
-        const near = l.w < medW * 0.45 && cxm > r.x0 - m && cxm < r.x1 + m && cy > r.y0 - m && cy < r.y1 + m;
-        if(inside || near){ l.k = 'figtext'; r.x0 = Math.min(r.x0, l.x0); r.x1 = Math.max(r.x1, l.x1); r.y0 = Math.min(r.y0, l.y - l.size * 0.3); r.y1 = Math.max(r.y1, l.y + l.size); }
+        const cy = l.y + l.size * 0.3, cxm = (l.x0 + l.x1) / 2, words = l.t.split(/\s+/).length;
+        const inside = cxm > o.x0 - 2 && cxm < o.x1 + 2 && cy > o.y0 - 2 && cy < o.y1 + 2;
+        const near = words <= 3 && l.t.length <= 24 && cxm > o.x0 - m && cxm < o.x1 + m && cy > o.y0 - m && cy < o.y1 + m;
+        if(inside || near) take.push(l);
+      }
+      if(take.reduce((n, l) => n + l.t.length, 0) <= MAX_FIG_TEXT){
+        take.forEach(l => { l.k = 'figtext'; r.x0 = Math.min(r.x0, l.x0); r.x1 = Math.max(r.x1, l.x1); r.y0 = Math.min(r.y0, l.y - l.size * 0.3); r.y1 = Math.max(r.y1, l.y + l.size); });
       }
       const v = {t:'fig', pg:p.n, box:r, label: c ? c.cap.label : 'Figure on page ' + p.n};
+      if(c) c.used = true;
       visuals.push(v);
       if(c) (c.visBefore = c.visBefore || []).push(v);
       else{
@@ -878,7 +925,8 @@ async function parsePdf(file){
       if(tab || short || L.size < body * 0.92){ acc.push(L); lastY = L.y; minY = Math.min(minY, L.y); }
       else break;
     }
-    if(acc.length >= 2) makeTable(acc, c.cap.label, c.pg, c);
+    const tabRows = acc.filter(L => L.gaps >= 1).length;
+    if(acc.length >= 2 && acc.length <= 80 && tabRows >= Math.max(2, acc.length * 0.4)){ makeTable(acc, c.cap.label, c.pg, c); c.used = true; }
   });
   // tables without a caption: three or more rows with several columns
   for(let i = 0; i < lines.length; i++){
@@ -909,6 +957,108 @@ async function parsePdf(file){
   const p1 = lines.filter(l => l.pg === 1 && l.k === 'h');
   if(p1.length){ const mx = Math.max(...p1.map(l => l.size)); if(mx >= body * 1.3) p1.forEach(l => { if(l.size === mx) l.lv = 0; }); }
   lines.forEach(l => { if(l.k === 'h') l.lv = Math.min(3, l.lv); });
+
+  /* everything else that is drawn or printed between the text: scanned figures, charts, diagrams, plates */
+  const areaOf = b => Math.max(0, b.x1 - b.x0) * Math.max(0, b.y1 - b.y0);
+  const overlapArea = (a, b) => Math.max(0, Math.min(a.x1, b.x1) - Math.max(a.x0, b.x0)) * Math.max(0, Math.min(a.y1, b.y1) - Math.max(a.y0, b.y0));
+  const wordsIn = l => l.t.split(/\s+/).filter(Boolean).length;
+  const occupies = l => l.k !== 'run' && l.k !== 'figtext' && l.k !== 'tbl' && (l.k === 'h' || (l.size >= body * 0.85 && wordsIn(l) >= 4) || (l.k === 'foot' && wordsIn(l) >= 6));
+  const minGap = Math.max(54, body * 4.5);
+  const cand = [];
+  for(const p of pages){
+    const pl = lines.filter(l => l.pg === p.n), runs = pl.filter(l => l.k === 'run');
+    const topLim = Math.min(p.H * 0.955, ...runs.filter(l => l.y > p.H / 2).map(l => l.y - l.size * 0.45));
+    const botLim = Math.max(p.H * 0.045, ...runs.filter(l => l.y < p.H / 2).map(l => l.y + l.size * 1.15));
+    const occ = pl.filter(occupies);
+    const xs = occ.length >= 3 ? [Math.min(...occ.map(l => l.x0)), Math.max(...occ.map(l => l.x1))] : [p.W * 0.07, p.W * 0.93];
+    const bands = [[xs[0], xs[1]]];
+    if(occ.length && occ.filter(l => l.w < (xs[1] - xs[0]) * 0.55).length > occ.length * 0.6){ const mid = (xs[0] + xs[1]) / 2; bands.push([xs[0], mid], [mid, xs[1]]); }
+    for(const [bx0, bx1] of bands){
+      const iv = occ.filter(l => overlapX(l.x0, l.x1, bx0, bx1) > Math.min(l.w, bx1 - bx0) * 0.3).map(l => [l.y - l.size * 0.35, l.y + l.size * 1.05]).sort((a, b) => b[1] - a[1]);
+      let cursor = topLim; const gaps = [];
+      for(const [lo, hi] of iv){ if(cursor - hi >= minGap) gaps.push([hi, cursor]); cursor = Math.min(cursor, lo); }
+      if(cursor - botLim >= minGap) gaps.push([botLim, cursor]);
+      for(const [y0, y1] of gaps){
+        const r = {x0:bx0 - 8, x1:bx1 + 8, y0, y1};
+        if(visuals.some(v => v.pg === p.n && overlapArea(v.box, r) > 0.25 * Math.min(areaOf(v.box), areaOf(r)))) continue;
+        if(cand.some(c => c.pg === p.n && overlapArea(c.r, r) > 0.4 * Math.min(areaOf(c.r), areaOf(r)))) continue;
+        cand.push({pg:p.n, r});
+      }
+    }
+  }
+  if(cand.length){
+    const byPg = {}; cand.forEach(c => (byPg[c.pg] = byPg[c.pg] || []).push(c));
+    const pgList = Object.keys(byPg);
+    for(let k = 0; k < pgList.length; k++){
+      const n = +pgList[k], P = pages[n - 1];
+      if(pgList.length > 6 && k % 4 === 0) toast(`Looking for figures and tables (page ${n} of ${pages.length})…`, 60000);
+      try{
+        const page = await pdf.getPage(n), vp = page.getViewport({scale:1.2});
+        const cv = document.createElement('canvas'); cv.width = Math.ceil(vp.width); cv.height = Math.ceil(vp.height);
+        const ctx = cv.getContext('2d', {willReadFrequently:true}); ctx.fillStyle = '#fff'; ctx.fillRect(0, 0, cv.width, cv.height);
+        await page.render({canvasContext:ctx, viewport:vp}).promise;
+        const img = ctx.getImageData(0, 0, cv.width, cv.height).data, W = cv.width;
+        for(const c of byPg[n]){
+          const rr = vp.convertToViewportRectangle([c.r.x0, c.r.y0, c.r.x1, c.r.y1]);
+          const X0 = Math.max(0, Math.floor(Math.min(rr[0], rr[2]))), X1 = Math.min(cv.width - 1, Math.ceil(Math.max(rr[0], rr[2])));
+          const Y0 = Math.max(0, Math.floor(Math.min(rr[1], rr[3]))), Y1 = Math.min(cv.height - 1, Math.ceil(Math.max(rr[1], rr[3])));
+          let ink = 0, tot = 0, mx0 = 1e9, mx1 = -1, my0 = 1e9, my1 = -1;
+          for(let y = Y0; y <= Y1; y += 2) for(let x = X0; x <= X1; x += 2){
+            const i = (y * W + x) * 4, R = img[i], G = img[i + 1], B = img[i + 2];
+            const lum = (R + G + B) / 3, sat = Math.max(R, G, B) - Math.min(R, G, B);
+            tot++;
+            if(lum < 200 || (sat > 50 && lum < 245)){ ink++; if(x < mx0) mx0 = x; if(x > mx1) mx1 = x; if(y < my0) my0 = y; if(y > my1) my1 = y; }
+          }
+          if(!tot || ink / tot < 0.012 || mx1 - mx0 < 50 * 1.2 || my1 - my0 < 36 * 1.2) continue;
+          const a = vp.convertToPdfPoint(mx0, my0), b = vp.convertToPdfPoint(mx1, my1);
+          const r = {x0:Math.min(a[0], b[0]) - 3, x1:Math.max(a[0], b[0]) + 3, y0:Math.min(a[1], b[1]) - 3, y1:Math.max(a[1], b[1]) + 3};
+          // if what's there is only a few lines of text, it isn't a figure
+          const inside = lines.filter(l => l.pg === n && !l.k && (l.x0 + l.x1) / 2 > r.x0 && (l.x0 + l.x1) / 2 < r.x1 && l.y + l.size * 0.3 > r.y0 && l.y + l.size * 0.3 < r.y1);
+          const textArea = inside.reduce((t, l) => t + l.w * l.size * 1.2, 0);
+          if(textArea > areaOf(r) * 0.55) continue;
+          if(inside.reduce((t, l) => t + l.t.length, 0) > MAX_FIG_TEXT) continue;
+          if(visuals.some(v => v.pg === n && overlapArea(v.box, r) > 0.25 * Math.min(areaOf(v.box), areaOf(r)))) continue;
+          // a caption just below or above names it
+          const caps = lines.filter(l => l.pg === n && l.cap && !l.used && !l.k);
+          let cap = null, bd = 1e9;
+          for(const l of caps){
+            const d = l.y <= r.y0 ? r.y0 - (l.y + l.size) : l.y - r.y1 + 20;
+            if(d >= -4 && d < body * 4 && d < bd && overlapX(l.x0, l.x1 + 40, r.x0, r.x1) > 0){ bd = d; cap = l; }
+          }
+          inside.forEach(l => l.k = 'figtext');
+          const kind = cap && cap.cap.kind === 'tbl' ? 'tbl' : 'fig';
+          const v = {t:kind, pg:n, box:r, label: cap ? cap.cap.label : (kind === 'tbl' ? 'Table on page ' : 'Figure on page ') + n};
+          visuals.push(v);
+          if(cap){ cap.used = true; (cap.visBefore = cap.visBefore || []).push(v); }
+          else{
+            const pl = lines.filter(l => l.pg === n && l.k !== 'run');
+            const after = pl.filter(l => !l.k && l.y < r.y0).sort((x, y) => lines.indexOf(x) - lines.indexOf(y))[0];
+            if(after) (after.visBefore = after.visBefore || []).push(v);
+            else{ const last = pl.filter(l => !l.k || l.k === 'h').pop() || pl.pop(); if(last) (last.visAfter = last.visAfter || []).push(v); }
+          }
+        }
+        page.cleanup();
+      }catch(e){ console.warn('figure search failed on page', n, e); }
+    }
+  }
+  // safety net: if a page lost much of its text to figures or tables, give the text back
+  for(const p of pages){
+    const pl = lines.filter(l => l.pg === p.n && l.k !== 'run' && !l.cap);
+    const all = pl.reduce((n, l) => n + l.t.length, 0), hidden = pl.filter(l => l.k === 'figtext' || l.k === 'tbl').reduce((n, l) => n + l.t.length, 0);
+    if(all > 400 && hidden > all * 0.25){
+      pl.forEach(l => { if(l.k === 'figtext' || l.k === 'tbl'){ l.k = undefined; delete l.tblStart; } });
+      for(let i = visuals.length - 1; i >= 0; i--){
+        const v = visuals[i];
+        if(v.pg === p.n && textCharsIn(v.box, p.n) > MAX_FIG_TEXT){
+          visuals.splice(i, 1);
+          lines.forEach(l => { ['visBefore', 'visAfter'].forEach(k => { if(l[k]) l[k] = l[k].filter(x => x !== v); }); });
+        }
+      }
+    }
+  }
+  // pages with figures but no text at all (plates)
+  const orphan = visuals.filter(v => !blocksAttached(v));
+  function blocksAttached(v){ return lines.some(l => (l.visBefore && l.visBefore.includes(v)) || (l.visAfter && l.visAfter.includes(v)) || l.tblStart === v); }
 
   /* lines → blocks */
   const blocks = []; let lastBody = null, lastBodyLine = null, prevH = null;
@@ -944,6 +1094,11 @@ async function parsePdf(file){
     pushVis(l.visAfter);
   }
   blocks.forEach(b => { if(!isVis(b)) delete b.y; });
+  for(const v of orphan){
+    let at = blocks.findIndex(b => (b.pg || 0) > v.pg);
+    if(at < 0) at = blocks.length;
+    blocks.splice(at, 0, v);
+  }
 
   /* picture crops of figures and tables */
   const byPage = {};
@@ -1182,7 +1337,7 @@ async function addDoc(title, blocks, extra){
   blocks = blocks || [];
   if(!blocks.some(b => !isVis(b) && /[A-Za-z0-9]/.test(b.x))){ toast('There’s no text to read. Paste or open something with words in it.'); return null; }
   if(!title) title = (blocks.find(b => b.t === 'h') || blocks.find(b => !isVis(b))).x.slice(0, 80);
-  const d = Object.assign({id: Date.now().toString(36) + Math.random().toString(36).slice(2,6), title, blocks, ov:{}, fmt:3, added: Date.now(), updated: Date.now()}, extra || {});
+  const d = Object.assign({id: Date.now().toString(36) + Math.random().toString(36).slice(2,6), title, blocks, ov:{}, fmt:5, added: Date.now(), updated: Date.now()}, extra || {});
   d.words = blocks.reduce((n, b) => n + (isVis(b) ? 0 : wc(b.x)), 0);
   docs.push(d);
   keepStorage();
@@ -1247,7 +1402,7 @@ async function openFile(f, replaceId){
     let blocks, extra = {};
     if(/\.pdf$/i.test(f.name) || f.type === 'application/pdf'){
       toast('Reading the PDF…', 60000);
-      const r = await parsePdf(f); blocks = r.blocks; extra.pages = r.pages; extra.file = f;
+      const r = await parsePdf(f); blocks = r.blocks; extra.pages = r.pages; extra.file = f; extra.fmt = 5;
       if(r.title && r.title.length >= 8 && r.title.length <= 160) title = r.title;
       if(!blocks.some(b => !isVis(b))){ toast('No text found in that PDF. Scanned PDFs contain pictures of text, so they can’t be read aloud.'); return; }
     }else if(/\.epub$/i.test(f.name) || f.type === 'application/epub+zip'){
@@ -1269,7 +1424,7 @@ async function openFile(f, replaceId){
       const old = docs.find(x => x.id === replaceId);
       if(old){
         const ratio = (positions[old.id] || 0) / Math.max(1, old.sents || 1);
-        Object.assign(old, extra, {blocks, fmt:3, ov:{}, updated: Date.now(), words: blocks.reduce((n, b) => n + (isVis(b) ? 0 : wc(b.x)), 0)});
+        Object.assign(old, extra, {blocks, fmt:5, ov:{}, updated: Date.now(), words: blocks.reduce((n, b) => n + (isVis(b) ? 0 : wc(b.x)), 0)});
         if(!extra.pages) delete old.pages;
         await store.put(old);
         openDoc(old.id);
@@ -1381,6 +1536,7 @@ function setMode(m){
 document.querySelectorAll('#modeSeg button').forEach(b => b.onclick = () => setMode(b.dataset.mode));
 
 /* ======================= reader ======================= */
+let fastEnds = 0;
 let cur = null, S = [], H = [], idx = 0, playing = false, token = 0, words = [], activeEl = null, activeWord = null, curSecEl = null, curPgEl = null, curFigEl = null, forceB = -1;
 const KIND_LABEL = {foot:'Footnote, skipped', note:'Publishing note, skipped', cap:'Caption, skipped'};
 
@@ -1472,6 +1628,13 @@ function makeVisual(b, bi){
   ex.onclick = () => explainClick(bi, ex);
   act.append(ex);
   if(cur.file && b.pg){ const vp = document.createElement('button'); vp.innerHTML = ICON_PAGE + `<span>View page ${b.pg}</span>`; vp.onclick = () => openPage(b.pg); act.append(vp); }
+  const rn = document.createElement('button'); rn.className = 'mini'; rn.title = 'Rename'; rn.setAttribute('aria-label', 'Rename ' + b.label);
+  rn.innerHTML = '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 20h4L19 9l-4-4L4 16z"/></svg>';
+  rn.onclick = () => renameVisual(b);
+  const rm = document.createElement('button'); rm.className = 'mini'; rm.title = 'Remove from the book'; rm.setAttribute('aria-label', 'Remove ' + b.label);
+  rm.innerHTML = '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 7h16M9 7V4h6v3M6 7l1 13h10l1-13"/></svg>';
+  rm.onclick = () => removeVisual(b);
+  act.append(rn, rm);
   fig.append(act);
   const fx = document.createElement('div'); fx.className = 'fx'; fx.hidden = !b.ex; fig.append(fx);
   return {wrap: fig, inner: fx};
@@ -1574,8 +1737,10 @@ function renderOutline(){
   });
   $('#explainAll').parentElement.hidden = !vis.some(([b]) => !b.ex);
   $('#tabPg').hidden = !cur.pages;
-  $('#tabFig').hidden = !vis.length;
-  const want = prefs.tab === 'pg' && cur.pages ? 'pg' : prefs.tab === 'fig' && vis.length ? 'fig' : 'sec';
+  $('#tabFig').hidden = false;
+  $('#capPage').hidden = !(cur.file && cur.pages);
+  if(!vis.length){ const li = document.createElement('li'); li.className = 'side-empty'; li.textContent = 'No figures or tables yet. Add them with the buttons above.'; fl.append(li); }
+  const want = prefs.tab === 'pg' && cur.pages ? 'pg' : prefs.tab === 'fig' ? 'fig' : 'sec';
   showTab(want, true);
   curSecEl = curPgEl = curFigEl = null;
   markOutline();
@@ -1616,6 +1781,35 @@ async function openDoc(id){
   const first = nextReadable(idx); setActive(first < 0 ? idx : first, true);
   if('mediaSession' in navigator){ try{ navigator.mediaSession.metadata = new MediaMetadata({title: cur.title, artist: 'Readaloud'}); }catch(e){} }
   try{ history.replaceState(null, '', '#' + id); }catch(e){}
+  if(cur.file && cur.pages && (cur.fmt || 0) < 5 && !cur.rescanning) rescan(cur);
+}
+// books added with an older version: find their figures and tables again, keeping explanations
+async function rescan(d){
+  d.rescanning = true;
+  const before = d.blocks.filter(isVis).length;
+  toast('Finding the figures and tables in this book…', 60000);
+  try{
+    const r = await parsePdf(d.file);
+    const pnBy = new Map(d.blocks.filter(b => b.pn).map(b => [b.x, b.pn]));
+    const exBy = new Map(d.blocks.filter(b => isVis(b) && b.ex && !/on page \d+$/.test(b.label)).map(b => [b.label, b.ex]));
+    r.blocks.forEach(b => { if(b.t === 'p' && pnBy.has(b.x)) b.pn = pnBy.get(b.x); if(isVis(b) && exBy.has(b.label)) b.ex = exBy.get(b.label); });
+    d.blocks.filter(b => b.user).forEach(u => {
+      let at = -1; r.blocks.forEach((b, i) => { if(b.pg === u.pg) at = i; });
+      r.blocks.splice(at >= 0 ? at + 1 : r.blocks.length, 0, u);
+    });
+    const ratio = (positions[d.id] || 0) / Math.max(1, d.sents || 1);
+    d.blocks = r.blocks; d.fmt = 5; d.words = r.blocks.reduce((n, b) => n + (isVis(b) ? 0 : wc(b.x)), 0);
+    delete d.rescanning; await store.put(d);
+    if(cur === d){
+      const wasPlaying = playing; stop();
+      buildModel(); d.sents = S.length; renderText(); renderOutline();
+      $('#scrub').max = Math.max(0, S.length - 1);
+      const j = nextReadable(Math.round(ratio * S.length)); setActive(j >= 0 ? j : 0, false);
+      if(wasPlaying) play();
+    }
+    const n = d.blocks.filter(isVis).length;
+    toast(n > before ? `Added ${n - before} figures and tables to this book.` : (n ? `This book has ${n} figures and tables.` : 'No figures or tables were found in this book.'), 6000);
+  }catch(e){ d.fmt = 5; delete d.rescanning; store.put(d); hideToast(); }
 }
 function closeReader(){
   stop(); cur = null; viewerPdf = null;
@@ -1628,8 +1822,9 @@ function closeReader(){
 }
 // rebuild after a change in content (a new explanation), keeping the reading position
 function rebuild(){
-  const s = S[idx], keepB = s ? s.b : 0, off = s ? S.slice(0, idx).filter(x => x.b === keepB).length : 0;
+  const s = S[idx], keepObj = s ? cur.blocks[s.b] : null, off = s ? S.slice(0, idx).filter(x => x.b === s.b).length : 0;
   buildModel(); cur.sents = S.length;
+  let keepB = keepObj ? cur.blocks.indexOf(keepObj) : 0; if(keepB < 0) keepB = Math.min(s ? s.b : 0, cur.blocks.length - 1);
   renderText(); renderOutline();
   let ni = S.findIndex(x => x.b === keepB); if(ni < 0) ni = 0;
   for(let k = 0; k < off && S[ni + 1] && S[ni + 1].b === keepB; k++) ni++;
@@ -1675,8 +1870,8 @@ function updateProgress(){
   $('#left').textContent = total ? `${Math.max(1, Math.round(left / (165 * prefs.rate)))} min left` : '';
 }
 function updatePlay(){
-  $('#playIco').hidden = playing; $('#pauseIco').hidden = !playing;
-  $('#playBtn').setAttribute('aria-label', playing ? 'Pause' : 'Play');
+  $('#playBtn').classList.toggle('on', playing); $('#pauseBtn').classList.toggle('on', !playing);
+  $('#playBtn').setAttribute('aria-pressed', playing); $('#pauseBtn').setAttribute('aria-pressed', !playing);
   if('mediaSession' in navigator) navigator.mediaSession.playbackState = playing ? 'playing' : 'paused';
 }
 function speakFrom(i){
@@ -1712,8 +1907,19 @@ function speakFrom(i){
   const v = currentVoice(prof ? 'prof' : 'reader'); if(v){ u.voice = v; u.lang = v.lang; }
   if(prof && v && v === currentVoice('reader')) u.pitch = 0.85;
   u.rate = prefs.rate;
+  const t0 = Date.now();
   u.onboundary = e => { if(my === token && (!e.name || e.name === 'word')) highlightWord(e.charIndex); };
-  u.onend = () => { if(my === token && playing){ const ni = S.indexOf(s); speakFrom(ni >= 0 ? ni + 1 : idx + 1); } };
+  u.onend = () => {
+    if(my !== token || !playing) return;
+    const expected = s.spk.length * 30 / prefs.rate;            // a rough minimum time to say it, in ms
+    if(s.spk.length > 30 && Date.now() - t0 < Math.min(400, expected * 0.15)) fastEnds++; else fastEnds = 0;
+    if(fastEnds >= 3){
+      fastEnds = 0; playing = false; updatePlay(); setActive(j, false);
+      toast('The voice stopped speaking, so playback was paused here. Choose another voice with the voice button, then press Play.', 9000);
+      return;
+    }
+    const ni = S.indexOf(s); speakFrom(ni >= 0 ? ni + 1 : idx + 1);
+  };
   u.onerror = e => {
     if(my !== token || e.error === 'interrupted' || e.error === 'canceled') return;
     playing = false; updatePlay(); toast('Playback stopped (' + e.error + '). Press play to try again.');
@@ -1946,11 +2152,13 @@ async function getViewerPdf(){
   const pdf = await lib.getDocument({data: await cur.file.arrayBuffer()}).promise;
   viewerPdf = {id: cur.id, pdf}; return pdf;
 }
-async function openPage(n){
+async function openPage(n, capture){
   if(!cur || !cur.file){ toast('The original file isn’t saved for this book, so its pages can’t be shown. Open the file again to add it.'); return; }
-  viewPg = n; $('#vPrev').hidden = $('#vNext').hidden = false;
+  viewPg = n; $('#vPrev').hidden = $('#vNext').hidden = false; $('#vSnip').hidden = false;
   if(!$('#viewDlg').open) $('#viewDlg').showModal();
+  endSnip();
   await renderViewPage();
+  if(capture) startSnip();
 }
 async function renderViewPage(){
   const body = $('#vBody'); body.innerHTML = '';
@@ -1961,20 +2169,147 @@ async function renderViewPage(){
     const want = Math.min(body.clientWidth || 900, 1100) * (window.devicePixelRatio || 1);
     const vp1 = page.getViewport({scale:1}), vp = page.getViewport({scale: want / vp1.width});
     const cv = document.createElement('canvas'); cv.width = Math.ceil(vp.width); cv.height = Math.ceil(vp.height);
-    body.append(cv);
+    const wrap = document.createElement('div'); wrap.className = 'vpage'; wrap.append(cv); body.append(wrap);
     await page.render({canvasContext: cv.getContext('2d'), viewport: vp}).promise;
+    if($('#viewDlg').classList.contains('snipping')) startSnip();
   }catch(e){ body.textContent = 'This page couldn’t be shown.'; }
 }
 function openImage(b){
+  endSnip(); $('#vSnip').hidden = true;
   $('#vTitle').textContent = b.label; $('#vPrev').hidden = $('#vNext').hidden = true;
   const body = $('#vBody'); body.innerHTML = '';
   const img = document.createElement('img'); img.src = b.src; img.alt = b.label; body.append(img);
   $('#viewDlg').showModal();
 }
+/* ---- adding your own pictures of figures and tables ---- */
+function shrinkImage(src, max){
+  return new Promise(res => {
+    const im = new Image();
+    im.onload = () => {
+      const sc = Math.min(1, (max || 1600) / Math.max(im.naturalWidth, im.naturalHeight));
+      if(sc === 1 && src.length < 600000){ res(src); return; }
+      const cv = document.createElement('canvas'); cv.width = Math.round(im.naturalWidth * sc); cv.height = Math.round(im.naturalHeight * sc);
+      const c = cv.getContext('2d'); c.fillStyle = '#fff'; c.fillRect(0, 0, cv.width, cv.height); c.drawImage(im, 0, 0, cv.width, cv.height);
+      res(cv.toDataURL('image/jpeg', 0.88));
+    };
+    im.onerror = () => res('');
+    im.src = src;
+  });
+}
+function nextImageName(kind){
+  const n = cur.blocks.filter(b => isVis(b) && b.user).length + 1;
+  return (kind === 'tbl' ? 'Table ' : 'Picture ') + n;
+}
+// where a new picture goes: after the paragraph being read, or at the end of a given page
+function insertAt(pg){
+  const s = S[idx];
+  if(s && (!pg || s.pg === pg)){ let b = s.b; while(cur.blocks[b + 1] && cur.blocks[b + 1].t === 'cap') b++; return b + 1; }
+  let last = -1; cur.blocks.forEach((b, i) => { if(b.pg === pg && b.t !== 'run') last = i; });
+  if(last >= 0) return last + 1;
+  const after = cur.blocks.findIndex(b => b.pg > pg); return after >= 0 ? after : cur.blocks.length;
+}
+async function addPicture(src, label, pg){
+  if(!cur) return;
+  src = await shrinkImage(src, 1600);
+  if(!src){ toast('That picture couldn’t be added. Try a PNG or JPG image.'); return; }
+  const at = insertAt(pg);
+  const near = cur.blocks[at - 1] || cur.blocks[at] || {};
+  const b = {t:'fig', src, label: label || nextImageName(), x:'', pg: pg || near.pg || 0, user:true};
+  b.x = b.label;
+  cur.blocks.splice(at, 0, b);
+  pending.clear();
+  await store.put(cur);
+  rebuild();
+  const el = document.getElementById('fig-' + cur.blocks.indexOf(b));
+  if(el) el.scrollIntoView({block:'center', behavior:'smooth'});
+  toast(`Added “${b.label}” to the book.` + (profOn() ? ' The professor will explain it when the reading gets there.' : ''), 5000);
+}
+async function renameVisual(b){
+  const nt = prompt('Name for this figure or table (for example “Figure 3.2” or “Table 1”)', b.label);
+  if(!nt || !nt.trim()) return;
+  b.label = b.x = nt.trim(); delete b.ex;
+  await store.put(cur); rebuild();
+}
+async function removeVisual(b){
+  if(!confirm(`Remove “${b.label}” from this book? The original file isn’t changed.`)) return;
+  const i = cur.blocks.indexOf(b); if(i < 0) return;
+  const wasPlaying = playing; stop();
+  cur.blocks.splice(i, 1); pending.clear();
+  await store.put(cur); rebuild();
+  if(wasPlaying) play();
+}
+// paste a screenshot anywhere while a book is open
+document.addEventListener('paste', async e => {
+  if(!cur || (e.target.closest && e.target.closest('input,textarea'))) return;
+  const items = [...((e.clipboardData && e.clipboardData.items) || [])];
+  const it = items.find(x => x.type && x.type.startsWith('image/'));
+  if(!it) return;
+  e.preventDefault();
+  const data = await blobToData(it.getAsFile());
+  const pg = $('#viewDlg').open && viewPg ? viewPg : 0;
+  await addPicture(data, null, pg || 0);
+});
+$('#addPic').onclick = () => $('#picIn').click();
+$('#picIn').onchange = async e => { const f = e.target.files[0]; e.target.value = ''; if(f){ closeDrawer(); await addPicture(await blobToData(f)); } };
+$('#capPage').onclick = () => { closeDrawer(); const s = S[idx]; openPage(s && s.pg ? s.pg : 1, true); };
+
+// capture a region of a PDF page
+let snip = null;
+function startSnip(){
+  $('#viewDlg').classList.add('snipping'); $('#snipHint').hidden = false; $('#snipBar').hidden = true; $('#vSnip').hidden = true;
+  const wrap = $('#vBody .vpage'); if(!wrap) return;
+  let layer = wrap.querySelector('.snaplayer');
+  if(!layer){ layer = document.createElement('div'); layer.className = 'snaplayer'; wrap.append(layer); }
+  let start = null, rect = null;
+  layer.onpointerdown = e => {
+    e.preventDefault(); layer.setPointerCapture(e.pointerId);
+    const r = wrap.getBoundingClientRect(); start = {x: e.clientX - r.left, y: e.clientY - r.top};
+    if(rect) rect.remove(); rect = document.createElement('div'); rect.className = 'sniprect'; wrap.append(rect);
+  };
+  layer.onpointermove = e => {
+    if(!start) return;
+    const r = wrap.getBoundingClientRect(), x = Math.max(0, Math.min(r.width, e.clientX - r.left)), y = Math.max(0, Math.min(r.height, e.clientY - r.top));
+    const box = {x: Math.min(start.x, x), y: Math.min(start.y, y), w: Math.abs(x - start.x), h: Math.abs(y - start.y)};
+    Object.assign(rect.style, {left: box.x + 'px', top: box.y + 'px', width: box.w + 'px', height: box.h + 'px'});
+    snip = {fx: box.x / r.width, fy: box.y / r.height, fw: box.w / r.width, fh: box.h / r.height};
+  };
+  layer.onpointerup = () => {
+    start = null;
+    if(!snip || snip.fw < 0.03 || snip.fh < 0.02){ if(rect) rect.remove(); snip = null; return; }
+    $('#snipHint').hidden = true; $('#snipBar').hidden = false;
+    $('#snipLabel').value = nextImageName(); $('#snipLabel').select();
+  };
+}
+function endSnip(){
+  $('#viewDlg').classList.remove('snipping'); $('#snipHint').hidden = true; $('#snipBar').hidden = true; snip = null;
+  $('#vSnip').hidden = !(cur && cur.file && $('#vPrev').hidden === false);
+  document.querySelectorAll('#vBody .snaplayer, #vBody .sniprect').forEach(e => e.remove());
+}
+$('#vSnip').onclick = startSnip;
+$('#snipCancel').onclick = endSnip;
+$('#snipAdd').onclick = async () => {
+  if(!snip) return;
+  const label = $('#snipLabel').value.trim(), cut = snip, pgNo = viewPg;
+  try{
+    const pdf = await getViewerPdf(), page = await pdf.getPage(pgNo);
+    const vp1 = page.getViewport({scale:1}), sc = Math.min(3, 2600 / Math.max(vp1.width, vp1.height)), vp = page.getViewport({scale: sc});
+    const cv = document.createElement('canvas'); cv.width = Math.ceil(vp.width); cv.height = Math.ceil(vp.height);
+    const c = cv.getContext('2d'); c.fillStyle = '#fff'; c.fillRect(0, 0, cv.width, cv.height);
+    await page.render({canvasContext: c, viewport: vp}).promise;
+    const x = Math.round(cut.fx * cv.width), y = Math.round(cut.fy * cv.height), w = Math.round(cut.fw * cv.width), h = Math.round(cut.fh * cv.height);
+    const out = document.createElement('canvas'); out.width = w; out.height = h;
+    const o = out.getContext('2d'); o.fillStyle = '#fff'; o.fillRect(0, 0, w, h); o.drawImage(cv, x, y, w, h, 0, 0, w, h);
+    endSnip();
+    await addPicture(out.toDataURL('image/jpeg', 0.9), label, pgNo);
+    toast(`Added “${label || 'picture'}” from page ${pgNo}. Capture another, or close this window.`, 5000);
+  }catch(e){ toast('That area couldn’t be captured. Try again.'); }
+};
+
 $('#vPrev').onclick = () => { if(viewPg > 1){ viewPg--; renderViewPage(); } };
 $('#vNext').onclick = () => { if(viewPg < cur.pages){ viewPg++; renderViewPage(); } };
-$('#vClose').onclick = () => $('#viewDlg').close();
-$('#viewDlg').addEventListener('click', e => { if(e.target === $('#viewDlg')) $('#viewDlg').close(); });
+$('#vClose').onclick = () => { endSnip(); $('#viewDlg').close(); };
+$('#viewDlg').addEventListener('close', () => endSnip());
+$('#viewDlg').addEventListener('click', e => { if(e.target === $('#viewDlg') && !$('#viewDlg').classList.contains('snipping')) $('#viewDlg').close(); });
 
 /* ======================= settings ======================= */
 function renderSettings(){
@@ -2057,7 +2392,8 @@ $('#scrim').onclick = closeDrawer;
 $('#tabSec').onclick = () => showTab('sec');
 $('#tabPg').onclick = () => { showTab('pg'); curPgEl && curPgEl.scrollIntoView({block:'nearest'}); };
 $('#tabFig').onclick = () => { showTab('fig'); curFigEl && curFigEl.scrollIntoView({block:'nearest'}); };
-$('#playBtn').onclick = toggle;
+$('#playBtn').onclick = () => { if(!playing) play(); };
+$('#pauseBtn').onclick = () => { if(playing) stop(); };
 $('#prevBtn').onclick = () => step(-1);
 $('#nextBtn').onclick = () => step(1);
 $('#prevPara').onclick = prevPara;
@@ -2118,7 +2454,7 @@ window.addEventListener('appinstalled', () => { $('#installBtn').hidden = true; 
 /* ======================= start ======================= */
 (async function init(){
   if(!SPEEDS.includes(prefs.rate)){ prefs.rate = 0.8; savePrefs(); }
-  renderSpeed(); renderMode();
+  renderSpeed(); renderMode(); updatePlay();
   applyFs(); fillVoices();
   docs = await store.all();
   renderLibrary();

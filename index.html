@@ -5,7 +5,13 @@
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
 <title>Readaloud</title>
 <meta name="description" content="Listen to articles and papers read aloud, with references, citations and footnotes skipped.">
-<link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>🎧</text></svg>">
+<link rel="icon" href="icon-192.png" type="image/png">
+<link rel="manifest" href="manifest.webmanifest">
+<link rel="apple-touch-icon" href="icon-192.png">
+<meta name="theme-color" content="#2E4A9E">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-title" content="Readaloud">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Figtree:wght@400;500;600&family=Literata:opsz,wght@7..72,400;7..72,600&display=swap" rel="stylesheet">
@@ -187,6 +193,28 @@ button{cursor:pointer}
 .s[data-k="pnl"]{display:none}
 body.mode-read .pnote{display:none}
 
+.libbtn{display:inline-flex;align-items:center;gap:.4rem;background:var(--surface);border:1.5px solid var(--line);border-radius:999px;padding:.35rem .8rem;font-weight:600;font-size:.88rem;color:var(--ink);flex:none}
+.libbtn:hover{border-color:var(--accent);color:var(--accent)}
+.libbtn svg{width:1.1rem;height:1.1rem}
+@media (max-width:640px){ .libbtn span{display:none} .libbtn{padding:.45rem} }
+.side-lib-link{padding:0 .75rem .5rem}
+.side-lib-link button{width:100%;display:flex;align-items:center;gap:.35rem;background:var(--bg);border:none;border-radius:.6rem;padding:.55rem .6rem;font-weight:600;font-size:.9rem;color:var(--accent);text-align:left}
+.side-lib-link svg{width:1rem;height:1rem;flex:none}
+.cont{margin:0 0 2rem}
+.cont-btn{width:100%;display:flex;align-items:center;gap:1rem;text-align:left;background:var(--surface);border:1px solid var(--line);border-radius:1rem;padding:1rem 1.1rem}
+.cont-btn:hover{border-color:var(--accent)}
+.cont-btn svg{width:2.6rem;height:2.6rem;flex:none;padding:.6rem;border-radius:50%;background:var(--accent);color:var(--on-accent)}
+.cont-btn .ct{min-width:0}
+.cont-btn small{display:block;color:var(--muted);font-size:.82rem}
+.cont-btn b{display:block;font-family:'Literata',Georgia,serif;font-size:1.1rem;font-weight:600;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.libtools{display:flex;flex-wrap:wrap;align-items:center;gap:.75rem;justify-content:space-between;margin:0 0 .75rem}
+.libtools h3{margin:0;font-family:'Literata',Georgia,serif;font-weight:600;font-size:1.2rem}
+.libtools input{flex:1;min-width:12rem;max-width:18rem;background:var(--surface);border:1px solid var(--line);border-radius:999px;padding:.5rem .9rem}
+.nomatch{color:var(--muted)}
+.oldnote{background:var(--surface);border:1px solid var(--line);border-left:4px solid var(--hl);border-radius:.6rem;padding:1rem 1.1rem;margin:0 0 2rem;font-family:'Figtree',system-ui,sans-serif;font-size:.95rem;line-height:1.5}
+.oldnote .btn{margin-top:.8rem}
+.offline{position:fixed;top:calc(4rem + env(safe-area-inset-top,0px));left:50%;transform:translateX(-50%);z-index:20;background:var(--surface);border:1px solid var(--line);border-radius:.7rem;padding:.55rem .9rem;font-size:.88rem;box-shadow:0 .4rem 1.2rem rgba(10,15,30,.15);max-width:min(32rem,calc(100vw - 2rem))}
+
 /* ---------- figures and tables ---------- */
 .blk.fig{margin:1.6em 0;padding:1rem;background:var(--surface);border:1px solid var(--line);border-radius:.9rem;font-family:'Figtree',system-ui,sans-serif}
 .fig-label{font-weight:600;font-size:.8rem;color:var(--muted);margin:0 0 .6rem}
@@ -264,6 +292,7 @@ dialog textarea{min-height:40vh;resize:vertical;font-family:'Literata',Georgia,s
 
 <aside class="side" id="side" aria-label="Library and contents">
   <div class="brand"><button id="homeBtn" aria-label="Go to library">Readaloud</button></div>
+  <div class="side-lib-link" id="sideLibLink" hidden><button id="sideLibBtn"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M15 18l-6-6 6-6"/></svg>All my books and papers</button></div>
   <div class="side-scroll">
     <div id="sideLib">
       <h4>Library</h4>
@@ -294,6 +323,7 @@ dialog textarea{min-height:40vh;resize:vertical;font-family:'Literata',Georgia,s
   <header class="top">
     <button class="icon-btn menu-btn" id="menuBtn" aria-label="Show sections and pages">
       <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M4 6h16M4 12h16M4 18h10"/></svg></button>
+    <button class="libbtn" id="libBtn" hidden aria-label="Go to my library"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 19V5a2 2 0 0 1 2-2h3v18H6a2 2 0 0 1-2-2zM9 3h4v18H9zM14.5 4.2l3.8-1 3.2 16.8-3.8 1z"/></svg><span>My library</span></button>
     <h2 id="topTitle">Library</h2>
     <div class="seg modeseg" id="modeSeg" role="group" aria-label="Listening mode" hidden>
       <button data-mode="read" aria-pressed="true" title="Read the text only"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M2 5h7a3 3 0 0 1 3 3v12a2 2 0 0 0-2-2H2zM22 5h-7a3 3 0 0 0-3 3v12a2 2 0 0 1 2-2h8z"/></svg><span class="ml">Read</span></button>
@@ -311,16 +341,23 @@ dialog textarea{min-height:40vh;resize:vertical;font-family:'Literata',Georgia,s
         <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M14 3H6a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V9z"/><path d="M14 3v6h6"/></svg>Open file</button>
       <button class="btn" id="pasteBtn">
         <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M12 5v14M5 12h14"/></svg>Paste text</button>
-      <input type="file" id="fileIn" accept=".txt,.md,.markdown,.pdf,.html,.htm,.docx,text/plain,application/pdf,text/html,application/vnd.openxmlformats-officedocument.wordprocessingml.document" hidden>
+      <input type="file" id="fileIn" accept=".txt,.md,.markdown,.pdf,.epub,.html,.htm,.docx,application/epub+zip,text/plain,application/pdf,text/html,application/vnd.openxmlformats-officedocument.wordprocessingml.document" hidden>
+    </div>
+    <div class="cont" id="contCard" hidden></div>
+    <div class="libtools" id="libTools" hidden>
+      <h3 id="libCount">My books and papers</h3>
+      <input type="search" id="libSearch" placeholder="Search your library" aria-label="Search your library">
     </div>
     <ul class="list" id="docList"></ul>
+    <p class="nomatch" id="noMatch" hidden>Nothing in your library matches that search.</p>
     <div class="empty" id="empty" hidden>
-      <p>Your library is empty. Open a PDF, Word file or web page, paste some text, or drop a file anywhere on this page.</p>
+      <p>Your library is empty. Open a PDF, e-book (.epub), Word file or web page, paste some text, or drop a file anywhere on this page.</p>
       <button class="btn" id="sampleBtn">Listen to a sample</button>
     </div>
     <div class="lib-foot">
       <button class="link" id="exportBtn">Back up library</button>
       <button class="link" id="importBtn">Restore from backup</button>
+      <button class="link" id="installBtn" hidden>Install as an app</button>
       <input type="file" id="importIn" accept=".json,application/json" hidden>
     </div>
     <p class="lib-note" id="libNote">Everything you open is saved in this browser, so it’s here next time without uploading again. Use “Back up library” to move your books to another device or browser.</p>
@@ -435,6 +472,7 @@ dialog textarea{min-height:40vh;resize:vertical;font-family:'Literata',Georgia,s
   <div class="vbody" id="vBody"></div>
 </dialog>
 
+<div class="offline" id="offline" role="status" hidden>You’re offline. Your saved books, and any explanations already made, still work. New professor explanations need the internet.</div>
 <div class="toast" id="toast" role="status" hidden></div>
 
 <script>
@@ -491,14 +529,15 @@ const hideToast = () => { $('#toast').hidden = true; };
 const norm = s => String(s).replace(/\s+/g, ' ').trim();
 const END_RE = /^\s*(?:(?:\d+(?:\.\d+)*|[IVX]+)\.?\s+)?(?:references?(?: and notes)?|bibliography|works cited|literature cited|cited literature|acknowledge?ments?|funding(?: information| sources| statement)?|financial (?:support|disclosures?)|sources? of (?:funding|support)|conflicts? of interests?(?: statement)?|competing interests?|declarations?(?: of (?:competing )?interests?)?|disclosures?(?: statement)?|author(?:s'|s’|’s|'s)? contributions?|contributors|data (?:availability|sharing)(?: statement)?|ethics(?: approval| statement| declarations?)?(?: and consent(?: to participate)?)?|abbreviations|supplementary (?:material|materials|data|information|files?)|supporting information|footnotes|endnotes|notes|orcid|consent(?: for publication)?|institutional review board statement|informed consent statement|publisher[’']?s note)\s*:?\s*$/i;
 const KNOWN_H = /^\s*(?:(?:\d+(?:\.\d+)*|[IVX]+)\.?\s+)?(?:abstract|summary|introduction|background|methods?|materials and methods|patients and methods|methodology|study design|results|findings|discussion|conclusions?|case (?:report|presentation|description|history)s?|clinical (?:history|summary|presentation)|limitations|objectives?|aims?|purpose|design|setting|participants|statistical analysis|future directions|recommendations|overview|key points|highlights|clinical significance|pathology|pathologic findings|histology|gross (?:findings|description)|microscopic (?:findings|description)|immunohistochemistry|molecular (?:findings|analysis|studies|testing)|differential diagnosis|diagnosis|treatment|outcomes?|prognosis|appendix(?: [A-Z\d]+)?)\s*:?\s*$/i;
-const CAP_RE = /^(?:supplementary\s+|extended data\s+)?(?:fig(?:ure)?s?\.?|table|tab\.)\s*S?\d+[A-Za-z]?\s*[.:|—–-]/i;
-const CAP_LOOSE = /^(?:(supplementary|extended data)\s+)?(fig(?:ure)?s?\.?|table|tab\.)\s*(S?\d+[A-Za-z]?)(?:\s*[.:|—–-]|\s+[A-Z(])/i;
+const CAP_RE = /^(?:supplementary\s+|extended data\s+|e)?(?:fig(?:ure)?s?\.?|table|tab\.|plate|chart|diagram|illustration|exhibit|box)\s*S?\d+(?:[.\-–]\d+)*[A-Za-z]?\s*[.:|—–-]/i;
+const CAP_LOOSE = /^(?:(supplementary|extended data)\s+)?(fig(?:ure)?s?\.?|table|tab\.|plate|chart|diagram|illustration|exhibit)\s*(S?\d+(?:[.\-–]\d+)*[A-Za-z]?)(?:\s*[.:|—–-]\s|\s*[.:|—–-]$|\s+[A-Z(])/i;
 const NOTE_RE = /^(?:[*†‡]\s*)?(?:correspondence|corresponding author|address (?:for )?correspondence|received|accepted|revised|published(?: online)?|available online|e-?mail|keywords?|key words|copyright|©|\(c\)\s?\d{4}|this (?:is an open access )?article|open access|citation:|to cite this|how to cite|article history|handling editor|edited by|reviewed by|reprints?|disclaimer|abbreviations:)/i;
 const AFFIL_RE = /^(?:\[?[\d*†a-z]{1,2}\]?\s*)?(?:department|division|dept\.|section|laboratory|institute|center|centre|school|faculty|university|hospital)\s+(?:of|for)\b/i;
 
 function capInfo(t){
   const m = String(t).match(CAP_LOOSE); if(!m) return null;
   const kind = /^t/i.test(m[2]) ? 'tbl' : 'fig';
+  m[3] = m[3].replace(/[.\-–]$/, '');
   return {kind, label: (m[1] ? 'Supplementary ' : '') + (kind === 'tbl' ? 'Table ' : 'Figure ') + m[3]};
 }
 function looksRef(t){
@@ -613,9 +652,10 @@ function parseMd(src){
 }
 
 /* ---- html / docx ---- */
-function parseHtml(src){
+function parseHtml(src, book){
   const doc = new DOMParser().parseFromString(src, 'text/html');
-  doc.querySelectorAll('script,style,noscript,svg,nav,header,footer,aside,form,button,iframe,template').forEach(e => e.remove());
+  doc.querySelectorAll(book ? 'script,style,noscript,nav,form,button,iframe,template,aside' : 'script,style,noscript,svg,nav,header,footer,aside,form,button,iframe,template').forEach(e => e.remove());
+  if(book) doc.querySelectorAll('svg').forEach(e => { const im = e.querySelector('image'); if(im){ const i = doc.createElement('img'); i.setAttribute('src', im.getAttribute('href') || im.getAttribute('xlink:href') || ''); e.replaceWith(i); } else e.remove(); });
   doc.querySelectorAll('sup').forEach(e => {
     const t = e.textContent.trim();
     if(/^[\[(]?[\d,\-–\s*†‡a-z]{1,12}[\])]?$/.test(t)) e.replaceWith(doc.createTextNode('[' + t.replace(/[\[\]()]/g, '') + ']'));
@@ -633,7 +673,9 @@ function parseHtml(src){
     }
     if(tag === 'table'){
       const rows = [...e.rows].map(r => [...r.cells].map(c => norm(c.textContent))).filter(r => r.some(Boolean));
-      if(rows.length) blocks.push({t:'tbl', rows});
+      const capEl = e.querySelector('caption'), capTx = capEl ? norm(capEl.textContent) : '', ci = capTx ? capInfo(capTx) : null;
+      if(rows.length) blocks.push(Object.assign({t:'tbl', rows}, ci && ci.kind === 'tbl' ? {label: ci.label} : {}));
+      if(capTx) blocks.push({t:'cap', x:capTx});
       return;
     }
     if(e.querySelector(SEL)) return;
@@ -1078,19 +1120,37 @@ function docMeta(d){
   const pct = Math.min(100, Math.round(pos / total * 100));
   const mins = Math.max(1, Math.round(n * (1 - pos / total) / (165 * prefs.rate)));
   const figs = (d.blocks || []).filter(isVis).length;
-  const extras = [d.pages ? `${d.pages} pages` : '', figs ? `${figs} figures and tables` : ''].filter(Boolean).join(', ');
+  const extras = [d.pages ? `${d.pages} ${d.pages === 1 ? 'page' : 'pages'}` : '', figs ? `${figs} ${figs === 1 ? 'figure or table' : 'figures and tables'}` : ''].filter(Boolean).join(', ');
   return {pct, text: pct === 0 ? `About ${mins} min` + (extras ? ` (${extras})` : '') : `${pct}% read, about ${mins} min left`};
 }
+function docKind(d){ return d.pages ? 'PDF' : (d.kind || 'Text'); }
 function renderLibrary(){
   const ul = $('#docList'); ul.innerHTML = '';
   const sorted = [...docs].sort((a,b) => (b.updated || 0) - (a.updated || 0));
   $('#empty').hidden = docs.length > 0; ul.hidden = !docs.length;
-  sorted.forEach(d => {
+  $('#libTools').hidden = !docs.length;
+  $('#libCount').textContent = `My books and papers (${docs.length})`;
+  // continue listening
+  const last = sorted.find(d => (positions[d.id] || 0) > 0 && docMeta(d).pct < 100);
+  const cc = $('#contCard'); cc.innerHTML = ''; cc.hidden = !last;
+  if(last){
+    const b = document.createElement('button'); b.className = 'cont-btn';
+    b.innerHTML = '<svg viewBox="0 0 24 24" fill="currentColor"><path d="M8 5v14l11-7z"/></svg>';
+    const tx = document.createElement('span'); tx.className = 'ct';
+    const k = document.createElement('small'); k.textContent = 'Continue listening';
+    const t = document.createElement('b'); t.textContent = last.title;
+    const m = document.createElement('small'); m.textContent = docMeta(last).text;
+    tx.append(k, t, m); b.append(tx); b.onclick = () => openDoc(last.id); cc.append(b);
+  }
+  const q = ($('#libSearch').value || '').trim().toLowerCase();
+  const shown = q ? sorted.filter(d => d.title.toLowerCase().includes(q)) : sorted;
+  $('#noMatch').hidden = !(q && !shown.length);
+  shown.forEach(d => {
     const meta = docMeta(d);
     const li = document.createElement('li');
     const b = document.createElement('button'); b.className = 'doc-open';
     const t = document.createElement('span'); t.className = 't'; t.textContent = d.title;
-    const m = document.createElement('span'); m.className = 'm'; m.textContent = meta.text;
+    const m = document.createElement('span'); m.className = 'm'; m.textContent = docKind(d) + ', ' + meta.text.replace(/^A/, 'a');
     const bar = document.createElement('span'); bar.className = 'bar'; const i = document.createElement('i'); i.style.width = meta.pct + '%'; bar.append(i);
     b.append(t, m, bar); b.onclick = () => openDoc(d.id);
     const ren = document.createElement('button'); ren.className = 'icon-btn'; ren.setAttribute('aria-label', 'Rename ' + d.title);
@@ -1122,7 +1182,7 @@ async function addDoc(title, blocks, extra){
   blocks = blocks || [];
   if(!blocks.some(b => !isVis(b) && /[A-Za-z0-9]/.test(b.x))){ toast('There’s no text to read. Paste or open something with words in it.'); return null; }
   if(!title) title = (blocks.find(b => b.t === 'h') || blocks.find(b => !isVis(b))).x.slice(0, 80);
-  const d = Object.assign({id: Date.now().toString(36) + Math.random().toString(36).slice(2,6), title, blocks, ov:{}, added: Date.now(), updated: Date.now()}, extra || {});
+  const d = Object.assign({id: Date.now().toString(36) + Math.random().toString(36).slice(2,6), title, blocks, ov:{}, fmt:3, added: Date.now(), updated: Date.now()}, extra || {});
   d.words = blocks.reduce((n, b) => n + (isVis(b) ? 0 : wc(b.x)), 0);
   docs.push(d);
   keepStorage();
@@ -1130,8 +1190,57 @@ async function addDoc(title, blocks, extra){
   renderLibrary(); return d;
 }
 
+/* ---- e-books (.epub) ---- */
+async function parseEpub(file){
+  if(!window.JSZip) await loadScript('https://cdnjs.cloudflare.com/ajax/libs/jszip/3.10.1/jszip.min.js');
+  const zip = await JSZip.loadAsync(await file.arrayBuffer());
+  const xml = async path => { const f = zip.file(path); if(!f) return null; return new DOMParser().parseFromString(await f.async('text'), 'application/xml'); };
+  const container = await xml('META-INF/container.xml');
+  const opfPath = container && container.querySelector('rootfile') ? container.querySelector('rootfile').getAttribute('full-path') : (Object.keys(zip.files).find(n => /\.opf$/i.test(n)) || '');
+  const opf = await xml(opfPath); if(!opf) throw new Error('not an epub');
+  const base = opfPath.includes('/') ? opfPath.slice(0, opfPath.lastIndexOf('/') + 1) : '';
+  const resolve = (from, href) => { const parts = (from + decodeURIComponent(href.split('#')[0])).split('/'), out = []; for(const p of parts){ if(p === '..') out.pop(); else if(p !== '.') out.push(p); } return out.join('/'); };
+  const items = {}; opf.querySelectorAll('manifest > item, item').forEach(it => items[it.getAttribute('id')] = {href: it.getAttribute('href'), type: it.getAttribute('media-type') || ''});
+  const spine = [...opf.querySelectorAll('spine > itemref, itemref')].map(r => items[r.getAttribute('idref')]).filter(x => x && /html/i.test(x.type + x.href));
+  const titleEl = opf.querySelector('title'); const bookTitle = titleEl ? titleEl.textContent.trim() : '';
+  const imgCache = {};
+  const imgData = async path => {
+    if(path in imgCache) return imgCache[path];
+    const f = zip.file(path); if(!f) return imgCache[path] = '';
+    const ext = (path.split('.').pop() || '').toLowerCase(), mt = {jpg:'image/jpeg', jpeg:'image/jpeg', png:'image/png', gif:'image/gif', webp:'image/webp', svg:'image/svg+xml'}[ext];
+    if(!mt) return imgCache[path] = '';
+    const blob = new Blob([await f.async('uint8array')], {type: mt});
+    // shrink large pictures so the library stays small
+    if(mt !== 'image/svg+xml' && blob.size > 350000){
+      try{
+        const bmp = await createImageBitmap(blob), sc = Math.min(1, 1600 / Math.max(bmp.width, bmp.height));
+        const cv = document.createElement('canvas'); cv.width = Math.round(bmp.width * sc); cv.height = Math.round(bmp.height * sc);
+        const c = cv.getContext('2d'); c.fillStyle = '#fff'; c.fillRect(0, 0, cv.width, cv.height); c.drawImage(bmp, 0, 0, cv.width, cv.height);
+        return imgCache[path] = cv.toDataURL('image/jpeg', 0.86);
+      }catch(e){}
+    }
+    return imgCache[path] = await blobToData(blob);
+  };
+  let html = '';
+  for(let k = 0; k < spine.length; k++){
+    if(spine.length > 8 && k % 5 === 0) toast(`Reading chapter ${k + 1} of ${spine.length}…`, 60000);
+    const path = resolve(base, spine[k].href), f = zip.file(path); if(!f) continue;
+    const doc = new DOMParser().parseFromString(await f.async('text'), 'text/html');
+    const dir = path.includes('/') ? path.slice(0, path.lastIndexOf('/') + 1) : '';
+    for(const im of doc.querySelectorAll('img, image')){
+      const src = im.getAttribute('src') || im.getAttribute('href') || im.getAttribute('xlink:href') || '';
+      if(!src || /^data:/.test(src)) continue;
+      const data = await imgData(resolve(dir, src));
+      if(im.tagName.toLowerCase() === 'img'){ if(data) im.setAttribute('src', data); else im.remove(); }
+      else{ if(data){ im.setAttribute('href', data); im.removeAttribute('xlink:href'); } else im.remove(); }
+    }
+    html += '\n' + (doc.body ? doc.body.innerHTML : '');
+  }
+  return {blocks: parseHtml(html, true), title: bookTitle};
+}
+
 /* ---- files ---- */
-async function openFile(f){
+async function openFile(f, replaceId){
   const name = f.name.replace(/\.[^.]+$/, '').replace(/[_]+/g, ' ');
   let title = name;
   try{
@@ -1141,19 +1250,38 @@ async function openFile(f){
       const r = await parsePdf(f); blocks = r.blocks; extra.pages = r.pages; extra.file = f;
       if(r.title && r.title.length >= 8 && r.title.length <= 160) title = r.title;
       if(!blocks.some(b => !isVis(b))){ toast('No text found in that PDF. Scanned PDFs contain pictures of text, so they can’t be read aloud.'); return; }
+    }else if(/\.epub$/i.test(f.name) || f.type === 'application/epub+zip'){
+      toast('Reading the e-book…', 60000);
+      const r = await parseEpub(f); blocks = r.blocks; if(r.title) title = r.title; extra.kind = 'E-book';
     }else if(/\.docx$/i.test(f.name)){
       toast('Reading the Word file…', 60000);
       if(!window.mammoth) await loadScript('https://cdnjs.cloudflare.com/ajax/libs/mammoth/1.6.0/mammoth.browser.min.js');
       const r = await mammoth.convertToHtml({arrayBuffer: await f.arrayBuffer()});
       blocks = parseHtml(r.value);
-    }else if(/\.html?$/i.test(f.name)) blocks = parseHtml(await f.text());
+      extra.kind = 'Word';
+    }else if(/\.html?$/i.test(f.name)){ blocks = parseHtml(await f.text()); extra.kind = 'Web page'; }
     else if(/\.(md|markdown)$/i.test(f.name)) blocks = parseMd(await f.text());
     else blocks = parsePlain(await f.text());
     hideToast();
     const h0 = blocks.find(b => b.t === 'h' && b.lv === 0);
     if(!extra.file && h0 && name.length < 6) title = h0.x.slice(0, 120);
+    if(replaceId){
+      const old = docs.find(x => x.id === replaceId);
+      if(old){
+        const ratio = (positions[old.id] || 0) / Math.max(1, old.sents || 1);
+        Object.assign(old, extra, {blocks, fmt:3, ov:{}, updated: Date.now(), words: blocks.reduce((n, b) => n + (isVis(b) ? 0 : wc(b.x)), 0)});
+        if(!extra.pages) delete old.pages;
+        await store.put(old);
+        openDoc(old.id);
+        positions[old.id] = Math.round(ratio * S.length); setJSON('ra2-pos', positions);
+        const j = nextReadable(positions[old.id]); if(j >= 0) setActive(j, true);
+        const n = blocks.filter(isVis).length;
+        toast(n ? `Updated. Found ${n} figures and tables.` : 'Updated. No figures or tables were found in this file.', 6000);
+        return;
+      }
+    }
     const d = await addDoc(title, blocks, extra); if(d) openDoc(d.id);
-  }catch(e){ console.error(e); toast('That file couldn’t be opened. Try a PDF with selectable text, a Word (.docx), .txt, .md or .html file.'); }
+  }catch(e){ console.error(e); toast('That file couldn’t be opened. Try a PDF with selectable text, an e-book (.epub), a Word (.docx), .txt, .md or .html file.'); }
 }
 
 
@@ -1273,11 +1401,12 @@ function computeSkips(){
     if(h && h.skip){ s.skip = true; return; }
     if(s.k === 'figl' || s.k === 'fx'){
       const b = cur.blocks[s.b];
-      s.skip = !prof || (s.k === 'figl' && !b.ex && b.exFailed);
+      s.skip = !prof || (s.k === 'figl' && !b.ex && (b.exFailed || !navigator.onLine));
       return;
     }
     if(s.k === 'pnl' || s.k === 'pn'){
       const b = cur.blocks[s.b];
+      if(s.k === 'pnl' && !b.pn && !navigator.onLine){ s.skip = true; return; }
       s.skip = !prof || !prefs.ai.paras || (s.k === 'pnl' && !b.pn && (b.pnFailed || b.pnSkip)) || kindSkip(b.t);
       return;
     }
@@ -1349,6 +1478,13 @@ function makeVisual(b, bi){
 }
 function renderText(){
   const art = $('#text'); art.innerHTML = ''; activeEl = null;
+  if(!cur.fmt && !cur.blocks.some(isVis)){
+    const n = document.createElement('div'); n.className = 'oldnote';
+    n.innerHTML = '<b>Figures and tables are missing from this book.</b> It was added with an older version of Readaloud that didn’t keep them. Open the same file again to add them; your place in the book is kept.';
+    const b = document.createElement('button'); b.className = 'btn primary'; b.textContent = 'Open the file again';
+    b.onclick = () => { replaceTarget = cur.id; $('#fileIn').click(); };
+    n.append(b); art.append(n);
+  }
   let lastPg = 0, el = null, lastB = -1;
   S.forEach((s, i) => {
     if(s.b !== lastB){
@@ -1473,7 +1609,7 @@ async function openDoc(id){
   $('#topTitle').textContent = cur.title;
   $('#scrub').max = Math.max(0, S.length - 1);
   $('#library').hidden = true; $('#text').hidden = false; $('#player').hidden = false;
-  $('#sideLib').hidden = true; $('#sideDoc').hidden = false;
+  $('#sideLib').hidden = true; $('#sideDoc').hidden = false; $('#sideLibLink').hidden = false; $('#libBtn').hidden = false;
   $('#modeSeg').hidden = false; $('#pgBtns').hidden = !cur.pages; renderMode();
   document.body.classList.remove('lib-view');
   window.scrollTo(0, 0);
@@ -1484,7 +1620,7 @@ async function openDoc(id){
 function closeReader(){
   stop(); cur = null; viewerPdf = null;
   $('#text').hidden = true; $('#player').hidden = true; $('#library').hidden = false;
-  $('#sideLib').hidden = false; $('#sideDoc').hidden = true; $('#modeSeg').hidden = true; closeVoicePanel();
+  $('#sideLib').hidden = false; $('#sideDoc').hidden = true; $('#modeSeg').hidden = true; $('#sideLibLink').hidden = true; $('#libBtn').hidden = true; closeVoicePanel();
   $('#topTitle').textContent = 'Library';
   document.body.classList.add('lib-view');
   renderLibrary(); window.scrollTo(0, 0);
@@ -1667,7 +1803,7 @@ If the image is unclear or cut off, say so briefly and explain what you can from
 
 function contextFor(bi, d){
   d = d || cur; const b = d.blocks[bi];
-  const num = (b.label.match(/(S?\d+[A-Za-z]?)$/) || [])[1];
+  const num = (b.label.match(/(S?\d+(?:[.\-–]\d+)*[A-Za-z]?)$/) || [])[1];
   let cap = '';
   for(const off of [1, -1, 2, -2, 3, -3]){
     const x = d.blocks[bi + off];
@@ -1910,9 +2046,12 @@ $('#pasteBtn').onclick = () => { $('#pTitle').value = ''; $('#pText').value = ''
 $('#pCancel').onclick = () => $('#pasteDlg').close();
 $('#pAdd').onclick = async () => { const d = await addDoc($('#pTitle').value.trim(), parsePlain($('#pText').value)); if(d){ $('#pasteDlg').close(); openDoc(d.id); } };
 $('#fileBtn').onclick = () => $('#fileIn').click();
-$('#fileIn').onchange = e => { const f = e.target.files[0]; e.target.value = ''; if(f) openFile(f); };
+let replaceTarget = null;
+$('#fileIn').onchange = e => { const f = e.target.files[0]; e.target.value = ''; const rt = replaceTarget; replaceTarget = null; if(f) openFile(f, rt); };
+$('#fileBtn').addEventListener('click', () => { replaceTarget = null; }, true);
 $('#sampleBtn').onclick = async () => { const d = await addDoc('The keeper’s night', parsePlain(SAMPLE)); if(d) openDoc(d.id); };
-$('#homeBtn').onclick = () => { closeDrawer(); if(cur) closeReader(); };
+$('#homeBtn').onclick = $('#libBtn').onclick = $('#sideLibBtn').onclick = () => { closeDrawer(); if(cur) closeReader(); };
+$('#libSearch').oninput = renderLibrary;
 $('#menuBtn').onclick = openDrawer;
 $('#scrim').onclick = closeDrawer;
 $('#tabSec').onclick = () => showTab('sec');
@@ -1965,6 +2104,17 @@ if('mediaSession' in navigator){
 }
 window.addEventListener('pagehide', () => { if(synth) synth.cancel(); });
 
+/* ======================= offline and install ======================= */
+function showOnline(){ $('#offline').hidden = navigator.onLine; if(cur) refreshSkips(); }
+window.addEventListener('online', showOnline); window.addEventListener('offline', showOnline);
+if('serviceWorker' in navigator && (location.protocol === 'https:' || location.hostname === 'localhost')){
+  window.addEventListener('load', () => { navigator.serviceWorker.register('sw.js').catch(() => {}); });
+}
+let installEvt = null;
+window.addEventListener('beforeinstallprompt', e => { e.preventDefault(); installEvt = e; $('#installBtn').hidden = false; });
+$('#installBtn').onclick = async () => { if(!installEvt) return; installEvt.prompt(); try{ await installEvt.userChoice; }catch(e){} installEvt = null; $('#installBtn').hidden = true; };
+window.addEventListener('appinstalled', () => { $('#installBtn').hidden = true; toast('Readaloud is installed. Open it from your apps or home screen, even offline.'); });
+
 /* ======================= start ======================= */
 (async function init(){
   if(!SPEEDS.includes(prefs.rate)){ prefs.rate = 0.8; savePrefs(); }
@@ -1975,6 +2125,7 @@ window.addEventListener('pagehide', () => { if(synth) synth.cancel(); });
   const h = location.hash.slice(1);
   if(h && docs.some(d => d.id === h)) openDoc(h);
   if(!synth) toast('This browser can’t read text aloud. Try Chrome, Edge or Safari.');
+  $('#offline').hidden = navigator.onLine;
 })();
 })();
 </script>

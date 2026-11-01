@@ -219,6 +219,7 @@ body.mode-read .pnote{display:none}
 .libtools h3{margin:0;font-family:'Literata',Georgia,serif;font-weight:600;font-size:1.2rem}
 .libtools input{flex:1;min-width:12rem;max-width:18rem;background:var(--surface);border:1px solid var(--line);border-radius:999px;padding:.5rem .9rem}
 .nomatch{color:var(--muted)}
+.lib-note.version{margin-top:1.5rem;font-size:.8rem}
 .oldnote{background:var(--surface);border:1px solid var(--line);border-left:4px solid var(--hl);border-radius:.6rem;padding:1rem 1.1rem;margin:0 0 2rem;font-family:'Figtree',system-ui,sans-serif;font-size:.95rem;line-height:1.5}
 .oldnote .btn{margin-top:.8rem}
 .offline{position:fixed;top:calc(4rem + env(safe-area-inset-top,0px));left:50%;transform:translateX(-50%);z-index:20;background:var(--surface);border:1px solid var(--line);border-radius:.7rem;padding:.55rem .9rem;font-size:.88rem;box-shadow:0 .4rem 1.2rem rgba(10,15,30,.15);max-width:min(32rem,calc(100vw - 2rem))}
@@ -389,6 +390,7 @@ dialog textarea{min-height:40vh;resize:vertical;font-family:'Literata',Georgia,s
       <input type="file" id="importIn" accept=".json,application/json" hidden>
     </div>
     <p class="lib-note" id="libNote">Everything you open is saved in this browser, so it’s here next time without uploading again. Use “Back up library” to move your books to another device or browser.</p>
+    <p class="lib-note version">Readaloud version 8 (November 1, 2026)</p>
   </main>
 
   <article class="text" id="text" hidden></article>
@@ -487,6 +489,7 @@ dialog textarea{min-height:40vh;resize:vertical;font-family:'Literata',Georgia,s
     <div class="row" style="justify-content:flex-start"><button class="btn" id="aiTest">Check key</button></div>
   </div>
   <div class="row">
+    <span class="note" style="margin:0 auto 0 0;align-self:center">Version 8</span>
     <button class="btn primary" id="setDone">Done</button>
   </div>
 </dialog>
@@ -2498,7 +2501,9 @@ window.addEventListener('pagehide', () => { if(synth) synth.cancel(); });
 function showOnline(){ $('#offline').hidden = navigator.onLine; if(cur) refreshSkips(); }
 window.addEventListener('online', showOnline); window.addEventListener('offline', showOnline);
 if('serviceWorker' in navigator && (location.protocol === 'https:' || location.hostname === 'localhost')){
-  window.addEventListener('load', () => { navigator.serviceWorker.register('sw.js').catch(() => {}); });
+  window.addEventListener('load', () => {
+    navigator.serviceWorker.register('sw.js', {updateViaCache: 'none'}).then(reg => { try{ reg.update(); }catch(e){} }).catch(() => {});
+  });
 }
 let installEvt = null;
 window.addEventListener('beforeinstallprompt', e => { e.preventDefault(); installEvt = e; $('#installBtn').hidden = false; });
